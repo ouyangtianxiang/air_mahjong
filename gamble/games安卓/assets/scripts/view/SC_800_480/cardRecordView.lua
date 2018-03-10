@@ -1,0 +1,35 @@
+local cardRecordView=
+{
+	name="cardRecordView",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=720,visible=1,fillParentWidth=0,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="bg",type=1,typeName="Image",time=112870199,x=0,y=0,width=862,height=544,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/pop_window_mid.png",
+		{
+			name="closeBtn",type=2,typeName="Button",time=112870289,x=-25,y=-25,width=66,height=70,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,file="Commonx/close_btn.png",file2="Commonx/close_btn_disable.png"
+		},
+		{
+			name="title",type=4,typeName="Text",time=112870324,x=0,y=10,width=0,height=72,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,fontSize=40,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[牌局记录]]
+		},
+		{
+			name="ScrollView1",type=0,typeName="ScrollView",time=112870400,x=0,y=30,width=775,height=420,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter
+		},
+		{
+			name="nocontent",type=4,typeName="Text",time=112871330,x=0,y=0,width=0,height=0,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=26,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[您还没有牌局记录哦!]],colorA=1
+		},
+		{
+			name="v_top",type=0,typeName="View",time=0,x=0,y=88,width=616,height=62,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,
+			{
+				name="btn_1",type=1,typeName="Button",time=0,x=0,y=0,width=308,height=62,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="apply/record_tab_1.png",
+				{
+					name="t",type=4,typeName="Text",time=0,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=28,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[比赛发奖记录]],colorA=1
+				}
+			},
+			{
+				name="btn_2",type=1,typeName="Button",time=0,x=0,y=0,width=308,height=62,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,file="apply/record_tab_2_1.png",
+				{
+					name="t",type=4,typeName="Text",time=0,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=28,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[我的获奖记录]]
+				}
+			}
+		}
+	}
+}
+return cardRecordView;

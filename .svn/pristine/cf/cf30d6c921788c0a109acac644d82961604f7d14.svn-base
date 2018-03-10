@@ -1,0 +1,96 @@
+const { ccclass, property } = cc._decorator;
+import Data from "./Data";
+import Buffer from "./Buffer";
+import Window from "../utils/Window";
+
+
+@ccclass
+export default class IM {
+    data: Data;
+    socket: WebSocket;
+    event: cc.EventTarget = new cc.EventTarget();
+
+    PARAM_TYPE = [];
+    wait: Window;
+    constructor(data: Data, url: string) {
+        this.data = data;
+
+        this.socket = new WebSocket(url);
+        this.wait = new Window("Wait", "正在连接服务器");
+
+        this.socket.onopen = function (event) {
+            data.onOpen(event);
+        };
+        this.socket.onerror = function (event) {
+            data.onError(event);
+        };
+        this.socket.onclose = function (event) {
+            data.onClose(event);
+        };
+        this.socket.onmessage = this.onMessage.bind(this);
+    }
+
+    onMessage(e) {
+        var buffer: Buffer = new Buffer(e.data);
+        var code = buffer.getUByte();
+        console.log(code);
+        switch (code) {
+            case 0:
+                this.data.Init(buffer);
+                break;
+            case 1:
+                this.data.Insert(buffer);
+                break;
+            case 2:
+                this.data.Delete(buffer);
+                break;
+            case 3:
+                this.data.Update(buffer);
+                break;
+            case 4:
+                while (buffer.remaining() > 0) {
+                    var c = buffer.getUByte();
+                    var len = buffer.getByte();
+                    var pTypes = [];
+                    for (var i = 0; i < len; i++) {
+                        pTypes[i] = buffer.getByte();
+                    }
+                    this.PARAM_TYPE[c] = pTypes;
+                    console.log(c + "------ " + pTypes);
+                }
+                break;
+            case 5:
+                var time = buffer.getLong();
+                var str = buffer.getUTF();
+                this.data.onServerTime(time, str);
+                this.wait.close();
+                break;
+            case 9:
+                throw "ServerError:\n" + buffer.getUTF();
+            default:
+                this.wait.close(code);
+                this.event.emit(code.toString(), buffer);
+                break;
+        }
+
+    }
+
+    Call(code, callback, target, ...param: any[]) {
+        if (callback != null) {
+            this.event.once(code, callback, target);
+            this.wait = new Window("Wait", code, code);
+        }
+        var buffer: Buffer = new Buffer(new ArrayBuffer(256));
+        buffer.putUByte(code);
+        if (param.length > 0) {
+            buffer.putArray(this.PARAM_TYPE[code], param);
+        }
+        buffer.flip();
+        console.log(code + ":" + param);
+        this.socket.send(buffer.getData());
+    }
+
+    close() {
+        this.socket.close();
+    }
+}

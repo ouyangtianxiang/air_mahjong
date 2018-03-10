@@ -1,0 +1,38 @@
+var Protocol = require("./net/Protocol.js");
+var data = require("./net/Data.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        label: {
+            default: null,
+            type: cc.Label
+        },
+        // defaults, set visually when attaching this script to the Canvas
+        text: 'Hello, World!'
+    },
+
+    // use this for initialization
+    onLoad: function () {
+        //this.label.string = this.text;
+        data.Connent();
+    },
+
+    // called every frame
+    update: function (dt) {
+
+    },
+
+    onLogin: function (event) {
+        var userId = event.detail.getInt();
+        cc.director.loadScene("Hall", function (err, scene) {
+            var canvas = scene.getChildByName('Canvas');
+            var hall = canvas.getComponent("Hall");
+            hall.init(userId);
+        });
+    },
+
+    login: function () {
+        data.im.Call(Protocol.LOGIN, this.onLogin, this, "ssss", 19, "txoyart", 456);
+    },
+});

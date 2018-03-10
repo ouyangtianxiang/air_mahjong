@@ -1,0 +1,14 @@
+package game.utils;
+
+public interface Protocol {
+	byte LOGIN=10;
+	byte LOGIN_SYSTEM_DATA=11;
+	byte LOGIN_USER_DATA=12;
+	byte NCMJ_BYTEO=13;
+	byte NCMJ_CREATE=14;
+	byte NCMJ_PREPARE=15;
+	byte NCMJ_PLAY=16;
+	byte NCMJ_REPLY=17;
+	byte NCMJ_EXIT=18;
+	byte NCMJ_INTO=19;
+}

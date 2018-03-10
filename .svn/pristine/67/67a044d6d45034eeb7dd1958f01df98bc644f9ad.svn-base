@@ -1,0 +1,105 @@
+const { ccclass, property } = cc._decorator;
+
+import Global from "../utils/Global";
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import Table from "../net/Table";
+import Player from "./Player";
+import Extractive from "./Extractive";
+import Reply from "./Reply"
+
+@ccclass
+export default class Desktop extends cc.Component {
+
+
+    @property(cc.Label)
+    RoomId: cc.Label;
+    @property(cc.Node)
+    PrepareBtn: cc.Node;
+
+    @property([Player])
+    players: Player[] = [];
+
+    @property(cc.SpriteAtlas)
+    pa: cc.SpriteAtlas;
+
+    @property(Extractive)
+    extractive: Extractive;
+
+    @property(Reply)
+    reply: Reply;
+
+
+    owner: number;
+    t_brand: Table;
+    t_state: Table;
+
+    onLoad() {
+        Global.PA = this.pa;
+
+        this.t_brand = Data.it.Table("T_brand");
+        this.t_state = Data.it.Table("T_state");
+        this.t_brand.event.on("update", this.onBrand, this);
+        this.t_state.event.on("insert", this.onState, this);
+        this.t_state.event.on("update", this.onState, this);
+        var arr = this.t_state.getList();
+
+        arr.forEach(this.State.bind(this));
+
+        var array = this.t_brand.getList(o => o.value == 9);
+        array.forEach(element => {
+            console.log(element.id);
+        });
+        console.log("array:", array);
+    }
+
+    onBrand(event: cc.Event.EventCustom) {
+        var o = event.detail;
+        if (o.index == 5) {
+            this.extractive.obj(o);
+        } else {
+            this.players[o.index].Brand(event.detail);
+        }
+    }
+
+    onState(event: cc.Event.EventCustom) {
+        this.State(event.detail);
+    }
+
+    State(o) {
+        if (o.userId == Data.it.userId) {
+            this.PrepareBtn.active = o.state == 0;
+        }
+        this.players[o.index].state(o);
+    }
+
+    init(param: any[]) {
+        this.RoomId.string = param[0];
+        this.owner = param[1];
+    }
+
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+
+    prepare() {
+        Data.it.im.Call(Protocol.NCMJ_PREPARE);
+    }
+
+    play() {
+
+    }
+
+
+    onExit(event) {
+        var code = event.detail.getByte();
+        if (code == 0) {
+            cc.director.loadScene("Hall");
+        }
+    }
+
+    exit() {
+        Data.it.im.Call(Protocol.NCMJ_EXIT, this.onExit, this);
+    }
+}

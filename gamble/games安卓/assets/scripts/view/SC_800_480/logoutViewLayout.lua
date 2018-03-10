@@ -1,0 +1,35 @@
+local logoutViewLayout=
+{
+	name="logoutViewLayout",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,
+	{
+		name="img_win_bg",type=1,typeName="Image",time=51435238,x=0,y=0,width=632,height=426,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/pop_window_small.png",gridLeft=50,gridRight=50,gridTop=85,gridBottom=50,
+		{
+			name="view_title",type=0,typeName="View",time=51437228,x=0,y=0,width=600,height=85,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+			{
+				name="text_title",type=4,typeName="Text",time=51437278,x=0,y=5,width=164,height=46,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[温馨提示]]
+			}
+		},
+		{
+			name="btn_close",type=2,typeName="Button",time=51852720,x=-20,y=-20,width=66,height=70,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,file="Commonx/close_btn.png",file2="Commonx/close_btn_disable.png"
+		},
+		{
+			name="btn_left",type=2,typeName="Button",time=53773437,x=-135,y=35,width=192,height=62,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,file="Commonx/red_small_wide_btn.png",
+			{
+				name="text_name",type=4,typeName="Text",time=53773441,x=0,y=-4,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=36,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[退出游戏]]
+			}
+		},
+		{
+			name="btn_right",type=2,typeName="Button",time=53773443,x=135,y=35,width=192,height=62,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,file="Commonx/green_small_wide_btn.png",
+			{
+				name="text_name",type=4,typeName="Text",time=53773447,x=0,y=-4,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=36,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[牌局抽奖]]
+			}
+		},
+		{
+			name="icon",type=1,typeName="Image",time=111653724,x=40,y=114,width=230,height=186,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Hall/logout/box.png"
+		},
+		{
+			name="View1",type=0,typeName="View",time=111653941,x=250,y=114,width=315,height=186,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft
+		}
+	}
+}
+return logoutViewLayout;

@@ -1,0 +1,49 @@
+const { ccclass, property } = cc._decorator;
+
+import Global2 from "../utils/Global2";
+import Protocol2 from "../net/Protocol2";
+import Data2 from "../net/Data2";
+
+@ccclass
+export default class Desktop extends cc.Component {
+
+    @property(cc.Label)
+    RoomId: cc.Label;
+
+
+    // use this for initialization
+    onLoad() {
+
+    }
+
+    init(param: any[]) {
+        this.RoomId.string = param[0];
+    }
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+
+    prepare() {
+
+    }
+
+    play() {
+
+    }
+
+    reply() {
+
+    }
+
+    onExit(event) {
+        var code = event.detail.getByte();
+        if (code == 0) {
+            cc.director.loadScene("Hall");
+        }
+    }
+
+    exit() {
+        Data2.it.im.Call(Protocol2.NCMJ_EXIT, this.onExit, this);
+    }
+}

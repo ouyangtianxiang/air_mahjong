@@ -1,0 +1,12 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class NewClass extends cc.Component {
+    onTouchStart(event: TouchEvent) {
+        this.node.y += 50;
+    }
+
+    onLoad() {
+        this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+    }
+}

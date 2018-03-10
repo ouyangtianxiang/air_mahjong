@@ -1,0 +1,48 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class Global2 {
+
+    public static dataView: any;
+
+    public static KeyEvent() {
+
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN.toString(), Global2.onKeyDown);
+    }
+
+    public static onKeyDown(event) {
+        switch (event.keyCode) {
+            case 6:
+            case 27:
+                if (Global2.dataView == null || Global2.dataView.node != null && !Global2.dataView.node.isValid) {
+                    Global2.dataView = Global2.ShowWindow("DataView", 1, 2, 3, 4);
+                }
+                break;
+        }
+    }
+
+    public static GotoScene(name, ...param) {
+        cc.director.loadScene(name, function (err, scene) {
+            var canvas = scene.getChildByName('Canvas');
+            var script = canvas.getComponent(name);
+            if (script.init instanceof Function) {
+                script.init(param);
+            }
+        });
+    }
+
+    public static ShowWindow(name, ...param) {
+        var obj = {};
+        cc.loader.loadRes(name, function (err, prefab) {
+            var o = cc.instantiate(prefab);
+            cc.director.getScene().addChild(o);
+            var script = o.getComponent(name);
+            obj["node"] = o;
+            obj["script"] = script;
+            if (script.init instanceof Function) {
+                script.init(param);
+            }
+        });
+        return obj;
+    }
+}

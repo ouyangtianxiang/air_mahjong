@@ -1,0 +1,32 @@
+fetionScorePop=
+{
+	name="fetionScorePop",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="bg",type=1,typeName="Image",time=60087694,x=0,y=0,width=254,height=352,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="fetion/scoreWindow.png",
+		{
+			name="score1",type=4,typeName="Text",time=60087768,x=77,y=44,width=130,height=70,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignRight,colorRed=255,colorGreen=200,colorBlue=0,string=[[]]
+		},
+		{
+			name="score2",type=4,typeName="Text",time=60087825,x=77,y=119,width=130,height=70,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignRight,colorRed=255,colorGreen=200,colorBlue=0,string=[[]]
+		},
+		{
+			name="score3",type=4,typeName="Text",time=60087844,x=77,y=195,width=130,height=70,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignRight,colorRed=255,colorGreen=200,colorBlue=0,string=[[]]
+		},
+		{
+			name="score4",type=4,typeName="Text",time=60087903,x=77,y=271,width=130,height=70,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignRight,colorRed=255,colorGreen=200,colorBlue=0,string=[[]]
+		},
+		{
+			name="Text1",type=4,typeName="Text",time=61614203,x=6,y=46,width=64,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[]]
+		},
+		{
+			name="Text2",type=4,typeName="Text",time=61614310,x=6,y=122,width=64,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[]]
+		},
+		{
+			name="Text3",type=4,typeName="Text",time=61614354,x=6,y=198,width=64,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[]]
+		},
+		{
+			name="Text4",type=4,typeName="Text",time=61614407,x=6,y=273,width=64,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[]]
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_fetionScorePop.lua"]=1;

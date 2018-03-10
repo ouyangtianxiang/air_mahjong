@@ -1,0 +1,344 @@
+package game.room.ncmahjong;
+
+import java.util.Vector;
+
+import game.application.Player;
+import game.data.bean.T_state;
+import game.data.bean.T_tile;
+import game.utils.Protocol;
+import ge.net.Buffer;
+import ge.net.Call;
+
+public class MJPlayer extends Call {
+	private Player player;
+	public Room room = null;
+	public int userId;
+	public byte index;
+	public byte order = 0;
+	public boolean vip = true;
+
+	public Vector<T_tile> array = new Vector<T_tile>();
+	public Vector<T_tile> array2 = new Vector<T_tile>();
+	public MJ mj;
+	public T_state state;
+	public HUState huState;
+
+	public MJPlayer(Room room, byte index, T_state ts) {
+		this.room = room;
+		this.index = index;
+		this.state = ts;
+		mj = new MJ(this);
+	}
+
+	public boolean init(Player player) {
+		if (this.userId == player.userId || this.userId == 0) {
+			this.player = player;
+			this.userId = player.userId;
+			this.state.userId = userId;
+			this.state.nickname = "nickname";
+			this.state.url = "url";
+			this.state.update();
+			room.u_room.addListener(player);
+			room.u_roomlevel.addListener(player);
+			room.t_state.addListener(player);
+			room.t_tile.addListener(player);
+			player.gameRoom(room.code);
+			return true;
+		}
+		return false;
+	}
+
+	private void reset() {
+		array.clear();
+		array2.clear();
+	}
+
+	public void CardDrafting(short id) {
+		room.drawTile.drawTile(id);
+	}
+
+	public void prepare() {
+		reset();
+		room.prepare(this);
+	}
+
+	public byte pr = 0;
+	public boolean reply = false;
+	public byte dis;
+	private T_tile open;
+
+	/**
+	 * @return 庄家=*2
+	 */
+	public boolean isBanker() {
+		return room.banker() == this;
+	}
+
+	/**
+	 * 出牌
+	 */
+	public void play(short id) {
+		reply = true;
+		pr = 0;
+		dis = 0;
+
+		open = room.play(this, id);
+		array.remove(open);
+		room.reply();
+	}
+
+	byte code;
+
+	/**
+	 * 应牌
+	 * 
+	 * @param type:0:过,1:吃,2:碰,4:杠,8:胡
+	 */
+	public void reply(boolean selfmo, byte type, byte code) {
+		if (selfmo) {// 自摸
+			switch (type) {
+			case 0: // 过
+				// 打牌
+				room.tick.start(index);
+				break;
+			case 4:// 暗杠
+				Vector<T_tile> v = mj.gang.get(code);
+				for (T_tile o : v) {
+					action(o, (byte) 6);
+				}
+				order++;
+				room.drawTile.start(this, true);
+				break;
+			case 8:// 胡
+				hu();
+				break;
+			}
+		} else {
+			this.code = code;
+			reply = true;
+			pr = type;
+			room.reply();
+		}
+	}
+
+	private void action(T_tile o, byte state) {
+		o.state = state;
+		o.index = index;
+		o.order = order;
+		o.update();
+		array.remove(o);
+		array2.add(o);
+	}
+
+	/*
+	 * 最高优先级被调
+	 */
+	public void onReply(boolean qiangGang) {
+		if (reply) {
+			switch (pr) {
+			case 0:
+				// 下一轮摸牌
+				open.state = 11;
+				open.order = order;
+				open.update();
+				order++;
+				room.drawTile.start(next(), false);
+				break;
+			case 1:// 吃
+				System.out.println("chi:" + code);
+				TTT ttt = mj.chiObj.get(code);
+				action(ttt.a, (byte) 3);
+				action(ttt.b, (byte) 3);
+				action(ttt.c, (byte) 3);
+				order++;
+				room.tick.start(index);
+				break;
+			case 2:// 碰
+				for (int i = 0; i < 3; i++) {
+					T_tile o = mj.pangs.get(i);
+					action(o, (byte) 4);
+				}
+				order++;
+				room.tick.start(index);
+				break;
+			case 4:// 明杠
+				for (T_tile o : mj.pangs) {
+					action(o, (byte) 5);
+				}
+				order++;
+				room.drawTile.start(this, true);
+				break;
+			case 8:// 胡
+				huState.qiangGang = qiangGang;
+				hu();
+				break;
+			}
+		}
+	}
+
+	private MJPlayer next() {
+		return room.map[(index + 1 + room.num) % room.num];
+	}
+
+	public void exit(byte code) {
+		clear();
+		call(Protocol.NCMJ_EXIT, code);
+	}
+
+	// ------------------------------------------------------------
+	/*
+	 * 发牌
+	 */
+	public void perflop(T_tile o) {
+		array.add(o);
+	}
+
+	/*
+	 * 自摸
+	 */
+	public void selfDrawn(T_tile obj, boolean gangHua) {
+		perflop(obj);
+		boolean gang = mj.Gang();
+		huState = new HUState(this, order, (byte) -1);
+		boolean hu = mj.HU();
+		if (hu) {
+			mj.JingDiao(obj);
+		}
+		huState.gangKai = gangHua;
+		if (hu || gang) {
+			call(Protocol.NCMJ_OPTIONS, true, hu, mj.gangValue[0], mj.gangValue[1], mj.gangValue[2]);
+		} else {
+			room.tick.start(index);
+		}
+	}
+
+	public void onPlay(T_tile obj) {
+		this.dis = (byte) ((index + room.num - obj.index) % room.num);
+		reply = false;
+		pr = 0;
+
+		byte chi = 0;
+		if (dis == 1) {
+			chi = mj.Chi(obj);
+			if (chi > 0) {
+				pr = 1;
+			}
+		}
+
+		byte pang = mj.Pang(obj);
+		if (pang >= 3) {
+			pr = 2;
+		}
+		if (pang == 4) {
+			pr = 4;
+		}
+
+		huState = new HUState(this, order, obj.index);
+		boolean hu = mj.HU(obj);
+		if (hu) {
+			pr = 8;
+		}
+		if (pr > 0) {
+			call(Protocol.NCMJ_OPTIONS, false, hu, obj.value, pang, mj.chivalue);
+		}
+		System.out.println(1 + "," + hu + "," + obj.value + "," + pang + "," + chi);
+	}
+
+	private void hu() {
+		if (mj.pingHU.ttts != null) {
+			for (TTT ttt : mj.pingHU.ttts) {
+				action(ttt.a, (byte) 7);
+				action(ttt.b, (byte) 7);
+				action(ttt.c, (byte) 7);
+				order++;
+			}
+		}
+		action(mj.pingHU.tt.a, (byte) 8);
+		action(mj.pingHU.tt.b, (byte) 8);
+		room.hu(this);
+	}
+
+	/**
+	 * 精数
+	 */
+	public int jing;
+	public byte jingLevel;
+
+	/**
+	 * 精计算
+	 */
+	public int baseJing() {
+		jing = 0;
+		for (T_tile o : array) {
+			jing += o.jing;
+		}
+		for (T_tile o : array2) {
+			jing += o.jing;
+		}
+		if (jing >= 5) {
+			jingLevel = (byte) (jing - 4);
+			jing *= (jing - 3);
+		}
+		System.out.println("baseJing:" + index + ":jing:" + jing);
+		return jing;
+	}
+
+	public boolean baWangJing;
+
+	/**
+	 * 设置霸王精
+	 * 
+	 * @param player
+	 * 
+	 * @param haveJing2
+	 */
+	public int BaWangJing(int sumjing) {
+		baWangJing = jing > 0 && jing == sumjing;
+		if (baWangJing) {
+			jing *= 2;
+		}
+		System.out.println("BaWangJing:" + index + ":jing:" + jing);
+		return jing;
+
+	}
+
+	public void syncJing(int sumjing) {
+		jing = jing * (room.num - 1) - (sumjing - jing);
+	}
+
+	/**
+	 * 清算
+	 * 
+	 * @param player
+	 *            赢家
+	 */
+
+	public int clearing(MJPlayer player) {
+		int score = player.huState.score;
+		int award = player.huState.award;
+		if (isBanker() || player.isBanker()) {
+			score *= 2;
+		}
+		if (player.huState.fangPao == index) {
+			score *= 2;
+		}
+
+		return score + award;
+	}
+
+	public void gameOver() {
+		if (player != null) {
+			player.gameRoom(0);
+		}
+	}
+
+	public void Send(Buffer buffer) {
+		if (player != null) {
+			player.Send(buffer);
+		}
+	}
+
+	public void clear() {
+		player = null;
+	}
+}

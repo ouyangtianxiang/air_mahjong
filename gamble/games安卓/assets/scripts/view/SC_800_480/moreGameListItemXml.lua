@@ -1,0 +1,29 @@
+local moreGameListItemXml=
+{
+	name="moreGameListItemXml",type=0,typeName="View",time=0,x=0,y=0,width=596,height=180,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="bg",type=1,typeName="Image",time=109483684,x=0,y=0,width=596,height=180,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/blank.png",
+		{
+			name="icon",type=1,typeName="Image",time=109483781,x=0,y=20,width=142,height=142,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Hall/task/icon_default.png"
+		},
+		{
+			name="text_size",type=4,typeName="Text",time=109484092,x=15,y=25,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,fontSize=26,textAlign=kAlignCenter,colorRed=245,colorGreen=247,colorBlue=19,string=[[150M]]
+		},
+		{
+			name="btn",type=2,typeName="Button",time=109484096,x=0,y=17,width=156,height=62,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottomRight,file="Commonx/yellow_small_btn.png",
+			{
+				name="text",type=4,typeName="Text",time=109484134,x=0,y=-4,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[打开]]
+			}
+		},
+		{
+			name="text_detail",type=5,typeName="TextView",time=109484300,x=165,y=21,width=270,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottomLeft,fontSize=24,textAlign=kAlignTopLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[DSFDS]]
+		},
+		{
+			name="text_title",type=4,typeName="Text",time=109999341,x=165,y=39,width=0,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=31,textAlign=kAlignTopLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[Text1]]
+		},
+		{
+			name="Image1",type=1,typeName="Image",time=111730212,x=0,y=0,width=597,height=2,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,file="Commonx/split_hori.png"
+		}
+	}
+}
+return moreGameListItemXml;

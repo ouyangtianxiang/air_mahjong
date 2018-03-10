@@ -1,0 +1,84 @@
+package game.application;
+
+import game.data.UserData;
+import game.data.bean.U_data;
+import game.room.RoomManage;
+import game.room.ncmahjong.MJPlayer;
+import game.room.ncmahjong.Room;
+import game.utils.Protocol;
+import ge.annotation.RemoteMethod;
+import ge.net.Application;
+
+/**
+ * 南昌麻将
+ */
+public class Player extends Application {
+	public Room room = null;
+	public int userId;
+	public MJPlayer mjPlayer;
+
+	protected void init() {
+		this.userId = UserID();
+	}
+
+	@RemoteMethod(Protocol.NCMJ_CREATE)
+	public Object[] create(byte a, byte b, byte c, byte d, byte e, byte f, byte g, byte h) {
+		room = RoomManage.it.CreateNCMJ(userId, a, b, c, d, e, f, g, h);
+		mjPlayer = room.into(this);
+		return Result(room.code);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_INTO)
+	public Object[] into(int roomId) {
+		room = RoomManage.it.Find(roomId);
+		if (room != null) {
+			mjPlayer = room.into(this);
+			if (mjPlayer != null) {
+				return Result(mjPlayer.index, room.code);
+			}
+			return Result((byte) -1);
+		}
+		return Result((byte) -2);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_CARD_DRAFTING)
+	public void CardDrafting(short id) {
+		mjPlayer.CardDrafting(id);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_PREPARE)
+	public Object[] prepare() {
+		mjPlayer.prepare();
+		return Result(0);
+	}
+
+	// 出牌
+	@RemoteMethod(Protocol.NCMJ_PLAY)
+	public void play(short id) {
+		mjPlayer.play(id);
+	}
+
+	// type:0:过,1:吃,2:碰,4:杠,8:胡
+	@RemoteMethod(Protocol.NCMJ_REPLY)
+	public Object[] reply(boolean selfmo, byte type, byte code) {
+		mjPlayer.reply(selfmo, type, code);
+		return Result(0);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_EXIT)
+	public void exit(byte code) {
+		mjPlayer.exit(code);
+	}
+
+	public void gameRoom(int code) {
+		U_data ud = ((UserData) data()).u_data.get();
+		ud.roomCode = code;
+		ud.update();
+	}
+
+	protected void clear() {
+		if (mjPlayer != null) {
+			mjPlayer.clear();
+		}
+	}
+}

@@ -1,0 +1,72 @@
+var data = require("./net/Data.js");
+var Global = require("./utils/Global.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        Row: cc.Node,
+        content: cc.Node,
+        label: {
+            default: null,
+            type: cc.Label
+        },
+        // foo: {
+        //    default: null,      // The default value will be used only when the component attaching
+        //                           to a node for the first time
+        //    url: cc.Texture2D,  // optional, default is typeof default
+        //    serializable: true, // optional, default is true
+        //    visible: true,      // optional, default is true
+        //    displayName: 'Foo', // optional
+        //    readonly: false,    // optional, default is false
+        // },
+        // ...
+    },
+
+    // use this for initialization
+    onLoad: function () {
+    },
+
+    init: function (tableName) {
+        this.label.string = tableName;
+        console.log("tableName:" + tableName);
+
+        var table = data.tableMap[tableName];
+        var item = this.Row.children[0];
+        for (var i = 0; i < table.names.length - 1; i++) {
+            var o = cc.instantiate(item);
+            o.parent = this.Row;
+        }
+
+        var arr = this.Row.children;
+
+        for (var i = 0; i < arr.length; i++) {
+            var o = arr[i];
+            var label = o.getComponent(cc.Label);
+            label.string = table.names[i];
+        }
+
+
+        for (var key in table.data) {
+            var row = cc.instantiate(this.Row);
+            row.parent = this.content;
+            var arr = row.children;
+            var obj = table.data[key];
+            for (var i = 0; i < arr.length; i++) {
+                var o = arr[i];
+                var label = o.getComponent(cc.Label);
+                label.string = obj[table.names[i]];
+            }
+        }
+
+
+    },
+
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+
+    close: function () {
+        this.node.destroy();
+    }
+});

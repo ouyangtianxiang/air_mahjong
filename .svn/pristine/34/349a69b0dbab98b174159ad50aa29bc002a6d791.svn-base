@@ -1,0 +1,260 @@
+package game.room;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+
+import game.application.Player;
+import game.data.bean.T_tile;
+import game.data.bean.T_room;
+import game.data.bean.T_state;
+import ge.db.Table;
+import ge.net.Buffer;
+import ge.net.Call;
+
+public class Room extends Call {
+	protected static ConcurrentHashMap<Integer, Room> ROOMS = new ConcurrentHashMap<Integer, Room>();
+
+	public static Room Find(int roomId) {
+		Room room = ROOMS.get(roomId);
+		return room;
+	}
+
+	private synchronized static int CreataID() {
+		int id = 0;
+		do {
+			id = (int) (100000 + Math.random() * 900000);
+		} while (ROOMS.containsKey(id));
+		return id;
+	}
+
+	public Timer timer = new Timer();
+	protected Player[] map;
+
+	public final int roomId;
+
+	private Table<T_tile> T_tile = new Table<T_tile>(T_tile.class, null);
+	private Table<T_state> t_state = new Table<T_state>(T_state.class, null);
+	private Table<T_room> t_room = new Table<T_room>(T_room.class, null);
+
+	private Vector<T_tile> array;
+
+	public T_room room;
+
+	public Tick tick;
+
+	public Room(int userId, byte num) {
+		this.roomId = CreataID();
+		map = new Player[num];
+		ROOMS.put(roomId, this);
+
+		room = new T_room(t_room, roomId, userId, num, (byte) 0, (byte) -1, (byte) 0, (byte) 0);
+
+		short id = 1;
+		for (byte b : MJ.TILE) {
+			for (int i = 0; i < 4; i++) {
+				new T_tile(T_tile, id++, b, (byte) 0, (byte) 0, (byte) -1);
+			}
+		}
+		array = T_tile.getList(null);
+		tick = new Tick(this);
+	}
+
+	private byte index() {
+		for (byte i = 0; i < map.length; i++) {
+			if (map[i] == null) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public synchronized byte into(Player player) {
+		byte i = index();
+		if (i >= 0) {
+			map[i] = player;
+			T_tile.addListener(player);
+			t_state.addListener(player);
+			t_room.addListener(player);
+			String nickname = "txoy " + i;
+			int ip = 0;
+			String url = "http://mj.game1982.com/1.jpg";
+			player.state = new T_state(t_state, player.userId, i, (byte) 0, nickname, ip, url, 0);
+		}
+		return i;
+	}
+
+	/**
+	 * 准备
+	 */
+	public void prepare(Player mj) {
+		T_state ts = t_state.get(mj.userId);
+		ts.state = 1;
+		ts.update();
+
+		for (Player p : map) {
+			if (p == null || p.state.state == 0) {
+				return;
+			}
+		}
+		startGame();
+	}
+
+	/**
+	 * 出牌
+	 */
+	public T_tile play(Player player, short id) {
+		room.play = -1;
+		room.update();
+		tick.cancel();
+		T_tile o = T_tile.get(id);
+		if (o.index == player.index && o.state == 0 && o.order == 0) {
+			o.state = 2;
+			o.update();
+			for (Player p : map) {
+				if (p != player && p != null) {
+					p.onPlay(o);
+				}
+			}
+			reply();
+		}
+		System.out.println(o);
+		return o;
+	}
+
+	/**
+	 * 应牌
+	 */
+	public void reply() {
+		Player p = null;
+		for (Player o : map) {
+			if (p == null || p.pr < o.pr || p.pr == o.pr && p.dis > o.dis) {
+				p = o;
+			}
+		}
+		p.onReply();
+	}
+
+	private void startGame() {
+		timer.schedule(perflop, 100, 100);
+	}
+
+	// 发牌
+	private TimerTask perflop = new TimerTask() {
+		int n = 0;
+
+		public void run() {
+			System.out.println("发牌:" + n);
+			for (byte i = 0; i < room.num; i++) {
+				T_tile o = array.remove((int) (Math.random() * array.size()));
+				o.index = i;
+				o.update();
+				map[i].perflop(o);
+			}
+			n++;
+			if (n >= 13) {
+				cancel();
+				timer.schedule(extractive, 500);
+			}
+		}
+	};
+	// 定精
+	private TimerTask extractive = new TimerTask() {
+		public void run() {
+			System.out.println("定精");
+			T_tile o = array.remove(0);
+			o.index = 5;
+			o.update();
+			timer.schedule(drawTiles, 500);
+		}
+	};
+
+	// 抓牌
+	private TimerTask drawTiles = new TimerTask() {
+		public void run() {
+			System.out.println("抓牌");
+			T_tile o = array.remove(0);
+			o.index = 0;
+			o.update();
+			tick.start((byte) 0);
+		}
+	};
+
+	public void exit(Player player) {
+		t_state.del(player.userId);
+
+		T_tile.removeListener(player);
+		t_state.removeListener(player);
+		t_room.removeListener(player);
+		map[player.index] = null;
+		if (player.userId == room.owner) {
+			destroy();
+		}
+	}
+
+	public void destroy() {
+		timer.cancel();
+		ROOMS.remove(roomId);
+		for (Player p : map) {
+			if (p != null) {
+				p.exit((byte) 1);
+			}
+		}
+		T_tile.clear();
+		t_state.clear();
+		t_room.clear();
+		T_tile = null;
+		t_state = null;
+		t_room = null;
+	}
+
+	public void Send(Buffer buffer) {
+		for (Player p : map) {
+			if (p != null) {
+				buffer.rewind();
+				p.Send(buffer);
+			}
+		}
+	}
+
+	public void Shuffle(String s0, String s1, String s2, String s3, String c, short jing) {
+		String strs[][] = { s0.split(","), s1.split(","), s2.split(","), s3.split(",") };
+		String cstr[] = c.split(",");
+
+		array.clear();
+		for (String k : cstr) {
+			T_tile o = T_tile.get(Integer.parseInt(k));
+			array.add(o);
+		}
+
+		perflop = new TimerTask() {
+			int n = 0;
+
+			public void run() {
+				System.out.println("发牌:" + n);
+				for (byte i = 0; i < room.num; i++) {
+					T_tile o = T_tile.get(Integer.parseInt(strs[i][n]));
+					o.index = i;
+					o.update();
+					map[i].perflop(o);
+				}
+				n++;
+				if (n >= 13) {
+					cancel();
+					timer.schedule(extractive, 500);
+				}
+			}
+		};
+		// 定精
+		extractive = new TimerTask() {
+			public void run() {
+				System.out.println("定精");
+				T_tile o = T_tile.get(jing);
+				o.index = 5;
+				o.update();
+				timer.schedule(drawTiles, 500);
+			}
+		};
+	}
+}

@@ -1,0 +1,197 @@
+package test;
+
+/**
+ *
+ * @author 奔跑 QQ:361817468
+ */
+public class Mahjong {
+	private static Tile22[] removeSomeMahjongTiles(Tile22[] mahjongTiles, int[] indexs) {
+		int lenNew = mahjongTiles.length - indexs.length;
+		if (lenNew > 0) {
+			Tile22[] mahjongTilesNew = new Tile22[lenNew];
+			int index = 0;
+			for (int i = 0; i < mahjongTiles.length; i++) {
+				boolean isAppend = true;
+				for (int j = 0; j < indexs.length; j++) {
+					if (i == indexs[j]) {
+						isAppend = false;
+						break;
+					}
+				}
+				if (isAppend) {
+					mahjongTilesNew[index] = mahjongTiles[i];
+					index++;
+				}
+			}
+			return mahjongTilesNew;
+		}
+		return null;
+	}
+
+	// 从数组长度为arrayLen的整形数组中任意抽取两个元素，把所有可能的组合的索引列成一个二位数组返回出来
+	private static int[][] siphonTwoIndexs(int arrayLen) {
+		int len = (arrayLen * (arrayLen - 1)) / 2;
+		if (len > 0) {
+			int[][] indexs = new int[len][2];
+			int index = 0;
+			for (int i = 0; i < arrayLen; i++) {
+				for (int j = (i + 1); j < arrayLen; j++) {
+					indexs[index][0] = i;
+					indexs[index][1] = j;
+					index++;
+				}
+			}
+
+			return indexs;
+		} else {
+			return null;
+		}
+	}
+
+	// 从数组长度为arrayLen的整形数组中任意抽取两个元素，把所有可能的组合的索引列成一个二位数组返回出来
+	private static int[][] siphonThreeIndexs(int arrayLen) {
+		int len = (arrayLen * (arrayLen - 1) * (arrayLen - 2)) / 6;
+		if (len > 0) {
+			int[][] indexs = new int[len][3];
+			int index = 0;
+			for (int i = 0; i < arrayLen; i++) {
+				for (int j = (i + 1); j < arrayLen; j++) {
+					for (int k = (j + 1); k < arrayLen; k++) {
+						indexs[index][0] = i;
+						indexs[index][1] = j;
+						indexs[index][2] = k;
+						index++;
+					}
+				}
+			}
+			return indexs;
+		} else {
+			return null;
+		}
+	}
+
+	private static Tile22[][] appendSomeMahjongTiles(Tile22[][] saveMahjongTileses, Tile22[] mahjongTiles) {
+		if (saveMahjongTileses == null) {
+			Tile22[][] mahjongTilesesReturn = new Tile22[1][];
+			mahjongTilesesReturn[0] = mahjongTiles;
+			return mahjongTilesesReturn;
+		} else {
+			Tile22[][] mahjongTilesesReturn = new Tile22[saveMahjongTileses.length + 1][];
+			System.arraycopy(saveMahjongTileses, 0, mahjongTilesesReturn, 0, saveMahjongTileses.length);
+			mahjongTilesesReturn[saveMahjongTileses.length] = mahjongTiles;
+			return mahjongTilesesReturn;
+		}
+	}
+
+	public static Tile22[][] tryCombination(Tile22[] mahjongTiles, int twoNum, int threeNum) {
+		return Mahjong.tryCombination(mahjongTiles, twoNum, threeNum, null);
+	}
+
+	private static Tile22[][] tryCombination(Tile22[] mahjongTiles, int twoNum, int threeNum,
+			Tile22[][] saveMahjongTileses) {
+		if (mahjongTiles == null) {
+			if (twoNum == 0 && threeNum == 0) {
+				return saveMahjongTileses;
+			} else {
+				return null;
+			}
+		}
+		if (mahjongTiles.length == ((twoNum * 2) + (threeNum * 3))) {
+			if (threeNum > 0) {
+				int[][] indexs = siphonThreeIndexs(mahjongTiles.length);
+				if (indexs == null) {
+					return null;
+				}
+
+				for (int[] index : indexs) {
+					if (mahjongTiles[index[0]].isCanThree(mahjongTiles[index[1]], mahjongTiles[index[2]])) {
+						Tile22[][] saveMahjongTilesesCache = appendSomeMahjongTiles(saveMahjongTileses, new Tile22[] {
+								mahjongTiles[index[0]], mahjongTiles[index[1]], mahjongTiles[index[2]] });
+						Tile22[][] mahjongTilesesReturn = Mahjong.tryCombination(
+								removeSomeMahjongTiles(mahjongTiles, new int[] { index[0], index[1], index[2] }),
+								twoNum, threeNum - 1, saveMahjongTilesesCache);
+						if (mahjongTilesesReturn != null) {
+							return mahjongTilesesReturn;
+						}
+					}
+				}
+			} else if (twoNum > 0) {
+				int[][] indexs = siphonTwoIndexs(mahjongTiles.length);
+				if (indexs == null) {
+
+					return null;
+				}
+				for (int[] index : indexs) {
+					if (mahjongTiles[index[0]].isCanTwo(mahjongTiles[index[1]])) {
+						Tile22[][] saveMahjongTilesesCache = appendSomeMahjongTiles(saveMahjongTileses,
+								new Tile22[] { mahjongTiles[index[0]], mahjongTiles[index[1]] });
+						Tile22[][] mahjongTilesesReturn = Mahjong.tryCombination(
+								removeSomeMahjongTiles(mahjongTiles, new int[] { index[0], index[1] }), twoNum - 1,
+								threeNum, saveMahjongTilesesCache);
+						if (mahjongTilesesReturn != null) {
+							return mahjongTilesesReturn;
+						}
+					}
+				}
+			} else {
+				return saveMahjongTileses;
+			}
+		}
+		return null;
+	}
+
+	public static void main(String[] args) throws Exception {
+		/**
+		 * ➀➁➂➃➄➅➆➇➈➊➋➌➍➎➏➐➑➒㊀㊁㊂㊃㊄㊅㊆㊇㊈东南西北中发白
+		 */
+
+		String str = "➀➀➀➀➁➁➁➁➂➂➂➂➃➃";
+		Tile22[] tiles = new Tile22[str.length()];
+		for (int i = 0; i < tiles.length; i++) {
+			tiles[i] = new Tile22(str.charAt(i));
+		}
+
+		System.out.println("检查所有下列牌:");
+		for (int i = 0; i < tiles.length; i++) {
+			if (i != 0) {
+				System.out.print(",");
+			}
+			System.out.print(tiles[i]);
+		}
+		System.out.println("");
+		Tile22[][] mahjongTileses = tryCombination(tiles, 1, 4);
+		if (mahjongTileses != null) {
+			System.out.println("检查通过!");
+			System.out.println("组合结果如下:");
+			int twoIndex = 1;
+			int threeIndex = 1;
+			for (Tile22[] row : mahjongTileses) {
+				if (row.length == 2) {
+					System.out.print("第" + twoIndex + "对组合：");
+					for (int j = 0; j < row.length; j++) {
+
+						if (j != 0) {
+							System.out.print(",");
+						}
+						System.out.print(row[j]);
+					}
+					System.out.println("");
+					twoIndex++;
+				} else if (row.length == 3) {
+					System.out.print("第" + threeIndex + "趟组合：");
+					for (int j = 0; j < row.length; j++) {
+
+						if (j != 0) {
+							System.out.print(",");
+						}
+						System.out.print(row[j]);
+					}
+					System.out.println("");
+					threeIndex++;
+				}
+			}
+		} else {
+			System.out.println("检查未通过!");
+		}
+	}
+}

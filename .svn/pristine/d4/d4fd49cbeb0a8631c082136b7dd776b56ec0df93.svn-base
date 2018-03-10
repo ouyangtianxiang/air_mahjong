@@ -1,0 +1,135 @@
+package game.data.bean;
+
+import ge.annotation.Delete;
+import ge.annotation.Insert;
+import ge.annotation.PrimaryKey;
+import ge.annotation.SyncKey;
+import ge.annotation.Update;
+import ge.db.Bean;
+import ge.db.Table;
+
+/**
+ *  (14)
+ */
+@SyncKey(0)
+@PrimaryKey(1)
+@Insert("insert into u_room_hu values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+@Update("update u_room_hu set roomId=?,index=?,fangPao=?,tianHU=?,minSevenPairs=?,thirteenRotten=?,mevius=?,deGuo=?,maxSevenPairs=?,qiangGang=?,gangKai=?,deZhongDe=?,jingDiao=? where level=?")
+@Delete("delete from u_room_hu where level=?")
+public class U_room_hu extends Bean {
+	/**
+	 * 
+	 * @param roomId
+	 *            
+	 * @param level
+	 *            
+	 * @param index
+	 *            
+	 * @param fangPao
+	 *            
+	 * @param tianHU
+	 *            
+	 * @param minSevenPairs
+	 *            
+	 * @param thirteenRotten
+	 *            
+	 * @param mevius
+	 *            
+	 * @param deGuo
+	 *            
+	 * @param maxSevenPairs
+	 *            
+	 * @param qiangGang
+	 *            
+	 * @param gangKai
+	 *            
+	 * @param deZhongDe
+	 *            
+	 * @param jingDiao
+	 *            
+	 */
+	public U_room_hu(Table<U_room_hu> table, int roomId, byte level, byte index, byte fangPao, byte tianHU, byte minSevenPairs, byte thirteenRotten, byte mevius, byte deGuo, byte maxSevenPairs, byte qiangGang, byte gangKai, byte deZhongDe, byte jingDiao) {
+		super(table, roomId, level, index, fangPao, tianHU, minSevenPairs, thirteenRotten, mevius, deGuo, maxSevenPairs, qiangGang, gangKai, deZhongDe, jingDiao);
+	}
+
+	// init
+	public U_room_hu(Table<U_room_hu> table, Object[] v) {
+		super(table, v);
+	}
+
+	// mysql
+	public U_room_hu(Object[] v, Table<U_room_hu> table) {
+		super(v, table);
+	}
+
+	/**
+	 * 
+	 */
+	public int roomId;
+
+	/**
+	 * 
+	 */
+	public byte level;
+
+	/**
+	 * 
+	 */
+	public byte index;
+
+	/**
+	 * 
+	 */
+	public byte fangPao;
+
+	/**
+	 * 
+	 */
+	public byte tianHU;
+
+	/**
+	 * 
+	 */
+	public byte minSevenPairs;
+
+	/**
+	 * 
+	 */
+	public byte thirteenRotten;
+
+	/**
+	 * 
+	 */
+	public byte mevius;
+
+	/**
+	 * 
+	 */
+	public byte deGuo;
+
+	/**
+	 * 
+	 */
+	public byte maxSevenPairs;
+
+	/**
+	 * 
+	 */
+	public byte qiangGang;
+
+	/**
+	 * 
+	 */
+	public byte gangKai;
+
+	/**
+	 * 
+	 */
+	public byte deZhongDe;
+
+	/**
+	 * 
+	 */
+	public byte jingDiao;
+
+}

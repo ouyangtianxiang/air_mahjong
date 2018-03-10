@@ -1,0 +1,19 @@
+roomTaskLayout=
+{
+	name="roomTaskLayout",type=0,typeName="View",time=0,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="bg",type=1,typeName="Image",time=33207132,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Room/room_task/bg.png",packFile="MahjongPinTu/roomPin.lua"
+	},
+	{
+		name="openBtn",type=2,typeName="Button",time=33207163,x=292,y=42,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Room/room_task/open.png",packFile="MahjongPinTu/roomPin.lua"
+	},
+	{
+		name="closeBtn",type=2,typeName="Button",time=33207221,x=292,y=42,width=43,height=108,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Room/room_task/close.png",packFile="MahjongPinTu/roomPin.lua"
+	},
+	{
+		name="loadingImg",type=1,typeName="Image",time=33273238,x=100,y=46,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/loading.png"
+	},
+	{
+		name="getReward",type=2,typeName="Button",time=42716404,x=292,y=42,width=43,height=108,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Room/getReward.png"
+	}
+}

@@ -1,0 +1,61 @@
+var Protocol = require("./net/Protocol.js");
+var data = require("./net/Data.js");
+var Global = require("./utils/Global.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        label: [cc.Label],
+        str: "",
+    },
+
+    // use this for initialization
+    onLoad: function () {
+        this.fill();
+    },
+    //str: "",
+
+    fill: function () {
+        for (i = 0; i < this.label.length; i++) {
+            this.label[i].string = this.str[i];
+        }
+    },
+
+    onKey: function (event, value) {
+        switch (value) {
+            case 'D':
+                if (this.str.length > 0) {
+                    this.str = this.str.substr(0, this.str.length - 1);
+                } else {
+                    return;
+                }
+                break;
+            case 'C':
+                this.str = "";
+                break;
+            default:
+                if (this.str.length < this.label.length) {
+                    this.str += value;
+                    if (this.str.length == this.label.length) {
+                        this.intoRoom();
+                    }
+                }
+
+        }
+        this.fill();
+        console.log(this.str);
+    },
+
+    onIntoRoom: function (event) {
+        var roomId = event.detail.getInt();
+        Global.GotoScene("Desktop", roomId);
+    },
+
+    intoRoom: function () {
+        data.im.Call(Protocol.NCMJ_INTO, this.onIntoRoom, this, parseInt(this.str), 10);
+    },
+
+    onClose: function () {
+        this.node.destroy();
+    }
+});

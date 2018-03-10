@@ -1,0 +1,36 @@
+package game.room.task;
+
+import game.application.Player;
+import game.data.bean.T_tile;
+import game.room.Room;
+
+public class DrawTile extends Task {
+
+	public DrawTile(Room room) {
+		super(room);
+	}
+
+	private Player player;
+	private boolean gangHua;
+
+	public void start(Player player) {
+		start(player, false);
+	}
+
+	public void start(Player player, boolean gangHua) {
+		this.player = player;
+		this.gangHua = gangHua;
+		super.start(500);
+	}
+
+	@Override
+	public void run() {
+		System.out.println("抓牌");
+		T_tile o = room.array.remove(0);
+		o.state = 1;
+		o.order = 101;
+		o.index = player.index;
+		o.update();
+		player.selfDrawn(o, gangHua);
+	}
+}

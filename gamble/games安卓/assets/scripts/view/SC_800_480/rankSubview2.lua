@@ -1,0 +1,29 @@
+rankSubview2=
+{
+	name="rankSubview2",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="top_part",type=0,typeName="View",time=50739207,x=0,y=0,width=0,height=120,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft
+	},
+	{
+		name="sub_part",type=0,typeName="View",time=50739261,x=197,y=120,width=0,height=680,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+		{
+			name="sub_view",type=0,typeName="View",time=50739351,x=40,y=0,width=1200,height=680,fillTopLeftX=40,fillTopLeftY=10,fillBottomRightX=40,fillBottomRightY=0,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+			{
+				name="sub_view_1",type=1,typeName="Image",time=50739850,x=0,y=0,width=1200,height=460,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="rank/listview_bg.png",gridLeft=10,gridRight=10,gridTop=10,gridBottom=10,
+				{
+					name="ListView",type=0,typeName="ListView",time=50741275,x=10,y=10,width=1180,height=440,fillTopLeftX=10,fillTopLeftY=10,fillBottomRightX=10,fillBottomRightY=10,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft
+				},
+				{
+					name="text_nodate",type=4,typeName="Text",time=52969946,x=0,y=0,width=182,height=26,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=26,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[暂无排行榜数据]]
+				}
+			},
+			{
+				name="sub_view_3",type=1,typeName="Image",time=50740639,x=0,y=480,width=1200,height=140,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="rank/listview_bg.png",gridLeft=10,gridRight=10,gridTop=10,gridBottom=10,
+				{
+					name="view_info",type=0,typeName="View",time=50810392,x=0,y=0,width=0,height=0,fillTopLeftX=10,fillTopLeftY=10,fillBottomRightX=10,fillBottomRightY=10,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft
+				}
+			}
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_rankSubview2.lua"]=1;

@@ -1,0 +1,238 @@
+import Table from "./Table";
+
+
+export class U_room {
+    public static table: Table<U_room> = new Table<U_room>(U_room);
+	/**
+	 * 
+	 */
+	public id:number;
+
+	/**
+	 * 房间号
+	 */
+	public code:number;
+
+	/**
+	 * 房主
+	 */
+	public owner:number;
+
+	/**
+	 * 人数
+	 */
+	public num:number;
+
+	/**
+	 * 庄家
+	 */
+	public banker:number;
+
+	/**
+	 * 当前出牌index
+	 */
+	public play:number;
+
+	/**
+	 * 剩下的牌数
+	 */
+	public remainingTile:number;
+
+	/**
+	 * 计时
+	 */
+	public time:number;
+
+	/**
+	 * 当前盘次
+	 */
+	public curLevel:number;
+
+	/**
+	 * 总盘数
+	 */
+	public sumLevel:number;
+
+	/**
+	 * 状态
+	 */
+	public state:number;
+
+	/**
+	 * 创建时间
+	 */
+	public createTime:number;
+
+}
+
+export class U_data {
+    public static table: Table<U_data> = new Table<U_data>(U_data);
+	/**
+	 * $
+	 */
+	public userId:number;
+
+	/**
+	 * 
+	 */
+	public state:number;
+
+	/**
+	 * 
+	 */
+	public card:number;
+
+	/**
+	 * 
+	 */
+	public rmb:number;
+
+	/**
+	 * 
+	 */
+	public roomCode:number;
+
+}
+
+export class T_tile {
+    public static table: Table<T_tile> = new Table<T_tile>(T_tile);
+	/**
+	 * $
+	 */
+	public id:number;
+
+	/**
+	 * 
+	 */
+	public value:number;
+
+	/**
+	 * 
+	 */
+	public state:number;
+
+	/**
+	 * 
+	 */
+	public order:number;
+
+	/**
+	 * 
+	 */
+	public index:number;
+
+	/**
+	 * 
+	 */
+	public jing:number;
+
+}
+
+export class U_info {
+    public static table: Table<U_info> = new Table<U_info>(U_info);
+	/**
+	 * $
+	 */
+	public id:number;
+
+	/**
+	 * 通行证id
+	 */
+	public passId:string;
+
+	/**
+	 * 用户密码
+	 */
+	public password:string;
+
+	/**
+	 * 注册时间(首次登录时间)
+	 */
+	public regTime:number;
+
+	/**
+	 * 最近登录时间
+	 */
+	public loginTime:number;
+
+	/**
+	 * 最近登录时的IP
+	 */
+	public ip:number;
+
+}
+
+export class T_state {
+    public static table: Table<T_state> = new Table<T_state>(T_state);
+	/**
+	 * 
+	 */
+	public userId:number;
+
+	/**
+	 * $
+	 */
+	public index:number;
+
+	/**
+	 * 状态
+	 */
+	public state:number;
+
+	/**
+	 * 昵称
+	 */
+	public nickname:string;
+
+	/**
+	 * IP地址
+	 */
+	public ip:number;
+
+	/**
+	 * 头像URL
+	 */
+	public url:string;
+
+}
+
+export class U_room_level {
+    public static table: Table<U_room_level> = new Table<U_room_level>(U_room_level);
+	/**
+	 * id
+	 */
+	public id:number;
+
+	/**
+	 * 用户ID
+	 */
+	public userId:number;
+
+	/**
+	 * 房间ID
+	 */
+	public roomId:number;
+
+	/**
+	 * 局次
+	 */
+	public level:number;
+
+	/**
+	 * 得分数
+	 */
+	public score:number;
+
+	/**
+	 * 精
+	 */
+	public jing:number;
+
+	/**
+	 * 精冲关
+	 */
+	public jingLevel:number;
+
+}
+
+export var Beans: object = { "U_room": U_room,"U_data": U_data,"T_tile": T_tile,"U_info": U_info,"T_state": T_state,"U_room_level": U_room_level };

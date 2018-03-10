@@ -1,0 +1,271 @@
+module.exports = function (arrayBuffer) {
+	var data = new DataView(arrayBuffer);
+	var pos = 0;
+
+	this.flip = function () {
+		data = new DataView(data.buffer.slice(0, pos));
+		pos = 0;
+	}
+
+	this.remaining = function () {
+		return data.byteLength - pos;
+	}
+
+	this.getData = function () {
+		return data;
+	}
+
+	this.getBoolean = function () {
+		return this.getByte() == 1;
+	}
+
+	this.getUByte = function () {
+		var value = data.getUint8(pos);
+		pos += 1;
+		return value;
+	}
+
+	this.getByte = function () {
+		var value = data.getInt8(pos);
+		pos += 1;
+		return value;
+	}
+
+	this.getUShort = function () {
+		var value = data.getUint16(pos, true);
+		pos += 2;
+		return value;
+	}
+
+	this.getShort = function () {
+		var value = data.getInt16(pos, true);
+		pos += 2;
+		return value;
+	}
+
+	this.getInt = function () {
+		var value = data.getInt32(pos, true);
+		pos += 4;
+		return value;
+	}
+
+	this.getUInt = function () {
+		var value = data.getUint32(pos, true);
+		pos += 4;
+		return value;
+	}
+
+	this.getLong = function () {
+		var value1 = this.getUInt();
+		var value2 = this.getUInt();
+		return value2 * 4294967296 + value1;
+	}
+
+	this.getFloat = function () {
+		var value = data.getFloat(pos, true);
+		pos += 4;
+		return value;
+	}
+
+	this.getDouble = function () {
+		var value = data.getDouble(pos, true);
+		pos += 8;
+		return value;
+	}
+
+	this.getUTF = function () {
+		var len = this.getShort();
+		var array = new Uint8Array(data.buffer, pos, len);
+		pos += len;
+
+		var out, i, len, c;
+		var char2, char3;
+
+		out = "";
+		len = array.length;
+		i = 0;
+		while (i < len) {
+			c = array[i++];
+			switch (c >> 4) {
+				case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+					// 0xxxxxxx
+					out += String.fromCharCode(c);
+					break;
+				case 12: case 13:
+					// 110x xxxx   10xx xxxx
+					char2 = array[i++];
+					out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+					break;
+				case 14:
+					// 1110 xxxx  10xx xxxx  10xx xxxx
+					char2 = array[i++];
+					char3 = array[i++];
+					out += String.fromCharCode(((c & 0x0F) << 12) |
+						((char2 & 0x3F) << 6) |
+						((char3 & 0x3F) << 0));
+					break;
+			}
+		}
+
+		return out;
+
+	}
+	//////////////////////////////////////////////////////////
+
+	this.putBoolean = function (value) {
+		this.putByte((value ? 1 : 0));
+	}
+
+	this.putUByte = function (value) {
+		this.examinePut(1);
+		data.setUint8(pos, value);
+		pos += 1;
+	}
+
+	this.putByte = function (value) {
+		this.examinePut(1);
+		data.setInt8(pos, value);
+		pos += 1;
+	}
+
+	this.putUShort = function (value) {
+		this.examinePut(2);
+		data.setUint16(pos, value, true);
+		pos += 2;
+	}
+
+	this.putShort = function (value) {
+		this.examinePut(2);
+		data.setInt16(pos, value, true);
+		pos += 2;
+	}
+
+	this.putUInt = function (value) {
+		this.examinePut(4);
+		data.setUint32(pos, value, true);
+		pos += 4;
+	}
+
+	this.putInt = function (value) {
+		this.examinePut(4);
+		data.setInt32(pos, value, true);
+		pos += 4;
+	}
+
+	this.putLong = function (value) {
+		this.putUInt(value % 4294967296);
+		this.putUInt(parseInt(value / 4294967296));
+	}
+
+	this.putFloat = function (value) {
+		this.examinePut(4);
+		data.setFloat(pos, value, true);
+		pos += 4;
+	}
+
+	this.putDouble = function (value) {
+		this.examinePut(8);
+		data.setDouble(pos, value, true);
+		pos += 8;
+	}
+
+
+	this.putUTF = function (str) {
+		var out = [], p = 0;
+		for (var i = 0; i < str.length; i++) {
+			var c = str.charCodeAt(i);
+			if (c < 128) {
+				out[p++] = c;
+			} else if (c < 2048) {
+				out[p++] = (c >> 6) | 192;
+				out[p++] = (c & 63) | 128;
+			} else if (
+				((c & 0xFC00) == 0xD800) && (i + 1) < str.length &&
+				((str.charCodeAt(i + 1) & 0xFC00) == 0xDC00)) {
+				// Surrogate Pair
+				c = 0x10000 + ((c & 0x03FF) << 10) + (str.charCodeAt(++i) & 0x03FF);
+				out[p++] = (c >> 18) | 240;
+				out[p++] = ((c >> 12) & 63) | 128;
+				out[p++] = ((c >> 6) & 63) | 128;
+				out[p++] = (c & 63) | 128;
+			} else {
+				out[p++] = (c >> 12) | 224;
+				out[p++] = ((c >> 6) & 63) | 128;
+				out[p++] = (c & 63) | 128;
+			}
+		}
+		this.putShort(p);
+		for (var i = 0; i < p; i++) {
+			this.putUByte(out[i]);
+		}
+	}
+
+
+	this.getObj = function (type) {
+		switch (type) {
+			case 0:
+				return this.getByte();
+			case 1:
+				return this.getShort();
+			case 2:
+				return this.getInt();
+			case 3:
+				return this.getLong();
+			case 4:
+				return this.getFloat();
+			case 5:
+				return this.getDouble();
+			case 6:
+				return this.getUTF();
+		}
+	}
+
+
+	this.putObj = function (o, type) {
+		switch (type) {
+			case 1:
+				this.putBoolean(o);
+				break;
+			case 2:
+				this.putByte(o);
+				break;
+			case 3:
+				this.putShort(o);
+				break;
+			case 4:
+				this.putInt(o);
+				break;
+			case 5:
+				this.putLong(o);
+				break;
+			case 6:
+				this.putFloat(o);
+				break;
+			case 7:
+				this.putDouble(o);
+				break;
+			case 8:
+				this.putUTF(o);
+				break;
+		}
+	}
+
+	this.putArray = function (pTypes, value) {
+		if (pTypes.length != value.length) {
+			throw "参数不一至";
+		}
+		for (var i = 0; i < value.length; i++) {
+			this.putObj(value[i], pTypes[i]);
+		}
+	}
+
+	this.examinePut = function (l) {
+		while (this.remaining() < l) {
+			var dv = new DataView(new ArrayBuffer(data.byteLength * 2));
+			for (var i = 0; i < data.byteLength; i++) {
+				dv.setUint8(i, data.getUint8(i));
+			}
+			data = dv;
+		}
+	}
+}

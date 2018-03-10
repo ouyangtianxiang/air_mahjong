@@ -1,0 +1,20 @@
+const { ccclass, property } = cc._decorator;
+import Tile from "./Tile"
+
+@ccclass
+export default class Tiles extends cc.Component {
+
+    @property({ default: [], type: [Tile] })
+    tiles: Tile[] = [];
+
+    i: number = 0;
+
+    push(o) {
+        this.tiles[this.i].obj(o);
+        this.i++;
+    }
+
+    onLoad() {
+
+    }
+}

@@ -1,0 +1,24 @@
+const { ccclass, property } = cc._decorator;
+import Desktop from "./Desktop";
+import Global from "../utils/Global";
+
+@ccclass
+export default class Brand extends cc.Component {
+
+    @property({ default: null, type: cc.Sprite })
+    img: cc.Sprite;
+
+    o: any;
+
+    onLoad() {
+    }
+
+    value(v) {
+        this.img.spriteFrame = Global.PA.getSpriteFrame(v);
+    }
+
+    obj(o: any) {
+        this.o = o;
+        this.value(o.value)
+    }
+}

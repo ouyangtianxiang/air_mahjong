@@ -1,0 +1,29 @@
+local oppoPayLayout=
+{
+	name="oppoPayLayout",type=0,typeName="View",time=0,x=0,y=0,width=46628016,height=1,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="bg",type=1,typeName="Image",time=42619461,x=0,y=0,width=455,height=233,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/alertBox.png"
+	},
+	{
+		name="closeBtn",type=2,typeName="Button",time=42619474,x=411,y=-11,width=54,height=54,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/close.png"
+	},
+	{
+		name="NPayBtn",type=2,typeName="Button",time=42619591,x=253,y=161,width=146,height=46,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/confirmBg.png",
+		{
+			name="Text3",type=4,typeName="Text",time=42619889,x=30,y=10,width=89,height=27,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=20,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[豆N购买]]
+		}
+	},
+	{
+		name="kePayBtn",type=2,typeName="Button",time=42619621,x=60,y=161,width=146,height=46,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/cancelBg.png",
+		{
+			name="Text4",type=4,typeName="Text",time=42619935,x=25,y=10,width=96,height=27,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=20,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[可币购买]]
+		}
+	},
+	{
+		name="Text1",type=4,typeName="Text",time=42619722,x=206,y=24,width=48,height=27,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=20,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=0,string=[[购买]]
+	},
+	{
+		name="Text2",type=4,typeName="Text",time=42619809,x=139,y=98,width=192,height=27,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=20,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[请选择支付方式。]]
+	}
+}
+return oppoPayLayout;

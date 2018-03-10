@@ -1,0 +1,206 @@
+const { ccclass, property } = cc._decorator;
+
+import Music from "../utils/Music";
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import Table from "../net/Table";
+import Extractive from "./Extractive";
+import Reply from "../window/Reply";
+import Buffer from "../net/Buffer";
+import Window from "../utils/Window";
+import UI from "./UI";
+import Time from "./Time";
+import Player from "./Player";
+import EventHandle from "../net/EventHandle"
+import { T_tile, T_state, U_room, U_room_level } from "../net/Bean";
+
+@ccclass
+export default class Desktop extends cc.Component {
+
+    public static it: Desktop;
+
+    @property({ type: [Player] })
+    players: Player[] = [];
+    array: Player[] = [];
+
+    @property({ type: cc.SpriteAtlas })
+    pa: cc.SpriteAtlas;
+
+    @property({ type: UI })
+    ui: UI;
+
+    @property({ type: cc.Prefab })
+    extractivePrefab: cc.Prefab;
+
+    @property({ type: Time })
+    time: Time;
+
+    @property({ type: cc.Prefab })
+    pointer: cc.Prefab;
+
+    extractive: Extractive;
+
+    index: number;
+    roomId: number;
+    room: any;
+    state: any;
+    eh: Array<EventHandle> = [];
+
+    init(index: number, roomCode: number) {
+        console.log(index, roomCode, this.onTile == this.onTile);
+        console.log(index, roomCode, this.onTile.bind(this) == this.onTile.bind(this));
+        console.log(index, roomCode, this.onTile.bind(this.ui) == this.onTile.bind(this));
+        Desktop.it = this;
+        this.index = index;
+        this.roomId = roomCode;
+
+
+
+        this.eh.push(T_tile.table.addEventListener("update", this.onTile, this));
+        this.eh.push(T_state.table.addEventListener("insert", this.onState, this));
+        this.eh.push(T_state.table.addEventListener("update", this.onState, this));
+        this.eh.push(U_room.table.addEventListener("update", this.onRoom, this));
+        this.eh.push(U_room_level.table.addEventListener("insert", this.onRoomLevel, this));
+
+        this.eh.push(Data.it.im.addEventListener(Protocol.NCMJ_EXIT, this.onExit, this));
+        this.eh.push(Data.it.im.addEventListener(Protocol.NCMJ_OPTIONS, this.onOpions, this));
+        this.eh.push(Data.it.im.addEventListener(Protocol.NCMJ_HU, this.onHU, this));
+        this.eh.push(Data.it.im.addEventListener(Protocol.NCMJ_ALL_PREPARE, this.onPrepareAll, this));
+        this.eh.push(Data.it.im.addEventListener(Protocol.NCMJ_START, this.onStart, this));
+        this.eh.push(Data.it.im.addEventListener(Protocol.NCMJ_CARD_DRAFTING, this.onCardDrafting, this));
+
+        this.clear();
+
+        this.room = U_room.table.getObj();
+        this.state = T_state.table.getObj(Data.it.userId);
+
+        this.ui.init(this);
+
+        if (this.room.num == 2) {
+            this.players[1].node.active = false;
+            this.players[2].node.active = false;
+            this.players.splice(2, 1);
+            this.players.splice(1, 1);
+        } else if (this.room.num == 3) {
+            this.players[2].node.active = false;
+            this.players.splice(2, 1);
+        }
+
+        for (var i = 0; i < this.room.num; i++) {
+            var index = (i + this.state.index) % this.room.num;
+            this.array[index] = this.players[i];
+            this.array[index].index = index;
+        }
+
+        var arr = T_state.table.getList();
+        arr.forEach(this.State.bind(this));
+
+        var tiles = T_tile.table.getList(o => o.index >= 0);
+        tiles.forEach(this.Tile.bind(this));
+        this.array.forEach(o => o.rank = true);
+
+        this.onRoom(null);
+
+        Music.bgMusic(2);
+    }
+
+    /**
+     * 胡牌
+     */
+    onHU(buffer: Buffer) {
+        this.time.hide();
+        var size = buffer.getByte();
+
+        var index = buffer.getByte();
+        var FangPao = buffer.getByte();
+        if (FangPao >= 0) {
+            this.array[FangPao].showHUState(101);
+        } else {
+            this.array[index].showHUState(100);
+        }
+        var baWangJing = buffer.getByte();
+        if (baWangJing >= 0) {
+            this.array[baWangJing].showHUState(102);
+        }
+        for (var i = 3; i < size; i++) {
+            var value = buffer.getByte();
+            this.array[index].showHUState(value);
+        }
+
+    }
+
+    onRoomLevel(o: U_room_level) {
+        var s = T_state.table.getObj(o.userId);
+        this.array[s.index].info.addLevel(o);
+        if (o.jingLevel > 0) {
+            this.array[s.index].showHUState(103, o.jingLevel);
+        }
+    }
+
+    onPrepareAll(buffer: Buffer) {
+        this.array.forEach(a => a.startGame());
+    }
+
+    onStart(buffer: Buffer) {
+        this.players[0].sort();
+    }
+
+    onCardDrafting(buffer: Buffer) {
+        new Window("CardDrafting");
+    }
+
+    onOpions(buffer: Buffer) {
+        new Window("Reply", buffer);
+    }
+
+    onRoom(o: U_room) {
+        var p = this.array[this.room.play];
+        this.time.data(this.room, p);
+        this.ui.onData();
+    }
+
+    onTile(o: T_tile) {
+        this.Tile(o);
+    }
+
+    Tile(o) {
+        if (o.index == 5) {
+            var extNode = cc.instantiate(this.extractivePrefab);
+            this.node.addChild(extNode);
+            this.extractive = extNode.getComponent<Extractive>(Extractive);
+            this.extractive.obj(o);
+        } else {
+            this.array.forEach(p => {
+                p.Tile(o);
+            });
+        }
+    }
+
+    onState(o: T_state) {
+        this.State(o);
+    }
+
+    State(o: T_state) {
+        this.ui.onData();
+        this.array[o.index].info.state(o, this.room);
+    }
+
+    onExit(buffer: Buffer) {
+        var code = buffer.getByte();
+        if (code == 0) {
+        }
+        cc.director.loadScene("Hall");
+    }
+
+    clear() {
+        if (this.extractive) {
+            this.extractive.node.destroy();
+            this.extractive = null;
+        }
+        this.players.forEach(p => p.clear());
+    }
+
+    onDisable() {
+        this.eh.forEach(eh => eh.remove());
+    }
+}

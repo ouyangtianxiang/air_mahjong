@@ -1,0 +1,31 @@
+const { ccclass, property } = cc._decorator;
+import IWindow from "./IWindow"
+
+@ccclass
+export default class Login extends IWindow {
+    @property(cc.EditBox)
+    edit: cc.EditBox;
+    @property(cc.Label)
+    label: cc.Label;
+    callback: Function;
+    target: null;
+
+
+    init(param: any[]) {
+        this.label.string = param[0];
+        this.callback = param[1];
+        console.log(param[2]);
+        if (param[2]) {
+            this.edit.string = param[2];
+        }
+    }
+
+    click() {
+        this.callback(this.edit.string);
+        this.close();
+    }
+
+    close() {
+        this.node.destroy();
+    }
+}

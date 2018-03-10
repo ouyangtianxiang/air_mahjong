@@ -1,0 +1,32 @@
+local payPopuWnd=
+{
+	name="payPopuWnd",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,
+	{
+		name="bg",type=1,typeName="Image",time=95501565,x=0,y=0,width=862,height=544,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/pop_window_mid.png",gridLeft=15,gridRight=15,gridTop=15,gridBottom=15,
+		{
+			name="choosepay",type=4,typeName="Text",time=95501566,x=0,y=23,width=240,height=45,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,fontSize=40,textAlign=kAlignLeft,colorRed=254,colorGreen=237,colorBlue=201,string=[[选择支付方式]],colorA=1
+		},
+		{
+			name="close",type=2,typeName="Button",time=95501567,x=815,y=-23,width=66,height=70,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/close_btn.png"
+		},
+		{
+			name="contentBg",type=1,typeName="Image",time=95501568,x=38,y=77,width=2,height=2,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/blank.png",gridLeft=10,gridRight=10,gridTop=10,gridBottom=10,
+			{
+				name="productNameTitle",type=4,typeName="Text",time=95501569,x=48,y=28,width=90,height=35,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=30,textAlign=kAlignLeft,colorRed=75,colorGreen=43,colorBlue=28,string=[[商品：]]
+			},
+			{
+				name="productName",type=4,typeName="Text",time=95501570,x=131,y=30,width=153,height=35,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=28,textAlign=kAlignLeft,colorRed=204,colorGreen=68,colorBlue=0
+			},
+			{
+				name="priceTitle",type=4,typeName="Text",time=95501571,x=435,y=28,width=90,height=35,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=28,textAlign=kAlignLeft,colorRed=75,colorGreen=43,colorBlue=60,string=[[价格：]]
+			},
+			{
+				name="price",type=4,typeName="Text",time=95501572,x=510,y=28,width=64,height=35,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=28,textAlign=kAlignLeft,colorRed=204,colorGreen=68,colorBlue=0
+			},
+			{
+				name="chooseView",type=0,typeName="ScrollView",time=95501573,x=19,y=91,width=760,height=312,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft
+			}
+		}
+	}
+}
+return payPopuWnd;

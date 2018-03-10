@@ -1,0 +1,55 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class Where2 {
+    i;
+    k;
+    v;
+    kv: Array<string>;
+    constructor(where) {
+        this.kv = where.split("!");
+        if (this.kv != null && this.kv.length == 2) {
+            this.i = '!';
+            this.k = this.kv[0];
+            this.v = this.kv[1];
+            return;
+        }
+        this.kv = where.split("=");
+        if (this.kv != null && this.kv.length == 2) {
+            this.i = '=';
+            this.k = this.kv[0];
+            this.v = this.kv[1];
+            return;
+        }
+        this.kv = where.split("<");
+        if (this.kv != null && this.kv.length == 2) {
+            this.i = '<';
+            this.k = this.kv[0];
+            this.v = this.kv[1];
+            return;
+        }
+        this.kv = where.split(">");
+        if (this.kv != null && this.kv.length == 2) {
+            this.i = '>';
+            this.k = this.kv[0];
+            this.v = this.kv[1];
+            return;
+        }
+    }
+
+    fairly(o) {
+        var value = o[this.k];
+        switch (this.i) {
+            case '!':
+                return (value != this.v);
+            case '=':
+                return (value == this.v);
+            case '<':
+                return (value < this.v);
+            case '>':
+                return (value > this.v);
+            default:
+                return false;
+        }
+    }
+}

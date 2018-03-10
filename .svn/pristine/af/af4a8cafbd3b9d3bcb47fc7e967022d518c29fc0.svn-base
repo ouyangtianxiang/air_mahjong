@@ -1,0 +1,22 @@
+const { ccclass, property } = cc._decorator;
+import Tile from "./Tile";
+import Reply from "../window/Reply";
+
+@ccclass
+export default class Gang extends cc.Component {
+    @property({ type: Tile })
+    tile1: Tile;
+
+    private value: number;
+    private reply: Reply;
+
+    init(value: number, reply: Reply) {
+        this.tile1.value(value);
+        this.reply = reply;
+        this.value = value;
+    }
+
+    click() {
+        this.reply.send(4, this.value);
+    }
+}

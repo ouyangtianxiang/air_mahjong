@@ -1,0 +1,29 @@
+const { ccclass, property } = cc._decorator;
+
+
+@ccclass
+export default class Wait extends cc.Component {
+    @property(cc.Label)
+    label: cc.Label;
+    @property(cc.Node)
+    img: cc.Node;
+
+    code = 0;
+
+    init(param) {
+        this.code = param[1];
+        if (param[0]) {
+            this.label.string = param[0];
+        }
+    }
+
+    update(dt) {
+        this.img.rotation += 30;
+    }
+
+    close(code) {
+        if (code == null || this.code == code) {
+            this.node.destroy();
+        }
+    }
+}

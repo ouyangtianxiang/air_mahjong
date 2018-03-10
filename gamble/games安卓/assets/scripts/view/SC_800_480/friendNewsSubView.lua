@@ -1,0 +1,14 @@
+friendNewsSubView=
+{
+	name="friendNewsSubView",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="img_bg",type=1,typeName="Image",time=54784833,x=40,y=140,width=1200,height=620,fillTopLeftX=40,fillTopLeftY=140,fillBottomRightX=40,fillBottomRightY=40,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTop,file="rank/listview_bg.png",gridLeft=10,gridRight=10,gridTop=10,gridBottom=10,
+		{
+			name="view_infor",type=0,typeName="View",time=54978890,x=10,y=5,width=1180,height=610,fillTopLeftX=10,fillTopLeftY=5,fillBottomRightX=10,fillBottomRightY=5,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+			{
+				name="text_nodate",type=4,typeName="Text",time=56185000,x=0,y=0,width=0,height=26,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=26,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[暂无动态消息]]
+			}
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_friendNewsSubView.lua"]=1;

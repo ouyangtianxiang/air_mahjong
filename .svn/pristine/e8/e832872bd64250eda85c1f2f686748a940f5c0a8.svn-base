@@ -1,0 +1,68 @@
+
+var Global = require("./utils/Global.js");
+var data = require("./net/Data.js");
+var Protocol = require("./net/Protocol.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+
+        IntoRoom: {
+            default: null,
+            type: cc.Prefab,
+        },
+        CreateRoom: {
+            default: null,
+            type: cc.Prefab,
+        },
+
+        UserID: {
+            default: null,
+            type: cc.Label
+        },
+        RoomCard: {
+            default: null,
+            type: cc.Label
+        },
+    },
+
+    onUserData: function (event) {
+        var obj = data.Table("U_data").getObj();
+        this.RoomCard.string = obj.roomCard;
+    },
+
+    // use this for initialization
+    onLoad: function () {
+        Global.KeyEvent();
+        data.im.Call(Protocol.LOGIN_USER_DATA, this.onUserData, this);
+
+    },
+
+    init: function (userId) {
+        this.UserID.string = "ID:" + userId;
+    },
+
+
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+
+    createRoom: function () {
+        var scene = cc.director.getScene();
+        var node = cc.instantiate(this.CreateRoom);
+
+        node.parent = scene;
+    },
+
+    intoRoom: function () {
+        var scene = cc.director.getScene();
+        var node = cc.instantiate(this.IntoRoom);
+
+        node.parent = scene;
+    },
+
+    showTable: function () {
+    }
+
+});

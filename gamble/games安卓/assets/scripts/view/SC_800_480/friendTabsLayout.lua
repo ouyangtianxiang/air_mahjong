@@ -1,0 +1,46 @@
+friendTabsLayout=
+{
+	name="friendTabsLayout",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="tab_view",type=0,typeName="View",time=50724821,x=0,y=0,width=731,height=106,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,
+		{
+			name="spl_2",type=1,typeName="Image",time=50725232,x=460,y=0,width=2,height=32,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Common/subViewSplite2.png"
+		},
+		{
+			name="tab_1",type=2,typeName="Button",time=50729640,x=241,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/blank.png",
+			{
+				name="tab_bg",type=1,typeName="Image",time=50725004,x=0,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewTag.png"
+			},
+			{
+				name="tagTextL",type=4,typeName="Text",time=57548947,x=0,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=250,colorGreen=220,colorBlue=60,string=[[好友]]
+			},
+			{
+				name="tagTextD",type=4,typeName="Text",time=57548972,x=0,y=0,width=199,height=105,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=255,colorGreen=240,colorBlue=207,string=[[好友]]
+			}
+		},
+		{
+			name="tab_2",type=2,typeName="Button",time=50729702,x=482,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/blank.png",
+			{
+				name="tab_bg",type=1,typeName="Image",time=50725347,x=0,y=0,width=199,height=105,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewTag.png"
+			},
+			{
+				name="tagTextL",type=4,typeName="Text",time=57548991,x=0,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=250,colorGreen=220,colorBlue=60,string=[[动态]]
+			},
+			{
+				name="tagTextD",type=4,typeName="Text",time=57549019,x=0,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=255,colorGreen=240,colorBlue=207,string=[[动态]]
+			},
+			{
+				name="img_title",type=1,typeName="Image",time=57550158,x=141,y=18,width=39,height=39,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/tip.png",
+				{
+					name="text_num",type=4,typeName="Text",time=57550232,x=0,y=0,width=200,height=150,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=24,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[18]]
+				}
+			}
+		}
+	},
+	{
+		name="retBtn",type=2,typeName="Button",time=85044644,x=0,y=0,width=150,height=99,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/blank.png",
+		{
+			name="bg",type=1,typeName="Image",time=85044676,x=10,y=0,width=62,height=60,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/subViewReturn.png"
+		}
+	}
+}

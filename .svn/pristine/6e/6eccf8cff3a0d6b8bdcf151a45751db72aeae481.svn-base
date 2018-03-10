@@ -1,0 +1,73 @@
+
+var IM = require("./IM.js");
+var Table = require("./Table.js");
+module.exports = {
+    im: null,
+    tables: {},
+    tableMap: {},
+    name: "data1234",
+
+    onOpen: function (event) {
+        console.log("连接成功" + this.name);
+    },
+
+    onError: function (event) {
+
+    },
+
+    onClose: function (event) {
+
+    },
+
+    Connent: function () {
+        this.im = new IM(this, "ws://localhost:8080/Server/websocket2");
+    },
+
+    Init: function (buffer) {
+        var hc = buffer.getUByte();
+        var name = buffer.getUTF();
+        var table = this.tableMap[name];
+        if (table == null) {
+            table = new Table(name);
+            this.tableMap[name] = table;
+        }
+        table.Init(buffer);
+        this.tables[hc] = table;
+    },
+
+    Insert: function (buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Insert(buffer);
+            console.log("Insert " + table.name);
+        }
+    },
+
+    Delete: function (buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Delete(buffer);
+            console.log("Delete " + table.name);
+        }
+    },
+
+    Update: function (buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Update(buffer);
+            console.log("Update " + table.name);
+        }
+    },
+
+    Table: function (name) {
+        var table = this.tableMap[name];
+        if (table == null) {
+            table = new Table(name);
+            this.tableMap[name] = table;
+        }
+        return table;
+    }
+}

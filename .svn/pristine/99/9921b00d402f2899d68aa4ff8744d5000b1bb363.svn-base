@@ -1,0 +1,87 @@
+var Where = require("./Where.js");
+module.exports = function (value) {
+
+    this.data = {};
+    this.names = [];
+    this.types = [];
+    this.key = 0;
+    this.name = value;
+    this.cols = 0;
+    this.event = new cc.EventTarget();
+
+    this.Init = function (buffer) {
+        this.key = buffer.getByte();
+        console.log("key:" + this.key);
+        this.cols = buffer.getShort();
+        for (var i = 0; i < this.cols; i++) {
+            this.names[i] = buffer.getUTF();
+            this.types[i] = buffer.getByte();
+        }
+    };
+
+    this.Insert = function (buffer) {
+        var size = buffer.getShort();
+        for (var j = 0; j < size; j++) {
+            var obj = {};
+            for (var i = 0; i < this.cols; i++) {
+                obj[this.names[i]] = buffer.getObj(this.types[i]);
+                console.log("obj " + this.names[i] + ":" + obj[this.names[i]]);
+            }
+            this.data[obj[this.names[this.key]]] = obj;
+            this.event.emit("insert", obj);
+        }
+    };
+
+    this.Delete = function (buffer) {
+        var obj = null;
+        if (buffer.remaining() > 0) {
+            var k = buffer.getObj(this.types[this.key]);
+            obj = this.data[k];
+            delete this.data[k];
+        } else {
+            data = {};
+        }
+        this.event.emit("delete", obj);
+    };
+
+    this.Update = function (buffer) {
+        var key = buffer.getObj(this.types[this.key]);
+        var obj = data[key];
+        if (buffer.remaining() > 0) {
+            var i = buffer.getByte();
+            obj[this.names[i]] = buffer.getObj(this.types[i]);
+        }
+        this.event.emit("update", obj);
+    };
+
+    this.getObj = function (key) {
+        if (key == null) {
+            for (var k in this.data) {
+                return this.data[k];
+            }
+        }
+        return this.data[key];
+    };
+
+    this.getList = function () {
+        var whs = [];
+        for (var i = 0; i < arguments.length; i++) {
+            whs.push(new Where(arguments[i]));
+        }
+        var len = whs.length;
+        var array = [];
+        for (var k in this.data) {
+            var o = this.data[d];
+            for (var i in whs) {
+                if (!whs[i].fairly(o)) {
+                    o = null;
+                    break;
+                }
+            }
+            if (o != null) {
+                array.push(o);
+            }
+        }
+        return array;
+    }
+}

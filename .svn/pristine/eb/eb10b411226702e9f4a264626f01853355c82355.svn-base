@@ -1,0 +1,24 @@
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        lable: cc.Label,
+    },
+
+    // use this for initialization
+    onLoad: function () {
+
+    },
+
+
+    init: function (msg) {
+        this.lable.string = msg;
+    },
+
+    // update: function (dt) {
+    // },
+
+    close: function (code) {
+        this.node.destroy();
+    }
+});

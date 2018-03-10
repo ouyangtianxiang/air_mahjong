@@ -1,0 +1,57 @@
+const { ccclass, property } = cc._decorator;
+import Brand from "./Brand";
+
+@ccclass
+export default class Player extends cc.Component {
+
+    @property(cc.Prefab)
+    H: cc.Prefab;
+
+    @property(cc.Prefab)
+    W: cc.Prefab;
+
+    @property(cc.Prefab)
+    M: cc.Prefab;
+
+    @property(cc.Prefab)
+    E: cc.Prefab;
+
+    @property(cc.Node)
+    ok: cc.Node;
+
+    @property(cc.Node)
+    layout1: cc.Node;
+
+    @property(cc.Node)
+    layout2: cc.Node;
+
+    onLoad() {
+        // for (var i = 0; i < 13; i++) {
+        //     var mj: cc.Node = cc.instantiate(this.H);
+        //     // mj.parent = this.layout1;
+        //     this.layout1.addChild(mj);
+        // }
+
+        // for (var i = 0; i < 8; i++) {
+
+        //     var mj: cc.Node = cc.instantiate(this.E);
+        //     // mj.parent = this.layout2;
+        //     this.layout2.addChild(mj);
+        // }
+
+    }
+
+    state(o) {
+        this.ok.active = o.state == 1;
+
+    }
+    Brand(o) {
+
+        var mj: cc.Node = cc.instantiate(this.H);
+        this.layout1.addChild(mj);
+        var brand: Brand = mj.getComponent<Brand>(Brand);
+        if (brand) {
+            brand.obj(o);
+        }
+    }
+}

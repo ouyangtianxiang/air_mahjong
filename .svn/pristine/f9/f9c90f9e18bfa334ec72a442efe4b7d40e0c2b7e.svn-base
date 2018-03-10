@@ -1,0 +1,22 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "nvhai",
+    "texture": "2f3e6b60-42c4-4ccb-85ee-10b4ba990415",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      256,
+      511
+    ],
+    "offset": [
+      0,
+      0.5
+    ],
+    "originalSize": [
+      256,
+      512
+    ]
+  }
+}

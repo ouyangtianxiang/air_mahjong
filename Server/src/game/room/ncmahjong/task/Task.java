@@ -1,0 +1,37 @@
+package game.room.ncmahjong.task;
+
+import java.util.TimerTask;
+
+import game.room.ncmahjong.Room;
+
+public abstract class Task implements Runnable {
+	protected Room room;
+	private TimerTask task;
+
+	public Task(Room room) {
+		this.room = room;
+	}
+
+	private void init() {
+		task = new TimerTask() {
+			public void run() {
+				Task.this.run();
+			}
+		};
+	}
+
+	protected void start(long delay, long period) {
+		init();
+		room.timer.schedule(task, delay, period);
+	}
+
+	protected void start(long delay) {
+		init();
+		room.timer.schedule(task, delay);
+	}
+
+	public void cancel() {
+		task.cancel();
+		room.timer.purge();
+	}
+}

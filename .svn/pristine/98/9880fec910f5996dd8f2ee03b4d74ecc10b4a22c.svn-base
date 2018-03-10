@@ -1,0 +1,39 @@
+
+module.exports = {
+    DataView: null,
+
+    KeyEvent: function () {
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+    },
+
+    onKeyDown: function (event) {
+        switch (event.keyCode) {
+            case 27:
+                if (this.DataView == null || this.DataView.node != null && !this.DataView.node.isValid) {
+                    this.DataView = this.ShowWindow("DataView");
+                }
+                break;
+        }
+    },
+
+    GotoScene: function (name, param) {
+        cc.director.loadScene(name, function (err, scene) {
+            var canvas = scene.getChildByName('Canvas');
+            var hall = canvas.getComponent(name);
+            hall.init(param);
+        });
+    },
+
+    ShowWindow: function (name, param1, param2, param3, param4) {
+        var obj = {};
+        cc.loader.loadRes(name, function (err, prefab) {
+            var o = cc.instantiate(prefab);
+            cc.director.getScene().addChild(o);
+            var script = o.getComponent(name);
+            script.init(param1, param2, param3, param4);
+            obj["node"] = o;
+            obj["script"] = script;
+        });
+        return obj;
+    },
+}

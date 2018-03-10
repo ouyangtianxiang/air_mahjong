@@ -1,0 +1,38 @@
+friendItem=
+{
+	name="friendItem",type=0,typeName="View",time=0,x=0,y=0,width=470,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="btn_item",type=2,typeName="Button",time=54958018,x=0,y=0,width=470,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/blank.png",
+		{
+			name="img_headicon",type=1,typeName="Image",time=54803610,x=0,y=0,width=84,height=84,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Common/default_man.png"
+		},
+		{
+			name="btn_free",type=2,typeName="Button",time=54804363,x=340,y=0,width=124,height=92,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="friend/free.png"
+		},
+		{
+			name="img_split",type=1,typeName="Image",time=54805716,x=0,y=118,width=470,height=2,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewSplite.png"
+		},
+		{
+			name="view_detail",type=0,typeName="View",time=54806269,x=93,y=0,width=230,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+			{
+				name="view_name",type=0,typeName="View",time=54803742,x=0,y=10,width=230,height=50,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+				{
+					name="Image2",type=1,typeName="Image",time=54803812,x=0,y=0,width=35,height=34,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Commonx/female.png"
+				},
+				{
+					name="text_name",type=4,typeName="Text",time=54803926,x=40,y=0,width=200,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=30,textAlign=kAlignLeft,colorRed=255,colorGreen=240,colorBlue=207,string=[[樱桃小丸子]]
+				}
+			},
+			{
+				name="view_money",type=0,typeName="View",time=54804040,x=0,y=60,width=230,height=50,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+				{
+					name="Image2",type=1,typeName="Image",time=54804041,x=-3,y=0,width=39,height=39,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Common/coinSmall.png"
+				},
+				{
+					name="text_money",type=4,typeName="Text",time=54804042,x=40,y=0,width=200,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=30,textAlign=kAlignLeft,colorRed=250,colorGreen=200,colorBlue=0,string=[[558,865,8]]
+				}
+			}
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_friendItem.lua"]=1;

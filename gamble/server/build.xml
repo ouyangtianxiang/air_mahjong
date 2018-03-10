@@ -1,0 +1,23 @@
+<project name="kv7" default="exportJar" basedir=".">
+
+	<target name="build">
+		<delete dir="bin" />
+		<mkdir dir="bin" />
+		<javac includeantruntime="false" debug="true" nowarn="true" debuglevel="source,lines,vars" destdir="bin" source="1.6" target="1.6" encoding="utf-8">
+			<!--<compilerarg value="-Xlint:unchecked" />-->
+			<compilerarg line="-encoding utf-8 " />
+			<src path="src" />
+			<classpath path="lib/mysql-connector-java-5.1.23-bin.jar" />
+		</javac>
+	</target>
+
+	<target name="exportJar" depends="build">
+		<jar basedir="bin" destfile="Server.jar">
+			<zipfileset src="lib/mysql-connector-java-5.1.23-bin.jar" excludes="META-INF/*.SF" />
+			<manifest>
+				<attribute name="Game-Version" value="${version}" />
+				<attribute name="Main-Class" value="game.Server" />
+			</manifest>
+		</jar>
+	</target>
+</project>

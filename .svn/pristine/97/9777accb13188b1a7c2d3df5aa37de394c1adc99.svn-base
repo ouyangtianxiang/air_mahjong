@@ -1,0 +1,140 @@
+package ge.net;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
+
+import ge.db.Data;
+import ge.log.Log;
+
+@ServerEndpoint("/websocket2")
+public class Client extends Call {
+	static {
+		Handler.init();
+	}
+	public final static ConcurrentHashMap<Integer, Client> clients = new ConcurrentHashMap<Integer, Client>();
+
+	private ConcurrentHashMap<String, Application> applications = new ConcurrentHashMap<String, Application>();
+
+	public final String ip = null;
+	public final int port = 0;
+	private Data data;
+	private long time = System.currentTimeMillis();
+	Session session;
+
+	public Client() {
+	}
+
+	@OnOpen
+	public void onOpen(Session session) {
+
+		this.session = session;
+		// ip = session.getRequestURI().getHost();
+		// port = session;
+
+		// for (Client c = tmps.peek(); c != null && c.time + 3000 < time; c =
+		// tmps.peek()) {
+		// c.close();
+		// }
+		// tmps.add(this);
+		Handler.send(this);
+		call((byte) 5, time, "连接成功@@@#");
+		System.out.println("Client connected" + "Session" + session.hashCode());
+	}
+
+	public String toString() {
+		return ip + ":" + port + "(" + data + ")";
+	}
+
+	public void init(Data data) {
+		this.data = data;
+		clients.put(data.UserID, this);
+		Log.Warn("(+)", clients.size(), data);
+	}
+
+	public void Send(Buffer buffer) {
+		try {
+			if (session.isOpen()) {
+				int limit = buffer.limit();
+				session.getBasicRemote().sendBinary(buffer.getData());
+				buffer.limit(limit);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Data data() {
+		return data;
+	}
+
+	synchronized Application app(Method method) throws Exception {
+		Class<?> C = method.getDeclaringClass();
+		String className = C.getSimpleName();
+		Application app = null;
+		if (applications != null) {
+			app = applications.get(className);
+			if (app == null) {
+				app = (Application) C.newInstance();
+				app.init(this);
+				applications.put(className, app);
+			}
+		}
+		return app;
+	}
+
+	@OnMessage
+	public void onMessage(ByteBuffer message) {
+		try {
+			Buffer buffer = new Buffer(message);
+			new Handler(this, buffer);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	@OnMessage
+	public void onMessage(String message, Session session) throws IOException, InterruptedException {
+		System.out.println(Thread.currentThread());
+		System.out.println("String2: " + message + "Session" + session.hashCode());
+		session.getBasicRemote().sendText("This is the first server message");
+	}
+
+	@OnClose
+	public void onClose(Session session) {
+		System.out.println("Connection closed" + "Session" + session.isSecure() + " " + session.isOpen());
+		if (applications != null) {
+			Iterator<Application> it = applications.values().iterator();
+			while (it.hasNext()) {
+				try {
+					it.next().close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			applications.clear();
+			applications = null;
+		}
+		if (data != null) {
+			clients.remove(data.UserID);
+			Log.Warn("(-)", clients.size(), data);
+			data.dismiss();
+			data = null;
+		}
+	}
+
+	@OnError
+	public void onError(Session session, Throwable error) {
+		System.out.println("发生错误" + "Session" + session.hashCode() + " " + error.getMessage());
+		// error.printStackTrace();
+	}
+}

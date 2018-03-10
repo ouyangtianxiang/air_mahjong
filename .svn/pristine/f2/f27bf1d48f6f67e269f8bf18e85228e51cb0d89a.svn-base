@@ -1,0 +1,307 @@
+package game.application;
+
+import java.util.Vector;
+
+import game.data.bean.T_state;
+import game.data.bean.T_tile;
+import game.room.MJ;
+import game.room.Room;
+import game.room.TTT;
+import game.utils.Protocol;
+import ge.annotation.RemoteMethod;
+import ge.net.Application;
+
+/**
+ * 南昌麻将
+ */
+public class Player extends Application {
+	private static byte[] JS = { 8, 16, 24, 32 };
+	private static byte[] RS = { 2, 3, 4 };
+	public Room room = null;
+	public int userId;
+	public byte index;
+	public byte order = 0;
+
+	public Vector<T_tile> array = new Vector<T_tile>();
+	public Vector<T_tile> array2 = new Vector<T_tile>();
+	public MJ mj;
+	public T_state state;
+
+	protected void init() {
+		this.userId = UserID();
+		mj = new MJ(this);
+	}
+
+	private void reset() {
+		array.clear();
+		array2.clear();
+	}
+
+	@RemoteMethod(Protocol.NCMJ_CREATE)
+	public Object[] create(byte a, byte b, byte c, byte d, byte e, byte f, byte g, byte h) {
+		room = new Room(userId, JS[a], RS[b]);
+		index = room.into(this);
+		return Result(room.roomId);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_INTO)
+	public Object[] into(int roomId) {
+		room = Room.Find(roomId);
+		if (room != null) {
+			index = room.into(this);
+			return Result(index, room.roomId);
+		}
+		return Result((byte) -2);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_SHUFFLE)
+	public Object[] Shuffle(String s0, String s1, String s2, String s3, String c, short jing) {
+		room.Shuffle(s0, s1, s2, s3, c, jing);
+		return Result((byte) 0);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_PREPARE)
+	public Object[] prepare() {
+		reset();
+		room.prepare(this);
+		return Result(0);
+	}
+
+	public byte pr = 0;
+	public boolean reply = false;
+	public byte dis;
+	private T_tile open;
+
+	/**
+	 * @return 庄家=*2
+	 */
+	public boolean isBanker() {
+		return room.banker() == this;
+	}
+
+	/**
+	 * 出牌
+	 */
+	@RemoteMethod(Protocol.NCMJ_PLAY)
+	public void play(short id) {
+		reply = true;
+		pr = 0;
+		dis = 0;
+
+		open = room.play(this, id);
+		array.remove(open);
+		room.reply();
+	}
+
+	byte code;
+
+	/**
+	 * 应牌
+	 * 
+	 * @param type:0:过,1:吃,2:碰,4:杠,8:胡
+	 */
+	@RemoteMethod(Protocol.NCMJ_REPLY)
+	public Object[] reply(boolean selfmo, byte type, byte code) {
+		if (selfmo) {// 自摸
+			switch (type) {
+			case 0: // 过
+				// 打牌
+				room.tick.start(index);
+				break;
+			case 4:// 暗杠
+				Vector<T_tile> v = mj.gang.get(code);
+				for (T_tile o : v) {
+					action(o, (byte) 6);
+				}
+				order++;
+				room.drawTile.start(this, true);
+				break;
+			case 8:// 胡
+				hu();
+				break;
+			}
+		} else {
+			this.code = code;
+			reply = true;
+			pr = type;
+			room.reply();
+		}
+		return Result(0);
+	}
+
+	private void action(T_tile o, byte state) {
+		o.state = state;
+		o.index = index;
+		o.order = order;
+		o.update();
+		array.remove(o);
+		array2.add(o);
+	}
+
+	/*
+	 * 最高优先级被调
+	 */
+	public void onReply(boolean qiangGang) {
+		if (reply) {
+			switch (pr) {
+			case 0:
+				// 下一轮摸牌
+				open.state = 11;
+				open.order = order;
+				open.update();
+				order++;
+				room.drawTile.start(next());
+				break;
+			case 1:// 吃
+				System.out.println("chi:" + code);
+				TTT ttt = mj.chiObj.get(code);
+				action(ttt.a, (byte) 3);
+				action(ttt.b, (byte) 3);
+				action(ttt.c, (byte) 3);
+				order++;
+				room.tick.start(index);
+				break;
+			case 2:// 碰
+				for (int i = 0; i < 3; i++) {
+					T_tile o = mj.pangs.get(i);
+					action(o, (byte) 4);
+				}
+				order++;
+				room.tick.start(index);
+				break;
+			case 4:// 明杠
+				for (T_tile o : mj.pangs) {
+					action(o, (byte) 5);
+				}
+				order++;
+				room.drawTile.start(this, true);
+				break;
+			case 8:// 胡
+				mj.isQiangGang = qiangGang;
+				hu();
+				break;
+			}
+		}
+	}
+
+	private Player next() {
+		return room.map[(index + 1 + room.num) % room.num];
+	}
+
+	@RemoteMethod(Protocol.NCMJ_EXIT)
+	public void exit(byte code) {
+		clear();
+		call(Protocol.NCMJ_EXIT, code);
+	}
+
+	protected void clear() {
+		if (room != null) {
+			room.exit(this);
+			room = null;
+		}
+		if (state != null) {
+			state.clear();
+			state = null;
+		}
+		if (array != null) {
+			array.clear();
+			array = null;
+		}
+		if (array2 != null) {
+			array2.clear();
+			array2 = null;
+		}
+	}
+
+	// ------------------------------------------------------------
+	/*
+	 * 发牌
+	 */
+	public void perflop(T_tile o) {
+		array.add(o);
+	}
+
+	/*
+	 * 自摸
+	 */
+	public void selfDrawn(T_tile obj, boolean gangHua) {
+		perflop(obj);
+		boolean gang = mj.Gang();
+		boolean hu = mj.HU();
+		mj.isGangHua = gangHua;
+		if (hu || gang) {
+			call(Protocol.NCMJ_OPTIONS, true, hu, mj.gangValue[0], mj.gangValue[1], mj.gangValue[2]);
+		} else {
+			room.tick.start(index);
+		}
+	}
+
+	public void onPlay(T_tile obj) {
+		this.dis = (byte) ((index + room.num - obj.index) % room.num);
+		reply = false;
+		pr = 0;
+
+		byte chi = 0;
+		if (dis == 1) {
+			chi = mj.Chi(obj);
+			if (chi > 0) {
+				pr = 1;
+			}
+		}
+
+		byte pang = mj.Pang(obj);
+		if (pang >= 3) {
+			pr = 2;
+		}
+		if (pang == 4) {
+			pr = 4;
+		}
+
+		boolean hu = mj.HU(obj);
+		if (hu) {
+			pr = 8;
+		}
+		if (pr > 0) {
+			call(Protocol.NCMJ_OPTIONS, false, hu, obj.value, pang, mj.chivalue);
+		}
+		System.out.println(1 + "," + hu + "," + obj.value + "," + pang + "," + chi);
+	}
+
+	private void hu() {
+		if (mj.ttts != null) {
+			for (TTT ttt : mj.ttts) {
+				action(ttt.a, (byte) 7);
+				action(ttt.b, (byte) 7);
+				action(ttt.c, (byte) 7);
+				order++;
+			}
+		}
+		action(mj.tt.a, (byte) 8);
+		action(mj.tt.b, (byte) 8);
+		room.hu(this);
+	}
+
+	/**
+	 * 清算
+	 * 
+	 * @param player
+	 *            赢家
+	 */
+
+	public void clearing(Player player) {
+		int score = player.mj.score;
+		int award = player.mj.award;
+		if (isBanker()) {
+			score *= 2;
+		}
+		if (player.mj.FangPao == index) {
+			score *= 2;
+		}
+
+		state.score -= score + award;
+		state.update();
+		player.state.score += score + award;
+		player.state.update();
+
+	}
+}

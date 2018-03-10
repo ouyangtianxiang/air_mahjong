@@ -1,0 +1,71 @@
+
+const { ccclass, property } = cc._decorator;
+
+import Music from "../utils/Music";
+import Window from "../utils/Window"
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import MJRoom from "./MJRoom"
+import Global from "../utils/Global";
+
+@ccclass
+export default class Login extends cc.Component {
+    @property(cc.Label)
+    userID: cc.Label;
+    @property(cc.Label)
+    card: cc.Label;
+    @property(cc.Label)
+    rmb: cc.Label;
+    @property({ type: cc.Prefab })
+    roomPrefab: cc.Prefab;
+    @property({ type: cc.Node })
+    rooms: cc.Node;
+
+    roomArray: Array<MJRoom> = [];
+
+    start() {
+        var obj = Data.it.Table("U_data").getObj();
+        this.rmb.string = obj.rmb;
+        this.card.string = obj.card;
+        this.userID.string = "ID:" + obj.userId;
+
+        for (var i = 0; i < 5; i++) {
+            var node = cc.instantiate(this.roomPrefab);
+            this.roomArray[i] = node.getComponent<MJRoom>(MJRoom);
+            this.rooms.addChild(node);
+            this.roomArray[i].init();
+        }
+
+        Music.bgMusic(1);
+
+        if (obj.roomCode > 0) {
+            Data.it.im.Call(Protocol.NCMJ_INTO, this.onIntoRoom, this, obj.roomCode);
+        }
+    }
+
+    onIntoRoom(event) {
+        var index = event.detail.getByte();
+        if (index >= 0) {
+            var roomId = event.detail.getInt();
+            Global.GotoScene("Desktop", roomId);
+        } else if (index == -1) {
+            new Window("Tips", "--房间已满！")
+        } else if (index == -2) {
+            new Window("Tips", "--房间不存在！")
+        }
+    }
+
+    createRoom() {
+        new Window("CreateRoom");
+    }
+
+    intoRoom() {
+        new Window("IntoRoom");
+    }
+
+    btnClick(event, data) {
+        if (data) {
+            new Window(data);
+        }
+    }
+}

@@ -1,0 +1,28 @@
+package game.room.task;
+
+import game.application.Player;
+import game.data.bean.T_tile;
+import game.room.Room;
+
+public class DrawTile extends Task {
+
+	public DrawTile(Room room) {
+		super(room);
+	}
+
+	private Player player;
+
+	public void start(Player player) {
+		this.player = player;
+		super.start(500);
+	}
+
+	@Override
+	public void run() {
+		System.out.println("抓牌");
+		T_tile o = room.array.remove(0);
+		o.index = player.index;
+		o.update();
+		player.selfDrawn(o);
+	}
+}

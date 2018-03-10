@@ -1,0 +1,62 @@
+
+module.exports = {
+    DataView: null,
+    DataViewPrefab: null,
+
+    initDataView: function (prefab) {
+        this.DataViewPrefab = prefab;
+        this.DataView = cc.instantiate(prefab);
+        cc.director.getScene().addChild(this.DataView);
+
+    },
+
+    ShowDataView: function () {
+        if (this.DataView == null) {
+            var global = this;
+            if (this.DataViewPrefab != null) {
+                global.initDataView(this.DataViewPrefab);
+            } else {
+                cc.loader.loadRes("DataView", function (err, prefab) {
+                    global.initDataView(prefab);
+                });
+
+            }
+        }
+    },
+
+    HideDataView: function () {
+        if (this.DataView != null) {
+            this.DataView.destroy();
+            this.DataView = null
+        }
+    },
+
+    ShowTableView: function (tableName) {
+        cc.loader.loadRes("TableView", function (err, prefab) {
+            var o = cc.instantiate(prefab);
+            cc.director.getScene().addChild(o);
+            var tv = o.getComponent("TableView");
+            tv.init(tableName);
+        });
+    },
+
+    KeyEvent: function () {
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+    },
+
+    onKeyDown: function (event) {
+        switch (event.keyCode) {
+            case 27:
+                this.ShowDataView();
+                break;
+        }
+    },
+
+    GotoScene: function (name, param) {
+        cc.director.loadScene(name, function (err, scene) {
+            var canvas = scene.getChildByName('Canvas');
+            var hall = canvas.getComponent(name);
+            hall.init(param);
+        });
+    },
+}

@@ -1,0 +1,196 @@
+module.exports = function (arrayBuffer) {
+	var data = new Buffer(arrayBuffer);
+	var pos = 0;
+
+	this.flip = function () {
+	}
+
+	this.clear = function () {
+	}
+
+	this.remaining = function () {
+		return data.length - pos;
+	}
+
+	this.getData = function () {
+		return this.data;
+	}
+
+	this.getUByte = function () {
+		var value = data.readUInt8(pos);
+		pos += 1;
+		return value;
+	}
+
+	this.getBoolean = function () {
+		return this.getByte() == 1;
+	}
+
+	this.getByte = function () {
+		var value = data.readInt8(pos);
+		pos += 1;
+		return value;
+	}
+
+	this.getUShort = function () {
+		var value = data.readUInt16LE(pos);
+		pos += 2;
+		return value;
+	}
+
+	this.getShort = function () {
+		var value = data.readInt16LE(pos);
+		pos += 2;
+		return value;
+	}
+
+	this.getInt = function () {
+		var value = data.readInt32LE(pos);
+		pos += 4;
+		return value;
+	}
+
+	this.getUInt = function () {
+		var value = data.readUInt32LE(pos);
+		pos += 4;
+		return value;
+	}
+
+	this.getLong = function () {
+		var value1 = this.getUInt();
+		var value2 = this.getUInt();
+		return value2 * 4294967296 + value1;
+	}
+
+	this.getFloat = function () {
+		var value = data.readFloatLE(pos);
+		pos += 4;
+		return value;
+	}
+
+	this.getDouble = function () {
+		var value = data.readDoubleLE(pos);
+		pos += 8;
+		return value;
+	}
+
+	this.getUTF = function () {
+		var len = this.getShort();
+		var str = data.toString("utf8", pos, pos + len);
+		pos += len;
+		return str;
+	}
+
+
+	this.putBoolean = function (value) {
+		this.examinePut(1);
+		data.writeInt8((value ? 1 : 0), pos);
+	}
+
+	this.putUByte = function (value) {
+		this.examinePut(1);
+		data.writeUInt8(value, pos);
+	}
+
+	this.putByte = function (value) {
+		this.examinePut(1);
+		data.writeInt8(value, pos);
+	}
+
+	this.putUShort = function (value) {
+		this.examinePut(2);
+		data.writeUInt16LE(value, pos);
+	}
+
+	this.putShort = function (value) {
+		this.examinePut(2);
+		data.writeInt16LE(value, pos);
+	}
+
+	this.putUInt = function (value) {
+		this.examinePut(4);
+		data.writeUInt32LE(value, pos);
+	}
+
+	this.putInt = function (value) {
+		this.examinePut(4);
+		data.writeInt32LE(value, pos);
+	}
+
+	this.putLong = function (value) {
+		this.putUInt(value % 4294967296);
+		this.putUInt(parseInt(value / 4294967296));
+	}
+
+	this.putFloat = function (value) {
+		this.examinePut(4);
+		data.writeFloatLE(value, pos);
+	}
+
+	this.putDouble = function (value) {
+		this.examinePut(8);
+		data.writeDoubleLE(value, pos);
+	}
+
+
+	this.putUTF = function (value) {
+		var buf = new Buffer(value);
+		this.putShort(buf.length);
+		var p = pos;
+		this.examinePut(buf.length);
+		buf.copy(data, p);
+	}
+
+
+	this.putObj = function (o, type) {
+		switch (type) {
+			case 1:
+				this.putBoolean(o);
+				break;
+			case 2:
+				this.putByte(o);
+				break;
+			case 3:
+				this.putShort(o);
+				break;
+			case 4:
+				this.putInt(o);
+				break;
+			case 5:
+				this.putLong(o);
+				break;
+			case 6:
+				this.putFloat(o);
+				break;
+			case 7:
+				this.putDouble(o);
+				break;
+			case 8:
+				this.putUTF(o);
+				break;
+		}
+	}
+
+	this.putArray = function (pTypes, value) {
+		if (pTypes.Length != value.Length) {
+			throw new Exception("参数不一至");
+		}
+		for (var i = 0; i < value.Length; i++) {
+			putObj(value[i], pTypes[i]);
+		}
+	}
+
+
+	this.examinePut = function (l) {
+		while (this.remaining() < l) {
+			if (limit() < capacity()) {
+				limit(capacity());
+			} else {
+				var tmp = data;
+				data = new Buffer(tmp.length * 2);
+				tmp.copy(data);
+			}
+		}
+		pos += l;
+	}
+}

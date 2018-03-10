@@ -1,0 +1,16 @@
+export default class Protocol{
+	public static LOGIN:string='10';
+	public static LOGIN_SYSTEM_DATA:string='11';
+	public static LOGIN_USER_DATA:string='12';
+	public static NCMJ_BYTEO:string='13';
+	public static NCMJ_CREATE:string='14';
+	public static NCMJ_PREPARE:string='15';
+	public static NCMJ_PLAY:string='16';
+	public static NCMJ_REPLY:string='17';
+	public static NCMJ_EXIT:string='18';
+	public static NCMJ_INTO:string='19';
+	public static NCMJ_OPTIONS:string='20';
+	public static NCMJ_SHUFFLE:string='21';
+	public static NCMJ_HU:string='22';
+	public static NCMJ_START:string='23';
+}

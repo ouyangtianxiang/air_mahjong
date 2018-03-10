@@ -1,0 +1,70 @@
+const { ccclass, property } = cc._decorator;
+import Desktop from "./Desktop";
+import Global from "../utils/Global";
+import IPos from "./IPos"
+
+@ccclass
+export default class Tile extends cc.Component implements IPos {
+
+    @property({ type: cc.Sprite })
+    img: cc.Sprite;
+    @property({ type: cc.Sprite })
+    jing: cc.Sprite;
+
+    o: any;
+
+    onLoad() {
+    }
+
+    value(v) {
+        if (this.img) {
+            this.img.spriteFrame = Global.PA.getSpriteFrame(v);
+        }
+    }
+
+    obj(o: any) {
+        this.o = o;
+        this.value(o.value)
+        if (this.jing) {
+            this.jing.node.active = true;
+            if (o.jing > 0) {
+                if (o.jing == 2) {
+                    this.jing.node.color = cc.color(0, 0, 255, 255);
+                }
+            } else {
+                this.jing.node.active = false;
+            }
+        }
+    }
+
+    pos(x: number, y: number) {
+        this.node.x = x;
+        this.node.y = y;
+    }
+    posX(x: number) {
+        this.node.x = x;
+    }
+    posY(y: number) {
+        this.node.y = y;
+    }
+    moveToX(x: number) {
+        if (this.node.x != x) {
+            this.node.runAction(cc.moveTo(0.5, x, this.node.y));
+        }
+    }
+    moveToY(y: number) {
+        if (this.node.y != y) {
+            this.node.runAction(cc.moveTo(0.5, this.node.x, y));
+        }
+    }
+    moveByX(x: number) {
+        if (this.node.x != x) {
+            this.node.runAction(cc.moveBy(0.5, x, this.node.y));
+        }
+    }
+    moveByY(y: number) {
+        if (this.node.y != y) {
+            this.node.runAction(cc.moveBy(0.5, this.node.x, y));
+        }
+    }
+}

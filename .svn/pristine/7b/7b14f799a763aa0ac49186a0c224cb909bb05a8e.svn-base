@@ -1,0 +1,67 @@
+const { ccclass, property } = cc._decorator;
+import Brand from "./Brand";
+import Global from "../utils/Global";
+
+@ccclass
+export default class Player extends cc.Component {
+    @property({ default: 0 })
+    azimuth = 0;
+
+    @property({ default: null, type: cc.Prefab })
+    H: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    W: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    M: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    E: cc.Prefab;
+
+    @property({ default: null, type: cc.Node })
+    layout1: cc.Node;
+
+    @property({ default: null, type: cc.Node })
+    layout2: cc.Node;
+
+    @property({ default: null, type: cc.Node })
+    ok: cc.Node;
+
+    @property({ default: null, type: cc.Sprite })
+    icon: cc.Sprite;
+
+    @property({ default: null, type: cc.Node })
+    banker: cc.Node;
+
+    @property({ default: null, type: cc.Label })
+    nickname: cc.Label;
+
+    @property({ default: null, type: cc.Label })
+    ip: cc.Label;
+
+    onImage(err, texture) {
+        this.icon.spriteFrame.setTexture(texture)
+    }
+
+    onLoad() {
+    }
+
+    state(o) {
+        this.ok.active = o.state == 1;
+        this.nickname.string = o.nickname;
+        //this.banker.active=
+        this.ip.string = Global.StringIP(o.ip);
+        cc.loader.load(o.url, this.onImage.bind(this));
+
+    }
+    Brand(o) {
+
+        var mj: cc.Node = cc.instantiate(this.H);
+        this.layout1.addChild(mj);
+        var brand: Brand = mj.getComponent<Brand>(Brand);
+        if (brand) {
+            brand.obj(o);
+        }
+    }
+}

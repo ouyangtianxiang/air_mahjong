@@ -1,0 +1,32 @@
+const { ccclass, property } = cc._decorator;
+import IWindow from "./IWindow"
+
+@ccclass
+export default class Window {
+    private name;
+    private param;
+    public node: cc.Node;
+    private isColse: boolean = false;
+    private script: IWindow;
+    constructor(name, ...param) {
+        this.name = name;
+        this.param = param;
+        cc.loader.loadRes(name, this.onLoadRes.bind(this));
+    }
+
+    onLoadRes(err, prefab) {
+        if (!this.isColse) {
+            this.node = cc.instantiate(prefab);
+            cc.director.getScene().addChild(this.node);
+            this.script = this.node.getComponent<IWindow>(this.name);
+            this.script.init(this.param);
+        }
+    }
+
+    close(code: number = 0) {
+        this.isColse = true;
+        if (this.node != null) {
+            this.script.close(code);
+        }
+    }
+}

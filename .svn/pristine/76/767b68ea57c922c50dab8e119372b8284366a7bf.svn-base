@@ -1,0 +1,31 @@
+const { ccclass, property } = cc._decorator;
+
+import Global from "../utils/Global";
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import Window from "../utils/Window"
+
+@ccclass
+export default class Login extends cc.Component {
+
+    @property(cc.Label)
+    label: cc.Label;
+
+    @property({
+        default: 'hello'
+    })
+    text: string = 'hello';
+
+    onLoad() {
+        Data.it.Connent();
+    }
+
+    onInput(passId) {
+        Data.it.Login(passId);
+    }
+
+    login() {
+        var passId = cc.sys.localStorage.getItem("passId");
+        new Window("InputBox", "请输入用户ID：", this.onInput, this, passId);
+    }
+}

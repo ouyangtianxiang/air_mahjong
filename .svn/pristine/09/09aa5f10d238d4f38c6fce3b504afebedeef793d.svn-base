@@ -1,0 +1,37 @@
+var data = require("./net/Data.js");
+var Global = require("./utils/Global.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+
+    },
+
+    // use this for initialization
+    onLoad: function () {
+        var layout = this.node.getChildByName("Layout");
+        var item = layout.children[0];
+        for (var key in data.tableMap) {
+            var o = cc.instantiate(item);
+            var label = o.getComponent(cc.Label);
+            label.string = key;
+            o.parent = layout;
+            o.on(cc.Node.EventType.MOUSE_DOWN, function (event) {
+                Global.ShowWindow("TableView", key);
+            }, this);
+        }
+        item.destroy();
+    },
+
+    init: function () {
+
+    },
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+
+    close: function () {
+        this.node.destroy();
+    }
+});

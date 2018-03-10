@@ -1,0 +1,32 @@
+const { ccclass, property } = cc._decorator;
+import Brand from "./Brand";
+
+@ccclass
+export default class Player extends cc.Component {
+
+    @property(Brand)
+    H: Brand;
+
+    @property(Brand)
+    W: Brand;
+
+    @property(Brand)
+    M: Brand;
+
+    @property(Brand)
+    U: Brand;
+
+    @property(cc.Node)
+    ok: cc.Node;
+
+    onLoad() {
+
+    }
+
+    state(o) {
+
+    }
+    data(o) {
+
+    }
+}

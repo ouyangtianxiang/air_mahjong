@@ -1,0 +1,52 @@
+var Protocol = require("./net/Protocol.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        label: {
+            default: null,
+            type: cc.Label
+        },
+        // defaults, set visually when attaching this script to the Canvas
+        text: 'Hello, World!'
+    },
+
+    im: null,
+
+    connent: function () {
+        var IM = require("./net/IM.js");
+        this.im = new IM();
+    },
+
+    onLogin: function (buffer) {
+        var userId = buffer.getInt();
+        console.log("userId:" + userId);
+    },
+
+    test: function () {
+        this.im.Call(Protocol.LOGIN, this.onLogin, "ssss", 19, "txoyart", 456);
+    },
+
+
+    onLoad: function () {
+        this.label.string = this.text;
+
+    },
+
+    // called every frame
+    update: function (dt) {
+
+    },
+    // called every frame
+    onDestroy: function (dt) {
+        console.log("onDestroyXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    },
+
+    send: function () {
+        this.im.Call(Protocol.LOGIN_USER_DATA,null);
+    },
+
+    colse: function () {
+        this.im.close();
+    }
+});

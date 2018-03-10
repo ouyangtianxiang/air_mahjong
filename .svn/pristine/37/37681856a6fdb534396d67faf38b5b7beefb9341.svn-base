@@ -1,0 +1,109 @@
+const { ccclass, property } = cc._decorator;
+import Table from "../net/Table";
+import Global from "../utils/Global";
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import Chi from "./Chi";
+import Gang from "./Gang";
+import PengORHu from "./PengORHu";
+import Buffer from "../net/Buffer";
+import Tile from "./Tile"
+
+@ccclass
+export default class Reply extends cc.Component {
+
+    @property({ type: cc.Prefab })
+    Pang: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    Gang: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    Chi: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    Hu: cc.Prefab;
+
+    selfmo: boolean;
+
+    onLoad() {
+
+    }
+
+    showGang(value: number) {
+        if (value > 0) {
+            var node: cc.Node = cc.instantiate(this.Gang);
+            var gang = node.getComponent<Gang>(Gang);
+            this.node.addChild(node);
+            gang.init(value, this);
+        }
+    }
+
+    showChi(a: number, b: number, c: number, index: number) {
+        var node: cc.Node = cc.instantiate(this.Chi);
+        var chi = node.getComponent<Chi>(Chi);
+        this.node.addChild(node);
+        chi.init(a, b, c, index, this);
+    }
+
+    showBtn(prefab: cc.Prefab, type: number, value: number) {
+        var node: cc.Node = cc.instantiate(prefab);
+        var pengORHu = node.getComponent<PengORHu>(PengORHu);
+        this.node.addChild(node);
+        pengORHu.init(type, value, this);
+    }
+
+
+
+    init(param) {
+        var buffer: Buffer = param[0];
+        this.selfmo = buffer.getBoolean();
+        var isHu = buffer.getBoolean();
+        if (this.selfmo) {
+            var gang1 = buffer.getByte();
+            var gang2 = buffer.getByte();
+            var gang3 = buffer.getByte();
+            this.showGang(gang1);
+            this.showGang(gang2);
+            this.showGang(gang3);
+        } else {
+            var value = buffer.getByte();
+            var pang = buffer.getByte();
+            var chiNum = buffer.getByte();
+            var len = Math.floor(chiNum / 3);
+            for (var i = 0; i < len; i++) {
+                var a = buffer.getByte();
+                var b = buffer.getByte();
+                var c = buffer.getByte();
+                this.showChi(a, b, c, i);
+            }
+
+            if (pang >= 3) {//碰
+                this.showBtn(this.Pang, 2, value);
+            }
+            if (pang == 4) {//扛
+                this.showGang(value);
+            }
+        }
+        if (isHu) {
+            this.showBtn(this.Hu, 8, value);
+        }//胡
+    }
+
+    onReply() {
+        this.node.destroy();
+    }
+    /**
+     * 
+     * @param type  0:过,1:吃,2:碰,4:杠,8:胡
+     * @param value 
+     */
+    send(type: number, value: number) {
+        Data.it.im.Call(Protocol.NCMJ_REPLY, this.onReply, this, this.selfmo, type, value);
+    }
+
+    //过
+    guo() {
+        this.send(0, 0);
+    }
+}

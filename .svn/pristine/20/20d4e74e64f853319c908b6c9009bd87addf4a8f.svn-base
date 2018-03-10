@@ -1,0 +1,87 @@
+const { ccclass, property } = cc._decorator;
+import Buffer from "./Buffer";
+import IMEvent from "./IMEvent";
+
+@ccclass
+export default class Table<T> extends IMEvent<T> {
+    C: { new(): T };
+    hc: number;
+    data = {};
+    names: string[] = [];
+    types: number[] = [];
+    key = 0;
+    cols = 0;
+
+    constructor(C: { new(): T }) {
+        super();
+        this.C = C;
+    }
+
+    Init(hc: number, buffer: Buffer) {
+        this.hc = hc;
+        this.key = buffer.getByte();
+        console.log("key:" + this.key);
+        this.cols = buffer.getShort();
+        for (var i = 0; i < this.cols; i++) {
+            this.names[i] = buffer.getUTF();
+            this.types[i] = buffer.getByte();
+        }
+    }
+
+    Insert(buffer: Buffer) {
+        var size = buffer.getShort();
+        for (var j = 0; j < size; j++) {
+            var obj = new this.C();
+            for (var i = 0; i < this.cols; i++) {
+                obj[this.names[i]] = buffer.getObj(this.types[i]);
+            }
+            this.data[obj[this.names[this.key]]] = obj;
+            this.dispatchEvent("insert", obj);
+        }
+    }
+
+    Delete(buffer: Buffer) {
+        if (buffer.remaining() > 0) {
+            var k = buffer.getObj(this.types[this.key]);
+            var obj = this.data[k];
+            delete this.data[k];
+            this.dispatchEvent("delete", obj);
+        } else {
+            this.data = {};
+            this.dispatchEvent("clear", null);
+        }
+    };
+
+    Update(buffer: Buffer) {
+        var key = buffer.getObj(this.types[this.key]);
+        var obj = this.data[key];
+        while (buffer.remaining() > 0) {
+            var i = buffer.getByte();
+            var name = this.names[i];
+            var old=obj[name];
+            obj[name] = buffer.getObj(this.types[i]);
+            this.dispatchEvent(name, obj, old);
+        }
+        this.dispatchEvent("update", obj);
+    };
+
+    getObj(key?): T {
+        if (key == null) {
+            for (var k in this.data) {
+                return this.data[k];
+            }
+        }
+        return this.data[key];
+    };
+
+    getList(compareFn?: (a: T) => boolean): Array<T> {
+        var array = [];
+        for (var k in this.data) {
+            var o = this.data[k];
+            if (compareFn == null || compareFn(o)) {
+                array.push(o);
+            }
+        }
+        return array;
+    }
+}

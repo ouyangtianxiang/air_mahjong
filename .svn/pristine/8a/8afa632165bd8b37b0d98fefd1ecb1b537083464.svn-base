@@ -1,0 +1,60 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class Pai extends cc.Component {
+
+    @property({ type: cc.Sprite })
+    img: cc.Sprite;
+
+    _parent: cc.Node;
+    _other: cc.BoxCollider;
+    onLoad() {
+
+        this._parent = this.node.parent;
+        this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+        this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
+
+    }
+
+    onTouchStart(event: cc.Event.EventTouch) {
+        cc.log('Drag stated ...');
+
+        var p = cc.v2(this.node.width * this.node.anchorX, this.node.height * this.node.anchorY);
+        var pos = this.node.convertToWorldSpace(p);
+        this.node.parent = cc.director.getScene();
+        this.node.setPosition(pos);
+        cc.log(this.node.parent + "--------------" + pos);
+    }
+    onTouchMove(event: cc.Event.EventTouch) {
+        cc.log('Drag move ...');
+        this.node.x += event.getDeltaX();
+        this.node.y += event.getDeltaY();
+    }
+    onTouchEnd(event: cc.Event.EventTouch) {
+        cc.log('Drag stated ...');
+
+        //this.node.zIndex = this.img.x;
+        //this.img.x = 0;
+        //this.img.y = 0;
+        if (this._other != null) {
+            this.node.parent = this._other.node;
+            this.node.x = 0;
+            this.node.y = 0;
+        }
+    }
+
+    init(id, pa: cc.SpriteAtlas) {
+        this.img.spriteFrame = pa.getSpriteFrame(id);
+    }
+
+    onCollisionEnter(other, self) {
+        this._other = other;
+        console.log('on collision enter');
+
+    }
+
+    onCollisionExit(other, self) {
+        console.log('on collision exit');
+    }
+}

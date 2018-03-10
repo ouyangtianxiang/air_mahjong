@@ -1,0 +1,194 @@
+2017-07-25T08:44:50.864Z - normal: Load ~/.CocosCreator/settings.json
+2017-07-25T08:44:50.868Z - normal: checking language setting...
+2017-07-25T08:44:50.869Z - normal: Language: zh
+2017-07-25T08:44:52.282Z - success: protocol editor-framework registered
+2017-07-25T08:44:52.282Z - success: protocol app registered
+2017-07-25T08:44:52.283Z - success: protocol theme registered
+2017-07-25T08:44:52.283Z - success: protocol profile registered
+2017-07-25T08:44:52.283Z - success: protocol packages registered
+2017-07-25T08:44:52.283Z - success: protocol unpack registerred
+2017-07-25T08:44:52.283Z - success: protocol disable-commonjs registerred
+2017-07-25T08:44:52.537Z - normal: connected!
+2017-07-25T08:44:52.539Z - normal: Check project E:\air_mahjong\Client
+2017-07-25T08:44:52.542Z - normal: Initializing Cocos2d
+2017-07-25T08:44:52.797Z - normal: Initializing Asset Database
+2017-07-25T08:44:52.830Z - success: protocol uuid registerred
+2017-07-25T08:44:52.830Z - success: protocol db registerred
+2017-07-25T08:44:52.830Z - success: protocol thumbnail registerred
+2017-07-25T08:44:52.830Z - normal: Loading editor/builtin packages
+2017-07-25T08:44:52.854Z - success: anysdk loaded
+2017-07-25T08:44:52.991Z - success: assets loaded
+2017-07-25T08:44:52.992Z - success: builder loaded
+2017-07-25T08:44:52.995Z - success: hierarchy loaded
+2017-07-25T08:44:52.997Z - success: inspector loaded
+2017-07-25T08:44:52.998Z - success: keystore loaded
+2017-07-25T08:44:53.000Z - success: node-library loaded
+2017-07-25T08:44:53.001Z - success: package-asset loaded
+2017-07-25T08:44:53.003Z - success: preferences loaded
+2017-07-25T08:44:53.015Z - success: project-importer loaded
+2017-07-25T08:44:53.017Z - success: project-settings loaded
+2017-07-25T08:44:53.019Z - success: ui-kit loaded
+2017-07-25T08:44:53.020Z - success: ui-grid loaded
+2017-07-25T08:44:53.025Z - success: scene loaded
+2017-07-25T08:44:53.026Z - success: sprite-editor loaded
+2017-07-25T08:44:53.029Z - success: store loaded
+2017-07-25T08:44:53.033Z - success: timeline loaded
+2017-07-25T08:44:53.034Z - normal: Loading builtin packages
+2017-07-25T08:44:53.037Z - success: asset-db-debugger loaded
+2017-07-25T08:44:53.038Z - success: code-editor loaded
+2017-07-25T08:44:53.038Z - success: color-picker loaded
+2017-07-25T08:44:53.041Z - success: console loaded
+2017-07-25T08:44:53.043Z - success: package-manager loaded
+2017-07-25T08:44:53.045Z - success: sdkbox loaded
+2017-07-25T08:44:53.048Z - success: tester loaded
+2017-07-25T08:44:53.051Z - success: ui-kit-preview-extra loaded
+2017-07-25T08:44:53.053Z - success: ui-kit-preview loaded
+2017-07-25T08:44:53.055Z - success: ui-tree loaded
+2017-07-25T08:44:53.955Z - normal: Initializing project E:\air_mahjong\Client
+2017-07-25T08:44:53.958Z - normal: Loading packages
+2017-07-25T08:44:53.961Z - normal: Watching packages
+2017-07-25T08:44:53.975Z - normal: Run Application
+2017-07-25T08:44:57.547Z - success: preview server running at http://localhost:7456
+2017-07-25T08:44:57.547Z - normal: Compiling scripts...
+2017-07-25T08:45:00.205Z - normal: Compiled project javascript file successfully
+2017-07-25T08:45:07.938Z - normal: 1.5.2
+2017-07-25T08:50:17.836Z - normal: Compiled project javascript file successfully
+2017-07-25T08:56:16.207Z - normal: Simulator: SCREEN DPI = 96, SCREEN SCALE = 1.00
+2017-07-25T08:56:16.209Z - normal: Simulator: WORKAREA WIDTH 1912.00, HEIGHT 989.00
+2017-07-25T08:56:16.209Z - normal: Simulator: FRAME SCALE = 1.00
+2017-07-25T08:56:16.563Z - normal: Simulator: Ready for GLSL
+2017-07-25T08:56:16.563Z - normal: Simulator: Ready for OpenGL 2.0
+2017-07-25T08:56:16.563Z - normal: Simulator: 
+2017-07-25T08:56:16.563Z - normal: Simulator: {
+2017-07-25T08:56:16.563Z - normal: Simulator: 	gl.version: 4.5.0 NVIDIA 375.63
+2017-07-25T08:56:16.564Z - normal: Simulator: 	gl.supports_NPOT: true
+2017-07-25T08:56:16.564Z - normal: Simulator: 	cocos2d.x.version: 1.5.2
+2017-07-25T08:56:16.564Z - normal: Simulator: 	cocos2d.x.compiled_with_profiler: false
+2017-07-25T08:56:16.564Z - normal: Simulator: 	cocos2d.x.build_type: DEBUG
+2017-07-25T08:56:16.564Z - normal: Simulator: 	cocos2d.x.compiled_with_gl_state_cache: true
+2017-07-25T08:56:16.564Z - normal: Simulator: 	gl.max_texture_size: 32768
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.supports_OES_packed_depth_stencil: false
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.vendor: NVIDIA Corporation
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.renderer: GeForce GTX 1060 3GB/PCIe/SSE2
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.max_texture_units: 192
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.supports_ETC1: false
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.supports_PVRTC: false
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.supports_BGRA8888: false
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.supports_discard_framebuffer: false
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.supports_vertex_array_object: true
+2017-07-25T08:56:16.565Z - normal: Simulator: 	gl.supports_OES_map_buffer: false
+2017-07-25T08:56:16.566Z - normal: Simulator: 	gl.supports_OES_depth24: false
+2017-07-25T08:56:16.566Z - normal: Simulator: }
+2017-07-25T08:56:16.566Z - normal: Simulator: 
+2017-07-25T08:56:16.566Z - normal: Simulator: 
+2017-07-25T08:56:16.566Z - normal: Simulator: cocos2d: warning, Director::setProjection() failed because size is 0
+2017-07-25T08:56:16.566Z - normal: Simulator: Project Config:
+2017-07-25T08:56:16.566Z - normal: Simulator:     project dir: D:\CocosCreator\resources\cocos2d-x\simulator\win32\
+2017-07-25T08:56:16.566Z - normal: Simulator:     writable path: $(PROJDIR)\
+2017-07-25T08:56:16.566Z - normal: Simulator:     script file: $(PROJDIR)\main.js
+2017-07-25T08:56:16.566Z - normal: Simulator:     frame size: 960 x 640
+2017-07-25T08:56:16.567Z - normal: Simulator:     frame scale: 1.00
+2017-07-25T08:56:16.567Z - normal: Simulator:     show console: NO
+2017-07-25T08:56:16.567Z - normal: Simulator:     write debug log: NO ()
+2017-07-25T08:56:16.567Z - normal: Simulator:     listen: 
+2017-07-25T08:56:16.567Z - normal: Simulator:     debugger: none
+2017-07-25T08:56:16.567Z - normal: Simulator:     add searching path:
+2017-07-25T08:56:16.568Z - normal: Simulator: 
+2017-07-25T08:56:16.568Z - normal: Simulator: 
+2017-07-25T08:56:16.568Z - normal: Simulator: 
+2017-07-25T08:56:16.568Z - normal: Simulator: ------------------------------------------------
+2017-07-25T08:56:16.568Z - normal: Simulator: LOAD Js FILE: main.js
+2017-07-25T08:56:16.568Z - normal: Simulator: ------------------------------------------------
+2017-07-25T08:56:16.634Z - normal: Simulator: Cocos2d-x-lite v1.5.2
+2017-07-25T08:56:16.899Z - error: Simulator: 543:mutating the [[Prototype]] of an object will cause your code to run very slowly; instead create the object with the correct initial [[Prototype]] value using Object.create
+    at a (E:\air_mahjong\Client\library\bundle.project.js?009:NaN:0)
+2017-07-25T08:56:16.900Z - normal: Simulator: 
+2017-07-25T08:56:16.900Z - normal: Simulator: iShow!
+2017-07-25T08:56:17.082Z - error: Simulator: 2004:TypeError: this.label is null
+    at a (E:\air_mahjong\Client\library\bundle.project.js?009:NaN:0)
+2017-07-25T08:56:17.083Z - normal: Simulator: 
+2017-07-25T08:56:21.147Z - normal: Simulator: basic_object_finalize 08931740 ...
+2017-07-25T08:56:21.147Z - normal: Simulator: jsbindings: finalizing JS object 08931760 (WebSocket)
+2017-07-25T08:56:21.147Z - normal: Simulator: jsbindings: finalizing JS object 08931780 (SocketIO)
+2017-07-25T08:57:34.948Z - normal: Simulator: SCREEN DPI = 96, SCREEN SCALE = 1.00
+2017-07-25T08:57:34.949Z - normal: Simulator: WORKAREA WIDTH 1912.00, HEIGHT 989.00
+2017-07-25T08:57:34.949Z - normal: Simulator: FRAME SCALE = 1.00
+2017-07-25T08:57:35.322Z - normal: Simulator: Ready for GLSL
+2017-07-25T08:57:35.322Z - normal: Simulator: Ready for OpenGL 2.0
+2017-07-25T08:57:35.322Z - normal: Simulator: 
+2017-07-25T08:57:35.323Z - normal: Simulator: {
+2017-07-25T08:57:35.323Z - normal: Simulator: 	gl.version: 4.5.0 NVIDIA 375.63
+2017-07-25T08:57:35.323Z - normal: Simulator: 	gl.supports_NPOT: true
+2017-07-25T08:57:35.323Z - normal: Simulator: 	cocos2d.x.version: 1.5.2
+2017-07-25T08:57:35.323Z - normal: Simulator: 	cocos2d.x.compiled_with_profiler: false
+2017-07-25T08:57:35.324Z - normal: Simulator: 	cocos2d.x.build_type: DEBUG
+2017-07-25T08:57:35.324Z - normal: Simulator: 	cocos2d.x.compiled_with_gl_state_cache: true
+2017-07-25T08:57:35.324Z - normal: Simulator: 	gl.max_texture_size: 32768
+2017-07-25T08:57:35.324Z - normal: Simulator: 	gl.supports_OES_packed_depth_stencil: false
+2017-07-25T08:57:35.324Z - normal: Simulator: 	gl.vendor: NVIDIA Corporation
+2017-07-25T08:57:35.324Z - normal: Simulator: 	gl.renderer: GeForce GTX 1060 3GB/PCIe/SSE2
+2017-07-25T08:57:35.324Z - normal: Simulator: 	gl.max_texture_units: 192
+2017-07-25T08:57:35.325Z - normal: Simulator: 	gl.supports_ETC1: false
+2017-07-25T08:57:35.325Z - normal: Simulator: 	gl.supports_PVRTC: false
+2017-07-25T08:57:35.325Z - normal: Simulator: 	gl.supports_BGRA8888: false
+2017-07-25T08:57:35.325Z - normal: Simulator: 	gl.supports_discard_framebuffer: false
+2017-07-25T08:57:35.325Z - normal: Simulator: 	gl.supports_vertex_array_object: true
+2017-07-25T08:57:35.325Z - normal: Simulator: 	gl.supports_OES_map_buffer: false
+2017-07-25T08:57:35.325Z - normal: Simulator: 	gl.supports_OES_depth24: false
+2017-07-25T08:57:35.325Z - normal: Simulator: }
+2017-07-25T08:57:35.325Z - normal: Simulator: 
+2017-07-25T08:57:35.326Z - normal: Simulator: 
+2017-07-25T08:57:35.326Z - normal: Simulator: cocos2d: warning, Director::setProjection() failed because size is 0
+2017-07-25T08:57:35.326Z - normal: Simulator: Project Config:
+2017-07-25T08:57:35.326Z - normal: Simulator:     project dir: D:\CocosCreator\resources\cocos2d-x\simulator\win32\
+2017-07-25T08:57:35.326Z - normal: Simulator:     writable path: $(PROJDIR)\
+2017-07-25T08:57:35.326Z - normal: Simulator:     script file: $(PROJDIR)\main.js
+2017-07-25T08:57:35.326Z - normal: Simulator:     frame size: 960 x 640
+2017-07-25T08:57:35.326Z - normal: Simulator:     frame scale: 1.00
+2017-07-25T08:57:35.327Z - normal: Simulator:     show console: NO
+2017-07-25T08:57:35.327Z - normal: Simulator:     write debug log: NO ()
+2017-07-25T08:57:35.327Z - normal: Simulator:     listen: 
+2017-07-25T08:57:35.327Z - normal: Simulator:     debugger: none
+2017-07-25T08:57:35.327Z - normal: Simulator:     add searching path:
+2017-07-25T08:57:35.327Z - normal: Simulator: 
+2017-07-25T08:57:35.327Z - normal: Simulator: 
+2017-07-25T08:57:35.327Z - normal: Simulator: 
+2017-07-25T08:57:35.327Z - normal: Simulator: ------------------------------------------------
+2017-07-25T08:57:35.327Z - normal: Simulator: LOAD Js FILE: main.js
+2017-07-25T08:57:35.328Z - normal: Simulator: ------------------------------------------------
+2017-07-25T08:57:35.373Z - normal: Simulator: Cocos2d-x-lite v1.5.2
+2017-07-25T08:57:35.620Z - error: Simulator: 543:mutating the [[Prototype]] of an object will cause your code to run very slowly; instead create the object with the correct initial [[Prototype]] value using Object.create
+    at a (E:\air_mahjong\Client\library\bundle.project.js?009:NaN:0)
+2017-07-25T08:57:35.620Z - normal: Simulator: 
+2017-07-25T08:57:35.622Z - normal: Simulator: iShow!
+2017-07-25T08:57:38.448Z - error: Simulator: 2022:TypeError: this.ws is undefined
+    at a (E:\air_mahjong\Client\library\bundle.project.js?009:NaN:0)
+2017-07-25T08:57:38.448Z - normal: Simulator: 
+2017-07-25T08:57:38.581Z - normal: Simulator: Send Text fired an error
+2017-07-25T08:57:38.581Z - normal: Simulator: WebSocket instance closed.
+2017-07-25T08:57:40.848Z - normal: Simulator: jsb: ERROR: File ..\manual\network\jsb_websocket.cpp: Line: 299, Function: js_cocos2dx_extension_WebSocket_close
+2017-07-25T08:57:40.848Z - normal: Simulator: Invalid Native Object
+2017-07-25T08:57:40.849Z - error: Simulator: 2064:Error: Invalid Native Object
+    at a (E:\air_mahjong\Client\library\bundle.project.js?009:NaN:0)
+2017-07-25T08:57:40.849Z - normal: Simulator: 
+2017-07-25T08:57:41.666Z - normal: Simulator: jsb: ERROR: File ..\manual\network\jsb_websocket.cpp: Line: 299, Function: js_cocos2dx_extension_WebSocket_close
+2017-07-25T08:57:41.666Z - normal: Simulator: Invalid Native Object
+2017-07-25T08:57:41.667Z - error: Simulator: 2064:Error: Invalid Native Object
+    at a (E:\air_mahjong\Client\library\bundle.project.js?009:NaN:0)
+2017-07-25T08:57:41.667Z - normal: Simulator: 
+2017-07-25T08:57:42.286Z - error: Simulator: 2022:TypeError: this.ws is undefined
+    at a (E:\air_mahjong\Client\library\bundle.project.js?009:NaN:0)
+2017-07-25T08:57:42.286Z - normal: Simulator: 
+2017-07-25T08:57:43.881Z - normal: Simulator: Send Text fired an error
+2017-07-25T08:57:43.882Z - normal: Simulator: WebSocket instance closed.
+2017-07-25T08:57:44.370Z - normal: Simulator: Send Text fired an error
+2017-07-25T08:57:44.370Z - normal: Simulator: WebSocket instance closed.
+2017-07-25T08:57:44.736Z - normal: Simulator: basic_object_finalize 08931740 ...
+2017-07-25T08:57:44.737Z - normal: Simulator: jsbindings: finalizing JS object 08931760 (WebSocket)
+2017-07-25T08:57:44.737Z - normal: Simulator: jsbindings: finalizing JS object 08931780 (SocketIO)
+2017-07-25T08:57:44.737Z - normal: Simulator: jsbindings: finalizing JS object 097C1F40 (WebSocket)
+2017-07-25T08:57:44.738Z - normal: Simulator: jsbindings: finalizing JS object 097DEB20 (WebSocket)
+2017-07-25T08:57:44.740Z - normal: Simulator: jsbindings: finalizing JS object 097DEE20 (WebSocket)
+2017-07-25T08:57:44.741Z - normal: Simulator: jsbindings: finalizing JS object 097DEFA0 (WebSocket)
+2017-07-25T08:57:44.741Z - normal: Simulator: jsbindings: finalizing JS object 097E7140 (WebSocket)
+2017-07-26T01:40:23.202Z - info: shutdown preview server

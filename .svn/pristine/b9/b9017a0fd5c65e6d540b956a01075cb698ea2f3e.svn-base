@@ -1,0 +1,49 @@
+var Protocol = require("../net/Protocol.js");
+var data = require("../net/Data.js");
+var Global = require("../utils/Global.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        RoomId: {
+            default: null,
+            type: cc.Label
+        },
+    },
+
+    // use this for initialization
+    onLoad: function () {
+
+    },
+
+    init: function (roomId) {
+        this.RoomId.string = roomId;
+    },
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+
+    prepare: function () {
+
+    },
+
+    play: function () {
+
+    },
+
+    reply: function () {
+
+    },
+
+    onExit: function (event) {
+        var code = event.detail.getByte();
+        if (code == 0) {
+            cc.director.loadScene("Hall");
+        }
+    },
+
+    exit: function () {
+        data.im.Call(Protocol.NCMJ_EXIT, this.onExit, this);
+    }
+});

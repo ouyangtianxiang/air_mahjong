@@ -1,0 +1,112 @@
+module.exports = function (value) {
+
+    var im = this;
+    var BUFFER = require("./Buffer.js");
+
+    var socket = new WebSocket("ws://localhost:8080/Server/websocket2");
+
+    socket.onopen = function (event) {
+        console.log("Send Text WS was opened.");
+    };
+
+    socket.onmessage = function (event) {
+        var buf = new BUFFER(event.data);
+        im.handler(buf);
+    };
+
+    socket.onerror = function (event) {
+        console.log("Send Text fired an error");
+    };
+    socket.onclose = function (event) {
+        console.log("WebSocket instance closed.");
+    };
+
+    var PARAM_TYPE = [];
+    this.handler = function (buffer) {
+        var code = buffer.getUByte();
+        console.log(code);
+        switch (code) {
+            case 0:
+                data.Init(buffer);
+                break;
+            case 1:
+                data.Insert(buffer);
+                break;
+            case 2:
+                data.Delete(buffer);
+                break;
+            case 3:
+                data.Update(buffer);
+                break;
+            case 4:
+                while (buffer.remaining() > 0) {
+                    var c = buffer.getUByte();
+                    var len = buffer.getByte();
+                    var pTypes = [];
+                    for (var i = 0; i < len; i++) {
+                        pTypes[i] = buffer.getByte();
+                    }
+                    PARAM_TYPE[c] = pTypes;
+                    console.log(c + "------ " + pTypes);
+                }
+                break;
+            case 5:
+                var time = buffer.getLong();
+                var str = buffer.getUTF();
+                console.log("TIME:" + time + " " + str);
+                break;
+            case 9:
+                throw "ServerError:\n" + buffer.getUTF();
+            default:
+                this.onCall(code, buffer);
+                break;
+        }
+
+    }
+
+    var callbacks = [];
+    var listeners = [];
+
+    this.addListener = function (code, callback) {
+
+        listeners[code] = callback;
+    }
+
+    this.removeListener = function (code) {
+        delete listeners[code];
+    }
+
+    this.onCall = function (code, buffer) {
+        if (listeners[code] != null) {
+            listeners[code](buffer);
+        }
+        if (callbacks[code] != null) {
+            callbacks[code](buffer);
+            callbacks[code] = null;
+        }
+    }
+
+    this.Call = function (code, callback) {
+        if (callback != null) {
+            callbacks[code] = callback;
+        }
+        if (socket == null) {
+            return;
+        }
+        var param = [];
+        for (var i = 2; i < arguments.length; i++) {
+            param[i - 2] = arguments[i];
+        }
+        var buffer = new BUFFER(new ArrayBuffer(256));
+        buffer.putUByte(code);
+        buffer.putArray(PARAM_TYPE[code], param);
+        buffer.flip();
+        console.log(param+"111111"+socket.readyState);
+        socket.send(buffer.getData());
+        console.log(param+"222222"+socket.readyState);
+    }
+
+    this.close = function () {
+        socket.close();
+    }
+}

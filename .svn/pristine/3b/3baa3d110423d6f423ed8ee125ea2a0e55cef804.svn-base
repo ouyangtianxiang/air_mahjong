@@ -1,0 +1,29 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class Loading extends cc.Component {
+
+    @property(cc.Label)
+    label: cc.Label;
+
+    @property(String)
+    text: string = 'hello';
+
+
+    onMouseDown() {
+        cc.director.loadScene("Login");
+    }
+
+    onLoad() {
+        this.label.string = this.text;
+
+        this.node.on("mousedown", this.onMouseDown);
+
+    }
+
+    onDisable() {
+        console.log("+++++++++++++");
+        var arr: Array<number> = [1, 2, 3, 4, 5, 6];
+    }
+
+}

@@ -1,0 +1,93 @@
+const { ccclass, property } = cc._decorator;
+import Where from "./Where"
+
+@ccclass
+export default class Table {
+
+    data = {};
+    names = [];
+    types = [];
+    key = 0;
+    name: string;
+    cols = 0;
+    event: cc.EventTarget = new cc.EventTarget();
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    Init(buffer) {
+        this.key = buffer.getByte();
+        console.log("key:" + this.key);
+        this.cols = buffer.getShort();
+        for (var i = 0; i < this.cols; i++) {
+            this.names[i] = buffer.getUTF();
+            this.types[i] = buffer.getByte();
+        }
+    }
+
+    Insert(buffer) {
+        var size = buffer.getShort();
+        for (var j = 0; j < size; j++) {
+            var obj = {};
+            for (var i = 0; i < this.cols; i++) {
+                obj[this.names[i]] = buffer.getObj(this.types[i]);
+            }
+            this.data[obj[this.names[this.key]]] = obj;
+            this.event.emit("insert", obj);
+        }
+    }
+
+    Delete(buffer) {
+        var obj = null;
+        if (buffer.remaining() > 0) {
+            var k = buffer.getObj(this.types[this.key]);
+            obj = this.data[k];
+            delete this.data[k];
+        } else {
+            this.data = {};
+        }
+        this.event.emit("delete", obj);
+    };
+
+    Update(buffer) {
+        var key = buffer.getObj(this.types[this.key]);
+        var obj = this.data[key];
+        if (buffer.remaining() > 0) {
+            var i = buffer.getByte();
+            obj[this.names[i]] = buffer.getObj(this.types[i]);
+        }
+        this.event.emit("update", obj);
+    };
+
+    getObj(key) {
+        if (key == null) {
+            for (var k in this.data) {
+                return this.data[k];
+            }
+        }
+        return this.data[key];
+    };
+
+    getList() {
+        var whs = [];
+        for (var i = 0; i < arguments.length; i++) {
+            whs.push(new Where(arguments[i]));
+        }
+        var len = whs.length;
+        var array = [];
+        for (var k in this.data) {
+            var o = this.data[k];
+            for (var j in whs) {
+                if (!whs[j].fairly(o)) {
+                    o = null;
+                    break;
+                }
+            }
+            if (o != null) {
+                array.push(o);
+            }
+        }
+        return array;
+    }
+}

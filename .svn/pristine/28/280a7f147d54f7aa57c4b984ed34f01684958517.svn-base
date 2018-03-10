@@ -1,0 +1,43 @@
+
+var Global = require("../utils/Global.js");
+var data = require("../net/Data.js");
+var Protocol = require("../net/Protocol.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+
+        UserID: {
+            default: null,
+            type: cc.Label
+        },
+        RoomCard: {
+            default: null,
+            type: cc.Label
+        },
+    },
+
+    onLoad: function () {
+        var obj = data.Table("U_data").getObj();
+        this.RoomCard.string = obj.roomCard;
+        this.UserID.string = "ID:" + obj.userId;
+    },
+
+    // update: function (dt) {
+
+    // },
+
+    createRoom: function () {
+        Global.ShowWindow("CreateRoom");
+    },
+
+    intoRoom: function () {
+        Global.ShowWindow("IntoRoom");
+    },
+
+    btnClick: function (event, data) {
+        if (data) {
+            Global.ShowWindow(data);
+        }
+    }
+});

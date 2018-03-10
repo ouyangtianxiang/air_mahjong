@@ -1,0 +1,27 @@
+
+hall_checkin_yu.png
+size: 57,57
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+nt_diploma_qiandao_spine_yu1
+  rotate: true
+  xy: 41, 13
+  size: 42, 14
+  orig: 42, 14
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_yu2
+  rotate: false
+  xy: 2, 4
+  size: 37, 21
+  orig: 37, 21
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_yu3
+  rotate: false
+  xy: 2, 27
+  size: 34, 28
+  orig: 34, 28
+  offset: 0, 0
+  index: -1

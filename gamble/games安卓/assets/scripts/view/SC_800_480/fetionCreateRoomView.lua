@@ -1,0 +1,40 @@
+fetionCreateRoomView=
+{
+	name="fetionCreateRoomView",type=0,typeName="View",time=0,x=0,y=0,width=850,height=400,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,
+	{
+		name="bgImg",type=1,typeName="Image",time=31387748,x=0,y=0,width=850,height=400,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/windowsBg_noClose.png",gridLeft=50,gridRight=50,gridTop=100,gridBottom=50,
+		{
+			name="frame",type=1,typeName="Image",time=59800535,x=0,y=83,width=770,height=200,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Common/windowsFrame.png",gridLeft=20,gridRight=20,gridTop=20,gridBottom=20,
+			{
+				name="light",type=1,typeName="Image",time=59800554,x=0,y=0,width=459,height=2,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Common/windowsLightLine.png"
+			},
+			{
+				name="diImg",type=1,typeName="Image",time=59887327,x=0,y=0,width=700,height=65,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/windowsEdit.png",gridLeft=20,gridRight=20,gridTop=20,gridBottom=20
+			}
+		}
+	},
+	{
+		name="titleText",type=4,typeName="Text",time=31387772,x=0,y=24,width=160,height=26,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,fontSize=40,textAlign=kAlignCenter,colorRed=250,colorGreen=240,colorBlue=200,string=[[创建房间]]
+	},
+	{
+		name="Text3",type=4,typeName="Text",time=52019954,x=72,y=101,width=130,height=31,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=26,textAlign=kAlignLeft,colorRed=250,colorGreen=240,colorBlue=200,string=[[底    注:]]
+	},
+	{
+		name="confirmBtn",type=2,typeName="Button",time=53866866,x=0,y=135,width=200,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/blank.png",
+		{
+			name="Image3",type=1,typeName="Image",time=53866867,x=42,y=0,width=116,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG2.png",gridLeft=10,gridRight=10,gridTop=0,gridBottom=0
+		},
+		{
+			name="Image4",type=1,typeName="Image",time=53866868,x=0,y=0,width=44,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG1.png"
+		},
+		{
+			name="Image5",type=1,typeName="Image",time=53866869,x=156,y=0,width=44,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG3.png"
+		},
+		{
+			name="confirmText",type=4,typeName="Text",time=53866870,x=5,y=1,width=200,height=74,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignCenter,fontSize=32,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[确  定]]
+		}
+	},
+	{
+		name="closeBtn",type=2,typeName="Button",time=59801182,x=812,y=-25,width=64,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/windowsClose.png"
+	}
+}

@@ -1,0 +1,25 @@
+const { ccclass, property } = cc._decorator;
+import Brand from "./Brand"
+
+@ccclass
+export default class Eat extends cc.Component {
+
+    @property({ default: null, type: Brand })
+    Brand1: Brand;
+    @property({ default: null, type: Brand })
+    Brand2: Brand;
+    @property({ default: null, type: Brand })
+    Brand3: Brand;
+
+    onLoad() {
+
+    }
+
+    init(a: number, b: number, c: number) {
+        this.node.active = a * b * c > 0;
+
+        this.Brand1.value(a);
+        this.Brand2.value(b);
+        this.Brand3.value(c);
+    }
+}

@@ -1,0 +1,31 @@
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        img: cc.Node,
+        lable: cc.Label,
+    },
+
+    onLoad: function () {
+
+    },
+
+    code: 0,
+
+    init: function (msg, code) {
+        this.code = code;
+        if (msg) {
+            this.lable.string = msg;
+        }
+    },
+
+    update: function (dt) {
+        this.img.rotation += 30;
+    },
+
+    close: function (code) {
+        if (code == null || this.code == code) {
+            this.node.destroy();
+        }
+    }
+});

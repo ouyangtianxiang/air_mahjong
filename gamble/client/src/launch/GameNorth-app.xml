@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/26.0">
+
+	<id>GameNorth</id>
+
+	<filename>GameNorth</filename>
+
+	<name>北</name>
+
+	<versionNumber>0.0.0</versionNumber>
+
+	<initialWindow>
+		<content>[此值将由 Flash Builder 在输出 app.xml 中覆盖]</content>
+		<aspectRatio>landscape</aspectRatio>
+		<renderMode>direct</renderMode>
+		<depthAndStencil>true</depthAndStencil>
+		<autoOrients>true</autoOrients>
+		<fullScreen>true</fullScreen>
+		<visible>true</visible>
+	</initialWindow>
+	<icon>
+	</icon>
+</application>

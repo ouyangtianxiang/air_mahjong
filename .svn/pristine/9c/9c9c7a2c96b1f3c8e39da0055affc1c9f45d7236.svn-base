@@ -1,0 +1,83 @@
+const { ccclass, property } = cc._decorator;
+import Buffer from "./Buffer";
+
+@ccclass
+export default class Table {
+    hc: number;
+    data = {};
+    names: string[] = [];
+    types: number[] = [];
+    key = 0;
+    name: string;
+    cols = 0;
+    event: cc.EventTarget = new cc.EventTarget();
+
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    Init(hc: number, buffer: Buffer) {
+        this.hc = hc;
+        this.key = buffer.getByte();
+        console.log("key:" + this.key);
+        this.cols = buffer.getShort();
+        for (var i = 0; i < this.cols; i++) {
+            this.names[i] = buffer.getUTF();
+            this.types[i] = buffer.getByte();
+        }
+    }
+
+    Insert(buffer: Buffer) {
+        var size = buffer.getShort();
+        for (var j = 0; j < size; j++) {
+            var obj = {};
+            for (var i = 0; i < this.cols; i++) {
+                obj[this.names[i]] = buffer.getObj(this.types[i]);
+            }
+            this.data[obj[this.names[this.key]]] = obj;
+            this.event.emit("insert", obj);
+        }
+    }
+
+    Delete(buffer: Buffer) {
+        if (buffer.remaining() > 0) {
+            var k = buffer.getObj(this.types[this.key]);
+            var obj = this.data[k];
+            delete this.data[k];
+            this.event.emit("delete", obj);
+        } else {
+            this.data = {};
+            this.event.emit("clear");
+        }
+    };
+
+    Update(buffer: Buffer) {
+        var key = buffer.getObj(this.types[this.key]);
+        var obj = this.data[key];
+        if (buffer.remaining() > 0) {
+            var i = buffer.getByte();
+            obj[this.names[i]] = buffer.getObj(this.types[i]);
+        }
+        this.event.emit("update", obj);
+    };
+
+    getObj(key?) {
+        if (key == null) {
+            for (var k in this.data) {
+                return this.data[k];
+            }
+        }
+        return this.data[key];
+    };
+
+    getList(compareFn?: (a) => boolean): Array<any> {
+        var array = [];
+        for (var k in this.data) {
+            var o = this.data[k];
+            if (compareFn == null || compareFn(o)) {
+                array.push(o);
+            }
+        }
+        return array;
+    }
+}

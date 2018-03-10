@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project name="javaTest" default="apk" basedir=".">
+
+	<property name="FLEX_HOME" value="G:\AIRSDK" />
+
+	<!-- 确定flexTasks.jar && for 循环支持 的位置 -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	
+	<!-- 编译swf部分 -->
+	<target name="SWF">
+		<mxmlc file="src\game\Loading.as" output="bin/Loading.swf" configname="air">
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml" />
+			<source-path path-element="src" />
+			<compiler.debug>false</compiler.debug>
+		</mxmlc>
+	</target>
+
+	<!-- 打包apk部分 -->
+	<target name="apk" depends="SWF">
+		<echo>packageing for android......</echo>
+		<java jar="${FLEX_HOME}\lib\adt.jar" fork="true" failonerror="true">
+			<arg value="-package" />
+			<arg value="-target" />
+			<arg value="apk-captive-runtime" />
+			<arg value="-storetype" />
+			<arg value="pkcs12" />
+			<arg value="-keystore" />
+			<arg value="keys/android.p12" />
+			<arg value="-storepass" />
+			<arg value="111111" />
+			<arg value="Loading.apk" />
+			<arg value="bin/GameAndroid-app.xml" />
+			<arg value="-C" />
+			<arg value="bin" />
+			<arg value="." />
+		</java>
+		<echo>android end</echo>
+	</target>
+
+</project>

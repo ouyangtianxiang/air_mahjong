@@ -1,0 +1,234 @@
+package game.room;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+
+import game.application.Player;
+import game.data.bean.T_brand;
+import game.data.bean.T_room;
+import game.data.bean.T_state;
+import ge.db.Table;
+import ge.net.Buffer;
+import ge.net.Call;
+
+public class Room extends Call {
+	protected static ConcurrentHashMap<Integer, Room> ROOMS = new ConcurrentHashMap<Integer, Room>();
+
+	public static Room Find(int roomId) {
+		Room room = ROOMS.get(roomId);
+		return room;
+	}
+
+	private synchronized static int CreataID() {
+		int id = 0;
+		do {
+			id = (int) (100000 + Math.random() * 900000);
+		} while (ROOMS.containsKey(id));
+		return id;
+	}
+
+	static byte[] BRAND = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26,
+			27, 28, 30, 31, 32, 33, 40, 41, 42 };
+
+	private Timer timer = new Timer();
+	protected Player[] map;
+
+	public final int roomId;
+
+	private Table<T_brand> t_brand = new Table<T_brand>(T_brand.class, null);
+	private Table<T_state> t_state = new Table<T_state>(T_state.class, null);
+	private Table<T_room> t_room = new Table<T_room>(T_room.class, null);
+
+	private Vector<T_brand> array;
+
+	public T_room room;
+
+	public Room(int userId, byte num) {
+		this.roomId = CreataID();
+		map = new Player[num];
+		ROOMS.put(roomId, this);
+
+		room = new T_room(t_room, roomId, userId, num, (byte) 0, (byte) -1, (byte) 0, (byte) 0);
+
+		short id = 1;
+		for (byte b : BRAND) {
+			for (int i = 0; i < 4; i++) {
+				new T_brand(t_brand, id++, b, (byte) 0, (byte) 0, (byte) -1);
+			}
+		}
+		array = t_brand.getList(null);
+	}
+
+	private byte index() {
+		for (byte i = 0; i < map.length; i++) {
+			if (map[i] == null) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public synchronized byte into(Player player) {
+		byte i = index();
+		if (i >= 0) {
+			map[i] = player;
+			t_brand.addListener(player);
+			t_state.addListener(player);
+			t_room.addListener(player);
+			String nickname = "txoy " + i;
+			int ip = 0;
+			String url = "http://mj.game1982.com/1.jpg";
+			player.state = new T_state(t_state, player.userId, i, (byte) 0, nickname, ip, url, 0);
+		}
+		return i;
+	}
+
+	/**
+	 * 准备
+	 */
+	public void prepare(Player mj) {
+		T_state ts = t_state.get(mj.userId);
+		ts.state = 1;
+		ts.update();
+
+		for (Player p : map) {
+			if (p == null || p.state.state == 0) {
+				return;
+			}
+		}
+		startGame();
+	}
+
+	/**
+	 * 出牌
+	 */
+	public T_brand play(Player player, short id) {
+		room.play = -1;
+		room.update();
+		tick.cancel();
+		T_brand o = t_brand.get(id);
+		if (o.index == player.index && o.state == 0 && o.order == 0) {
+			o.state = 2;
+			o.update();
+			for (Player p : map) {
+				if (p != player && p != null) {
+					p.onPlay(o);
+				}
+			}
+			reply();
+		}
+		System.out.println(o);
+		return o;
+	}
+
+	/**
+	 * 应牌
+	 */
+	public void reply() {
+		Player p = null;
+		for (Player o : map) {
+			if (p == null || p.pr < o.pr || p.pr == o.pr && p.dis > o.dis) {
+				p = o;
+			}
+		}
+		p.onReply();
+	}
+
+	private void startGame() {
+		timer.schedule(perflop, 100, 100);
+	}
+
+	// 发牌
+	private TimerTask perflop = new TimerTask() {
+		int n = 0;
+
+		public void run() {
+			System.out.println("发牌:" + n);
+			for (byte i = 0; i < room.num; i++) {
+				T_brand o = array.remove((int) (Math.random() * array.size()));
+				o.index = i;
+				o.update();
+				map[i].perflop(o);
+			}
+			n++;
+			if (n >= 13) {
+				cancel();
+				timer.schedule(extractive, 500);
+			}
+		}
+	};
+	// 定精
+	private TimerTask extractive = new TimerTask() {
+		public void run() {
+			System.out.println("定精");
+			T_brand o = array.remove(0);
+			o.index = 5;
+			o.update();
+			timer.schedule(drawTiles, 500);
+		}
+	};
+
+	// 抓牌
+	private TimerTask drawTiles = new TimerTask() {
+		public void run() {
+			System.out.println("抓牌");
+			T_brand o = array.remove(0);
+			o.index = 0;
+			o.update();
+			timer.schedule(tick, 1, 1000);
+		}
+	};
+
+	// 倒计时
+	private TimerTask tick = new TimerTask() {
+		byte t = 30;
+
+		public void run() {
+			room.play = 0;
+			room.time = t--;
+			room.update();
+			if (t < 0) {
+				cancel();
+			}
+		}
+	};
+
+	public void exit(Player player) {
+		t_state.del(player.userId);
+
+		t_brand.removeListener(player);
+		t_state.removeListener(player);
+		t_room.removeListener(player);
+		map[player.index] = null;
+		if (player.userId == room.owner) {
+			destroy();
+		}
+	}
+
+	public void destroy() {
+		timer.cancel();
+		ROOMS.remove(roomId);
+		for (Player p : map) {
+			if (p != null) {
+				p.exit((byte) 1);
+			}
+		}
+		t_brand.clear();
+		t_state.clear();
+		t_room.clear();
+		t_brand = null;
+		t_state = null;
+		t_room = null;
+	}
+
+	public void Send(Buffer buffer) {
+		for (Player p : map) {
+			if (p != null) {
+				buffer.rewind();
+				p.Send(buffer);
+			}
+		}
+	}
+}

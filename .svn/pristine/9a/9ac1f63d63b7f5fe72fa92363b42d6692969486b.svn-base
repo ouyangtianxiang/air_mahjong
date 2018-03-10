@@ -1,0 +1,237 @@
+package ge.net;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Collection;
+
+public class Buffer {
+
+	public ByteBuffer data = null;
+
+	public Buffer() {
+		this(1024);
+	}
+
+	public Buffer(int capacity) {
+		allocate(capacity);
+	}
+
+	public Buffer(ByteBuffer buf) {
+		data = buf;
+		data.order(ByteOrder.LITTLE_ENDIAN);
+	}
+
+	private void allocate(int capacity) {
+		data = ByteBuffer.allocate(capacity);
+		data.order(ByteOrder.LITTLE_ENDIAN);
+	}
+
+	public synchronized void flip() {
+		data.flip();
+	}
+
+	public synchronized void clear() {
+		data.clear();
+	}
+
+	public int capacity() {
+		return data.capacity();
+	}
+
+	public int limit() {
+		return data.limit();
+	}
+
+	public synchronized void limit(int newLimit) {
+		data.limit(newLimit);
+	}
+
+	public int position() {
+		return data.position();
+	}
+
+	public synchronized void position(int pos) {
+		data.position(pos);
+	}
+
+	public int remaining() {
+		return data.remaining();
+	}
+
+	public synchronized void rewind() {
+		data.rewind();
+	}
+
+	public void mark() {
+		mark = position();
+	}
+
+	private int mark = 0;
+
+	public void reset() {
+		position(mark);
+	}
+
+	private void examinePut(int l) {
+		while (remaining() < l) {
+			if (limit() < capacity()) {
+				limit(capacity());
+			} else {
+				ByteBuffer tmp = data;
+				allocate(data.capacity() * 2);
+				tmp.flip();
+				data.put(tmp);
+				tmp.clear();
+			}
+		}
+	}
+
+	public int getUByte() {
+		return getByte() & 0xFF;
+	}
+
+	public boolean getBoolean() {
+		return data.get() == 1;
+	}
+
+	public byte getByte() {
+		return data.get();
+	}
+
+	public short getShort() {
+		return data.getShort();
+	}
+
+	public int getInt() {
+		return data.getInt();
+	}
+
+	public long getLong() {
+		return data.getLong();
+	}
+
+	public float getFloat() {
+		return data.getFloat();
+	}
+
+	public double getDouble() {
+		return data.getDouble();
+	}
+
+	public String getUTF() {
+		try {
+			byte b[] = new byte[data.getShort()];
+			data.get(b);
+			return new String(b, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public ByteBuffer getData() {
+		return data;
+	}
+
+	public synchronized void putBoolean(boolean value) {
+		examinePut(1);
+		data.put((byte) (value ? 1 : 0));
+	}
+
+	public synchronized void putByte(byte value) {
+		examinePut(1);
+		data.put(value);
+	}
+
+	public synchronized void putShort(short value) {
+		examinePut(2);
+		data.putShort(value);
+	}
+
+	public synchronized void putInt(int value) {
+		examinePut(4);
+		data.putInt(value);
+	}
+
+	public synchronized void putLong(long value) {
+		examinePut(8);
+		data.putLong(value);
+	}
+
+	public synchronized void putFloat(float value) {
+		examinePut(4);
+		data.putFloat(value);
+	}
+
+	public synchronized void putDouble(double value) {
+		examinePut(8);
+		data.putDouble(value);
+	}
+
+	public synchronized void putBytes(byte[] value) {
+		examinePut(value.length);
+		data.put(value);
+	}
+
+	public synchronized void putBuffer(Buffer value) {
+		synchronized (value) {
+			examinePut(value.remaining());
+			while (value.remaining() > 0) {
+				data.put(value.data.get());
+			}
+		}
+	}
+
+	public synchronized void putUTF(String value) {
+		try {
+			byte[] b = value.getBytes("UTF-8");
+			int len = b.length;
+			putShort((short) len);
+			examinePut(len);
+			data.put(b);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void putCollection(Collection<?> c) {
+		this.putByte((byte) c.size());
+		for (Object object : c) {
+			putObj(object);
+		}
+	}
+
+	public void putObj(Object o) {
+		if (o instanceof Byte) {
+			this.putByte((Byte) o);
+		} else if (o instanceof Boolean) {
+			this.putBoolean((Boolean) o);
+		} else if (o instanceof Short) {
+			this.putShort((Short) o);
+		} else if (o instanceof Integer) {
+			this.putInt((Integer) o);
+		} else if (o instanceof Long) {
+			this.putLong((Long) o);
+		} else if (o instanceof Float) {
+			this.putFloat((Float) o);
+		} else if (o instanceof Double) {
+			this.putDouble((Double) o);
+		} else if (o instanceof String) {
+			this.putUTF((String) o);
+		} else if (o instanceof Buffer) {
+			this.putBuffer((Buffer) o);
+		} else if (o instanceof Collection) {
+			this.putCollection((Collection<?>) o);
+		} else {
+			throw new Error("不支持的类型：" + o.getClass().getName());
+		}
+	}
+
+	public void putArray(Object[] value) {
+		for (Object o : value) {
+			putObj(o);
+		}
+	}
+
+}

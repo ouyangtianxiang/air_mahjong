@@ -1,0 +1,17 @@
+"use strict";
+cc._RF.push(module, 'eac6ebPUMRPnJ/0EhXE3+Wr', 'Room');
+// Script/Room.js
+
+"use strict";
+
+module.exports = function (value) {
+    var name;
+    this.setName = function (thyName) {
+        name = thyName;
+    };
+    this.sayHello = function () {
+        console.log('Hello  -=-- ' + name + "  " + value);
+    };
+};
+
+cc._RF.pop();

@@ -1,0 +1,40 @@
+var Protocol = require("./net/Protocol.js");
+var data = require("./net/Data.js");
+var Global = require("./utils/Global.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        label: {
+            default: null,
+            type: cc.Label
+        },
+        // defaults, set visually when attaching this script to the Canvas
+        text: 'Hello, World!'
+    },
+
+    // use this for initialization
+    onLoad: function () {
+        //this.label.string = this.text;
+        data.Connent();
+    },
+
+    // called every frame
+    update: function (dt) {
+
+    },
+
+    onLogin: function (event) {
+        var userId = event.detail.getInt();
+        Global.GotoScene("Hall", userId);
+    },
+
+    onInput: function (passId) {
+        console.log("passId:", passId);
+        data.im.Call(Protocol.LOGIN, this.onLogin, this, "ssss", 19, passId, 456);
+    },
+
+    login: function () {
+        Global.ShowWindow("InputBox", "请输入用户ID：", this.onInput, this);
+    },
+});

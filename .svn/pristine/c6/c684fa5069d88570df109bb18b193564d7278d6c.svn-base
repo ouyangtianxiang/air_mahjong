@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<project name="GameMain" default="swf" basedir=".">
+
+	<property name="FLEX_HOME" value="/data/AIRSDK" />
+	<property name="GAME_PATH" value="/data/release/client" />
+
+	<!-- 确定flexTasks.jar && for 循环支持 的位置 -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+
+	<!-- 编译swf部分 -->
+	<target name="swf">
+		<mxmlc file="${GAME_PATH}/src/game/GameMain.as" output="${GAME_PATH}/bin/GameMain.swf" configname="air">
+			<load-config filename="${FLEX_HOME}\frameworks\air-config.xml" />
+			<source-path path-element="${GAME_PATH}/src" />
+			<compiler.debug>false</compiler.debug>
+		</mxmlc>
+	</target>
+</project>

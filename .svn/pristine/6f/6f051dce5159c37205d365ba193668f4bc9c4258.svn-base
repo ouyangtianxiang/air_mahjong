@@ -1,0 +1,33 @@
+const { ccclass, property } = cc._decorator;
+
+import Player from "./Player";
+import Music from "../utils/Music";
+
+@ccclass
+export default class Time extends cc.Component {
+
+    @property({ default: null, type: cc.Label })
+    time: cc.Label;
+
+    @property({ default: null, type: cc.Node })
+    playTips: cc.Node;
+
+    onLoad() {
+        this.node.scale = 0.3;
+        var action0 = cc.scaleTo(0.5, 1, 1);
+        action0.easing(cc.easeBackInOut());
+        this.node.runAction(action0);
+    }
+
+    Countdown(time, player: Player) {
+        if (player) {
+            Music.effect(1);
+            this.time.string = time;
+            this.playTips.active = true;
+            this.playTips.rotation = player.azimuth;
+        } else {
+            this.time.string = "";
+            this.playTips.active = false;
+        }
+    }
+}

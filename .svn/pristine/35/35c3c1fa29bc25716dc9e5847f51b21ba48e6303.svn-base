@@ -1,0 +1,51 @@
+package ge;
+
+import java.util.HashMap;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import ge.utils.Util;
+
+public class Config {
+	private static final HashMap<String, String> config = new HashMap<String, String>();
+
+	public static String META_INF(String filename) {
+		String classPath = Config.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		int webinf = classPath.lastIndexOf("WEB-INF");
+		String path = classPath.substring(0, webinf) + "META-INF/" + filename;
+		return path;
+	}
+
+	static {
+		try {
+			parse(META_INF("config.xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void parse(String is) throws Exception {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(is);
+		Node root = document.getFirstChild();
+		NodeList list = root.getChildNodes();
+		for (int j = 0; j < list.getLength(); j++) {
+			Node node = list.item(j);
+			if (node.getNodeType() == 1) {
+				String k = node.getNodeName().trim().toLowerCase();
+				String v = node.getTextContent().trim();
+				config.put(k.toLowerCase(), Util.Env(v));
+			}
+		}
+	}
+
+	public static String get(String key) {
+		return config.get(key.toLowerCase());
+	}
+}

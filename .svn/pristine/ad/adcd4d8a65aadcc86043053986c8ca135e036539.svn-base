@@ -1,0 +1,118 @@
+package test;
+
+import java.util.Arrays;
+
+public class Tile {
+
+	public static int T_WAN = 1;
+	public static int T_TUNG = 2;
+	public static int T_BAR = 3;
+	public static int T_WIND = 4;
+	public static int T_MESS = 5;
+
+	/**
+	 * 标准麻将的各种牌的名称，该名称为一个三维数组，第一维为各套独立的名称 第二维为每套名称中的不同类别，例如万和桶九属于不同类型的牌 第三维维具体的名称
+	 */
+	public final static String[] NAMES = new String[] { "➀➁➂➃➄➅➆➇➈", "➊➋➌➍➎➏➐➑➒", "㊀㊁㊂㊃㊄㊅㊆㊇㊈", "东南西北", "中发白" };
+	public final int id;
+	public final int type;
+	public final int value;
+	public final char name;
+
+	public Tile(char name) throws Exception {
+		this.name = name;
+		for (int j = 0; j < NAMES.length; j++) {
+			String str = NAMES[j];
+			for (int i = 0; i < str.length(); i++) {
+				if (str.charAt(i) == name) {
+					this.type = j + 1;
+					this.value = i + 1;
+					this.id = computeUniqueId(type, value);
+					return;
+				}
+			}
+		}
+		throw new Exception(name + "Error");
+	}
+
+	private int computeUniqueId(int type, int typeId) throws Exception {
+		if (type == T_WAN) {
+			return typeId;
+		} else if (type == T_TUNG) {
+			return typeId + 9;
+		} else if (type == T_BAR) {
+			return typeId + 18;
+		} else if (type == T_WIND) {
+			return typeId + 27;
+		} else if (type == T_MESS) {
+			return typeId + 31;
+		} else {
+			return typeId + 34;
+		}
+	}
+
+	public boolean isCanTwo(Tile tile) {
+		if (isCanAny() || tile.isCanAny()) {
+			return true;
+		} else {
+			return id == tile.id;
+		}
+	}
+
+	private boolean isIdLink(int id1, int id2, int id3) {
+		int[] ids = { id1, id2, id3 };
+		Arrays.sort(ids);
+		if (ids[2] - ids[1] != 1) {
+			return false;
+		} else if (ids[1] - ids[0] != 1) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isCanThree(Tile one, Tile two) {
+		if (type == one.type && type == two.type) {
+			if (value == one.value && value == two.value) {
+				return true;
+			} else if (isIdLink(value, one.value, two.value) && type != T_WIND && type != T_MESS) {
+				return true;
+			}
+		}
+		if (isCanAny()) {
+			if (one.isCanAny() || two.isCanAny()) {
+				return true;
+			} else if (Math.abs(one.value - two.value) <= 2 && one.type == two.type) {
+				return true;
+			}
+		} else if (one.isCanAny()) {
+			if (isCanAny() || two.isCanAny()) {
+				return true;
+			} else if (Math.abs(value - two.value) <= 2 && type == two.type) {
+				return true;
+			}
+		} else if (two.isCanAny()) {
+			if (one.isCanAny() || isCanAny()) {
+				return true;
+			} else if ((Math.abs(value - one.value) <= 2) && type == one.type) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isCanAny() {
+		if (type == 1 && value == 9) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		if (isCanAny()) {
+			return name + "*";
+		}
+		return this.name + "";
+	}
+}

@@ -1,0 +1,159 @@
+package game.room.ncmahjong;
+
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Vector;
+
+import game.data.bean.T_tile;
+
+public class MJ {
+
+	public static byte[] TILE = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 41, 42, 43 };
+
+	private HashMap<Integer, Boolean> tmp = new HashMap<>();
+	private MJPlayer player;
+
+	public PingHu pingHU;
+
+	public MJ(MJPlayer player) {
+		this.player = player;
+	}
+
+	/**
+	 * 十三烂
+	 */
+	private boolean ThirteenRotten(Vector<T_tile> tiles) {
+		tiles.sort(new Comparator<T_tile>() {
+			public int compare(T_tile a, T_tile b) {
+				return a.value - b.value;
+			}
+		});
+		int star = 0;
+		int len = tiles.size();
+		for (int i = 1; i < len; i++) {
+			T_tile o = tiles.get(i);
+			T_tile a = tiles.get(i - 1);
+			if (T.loop(o)) {
+				star++;
+				if (o.value == a.value) {
+					return false;
+				}
+			} else {
+				if (Math.abs(o.value - a.value) < 2) {
+					return false;
+				}
+			}
+		}
+		player.huState.thirteenRotten = true;
+		player.huState.mevius = star == 7;
+
+		return false;
+	}
+
+	public boolean HU(T_tile o) {
+		Vector<T_tile> array = new Vector<T_tile>(player.array);
+		array.add(o);
+		return HU(array);
+	}
+
+	/*
+	 * 自摸
+	 */
+	public boolean HU() {
+		return HU(player.array);
+	}
+
+	public boolean HU(Vector<T_tile> tiles) {
+		if (ThirteenRotten(tiles)) {
+			return true;
+		}
+		this.pingHU = new PingHu(tiles);
+		player.huState.deGuo = pingHU.isDeGuo();
+		player.huState.maxSevenPairs = pingHU.isMaxSevenPairs;
+		player.huState.minSevenPairs = pingHU.isMinSevenPairs;
+		return pingHU.hu;
+	}
+
+	private static final byte[] JingDao = { 1, 36, 37, 72, 73, 108, 109, 125 };
+
+	public void JingDiao(T_tile o) {
+		boolean jingDiao = true;
+		o.jing = 0;
+		for (byte i : JingDao) {
+			T_tile t = player.room.t_tile.get(i);
+			System.out.println("精吊：" + i);
+			o.value = t.value;
+			System.out.println("精吊：" + t);
+			PingHu ph = new PingHu(player.array);
+			if (!ph.hu) {
+				jingDiao = false;
+				break;
+			}
+		}
+		o.revert();
+		player.huState.jingDiao = jingDiao;
+		System.out.println("精吊：" + jingDiao);
+	}
+
+	/**
+	 * 杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠
+	 */
+	public HashMap<Byte, Vector<T_tile>> gang = new HashMap<>();
+	public byte[] gangValue;
+
+	public boolean Gang() {
+		gang.clear();
+		gangValue = new byte[] { 0, 0, 0 };
+		byte i = 0;
+		for (T_tile o : player.array) {
+			Vector<T_tile> v = gang.get(o.value);
+			if (v == null) {
+				v = new Vector<>(4);
+				gang.put(o.value, v);
+			}
+			v.add(o);
+			if (v.size() == 4) {
+				gangValue[i++] = o.value;
+			}
+		}
+		return i > 0;
+	}
+
+	public Vector<T_tile> pangs = new Vector<T_tile>(4);
+
+	public byte Pang(T_tile obj) {
+		pangs.clear();
+		pangs.add(obj);
+		for (T_tile o : player.array) {
+			if (o.value == obj.value) {
+				pangs.add(o);
+			}
+		}
+		return (byte) pangs.size();
+	}
+
+	public Vector<Byte> chivalue = new Vector<Byte>();
+	public Vector<TTT> chiObj = new Vector<TTT>();
+
+	public byte Chi(T_tile o) {
+		tmp.clear();
+		chivalue.clear();
+		chiObj.clear();
+		int len = player.array.size();
+		for (int i = 0; i < len; i++) {
+			T_tile a = player.array.get(i);
+			for (int j = i + 1; j < len; j++) {
+				T_tile b = player.array.get(j);
+				TTT ttt = new TTT(a, b, o);
+				if (ttt.ok && !ttt.any && ttt.chi && !tmp.containsKey(ttt.code)) {
+					tmp.put(ttt.code, true);
+					chiObj.add(ttt);
+					chivalue.add(a.value);
+					chivalue.add(b.value);
+					chivalue.add(o.value);
+				}
+			}
+		}
+		return (byte) chivalue.size();
+	}
+}

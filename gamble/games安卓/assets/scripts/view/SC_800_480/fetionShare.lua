@@ -1,0 +1,53 @@
+fetionShare=
+{
+	name="fetionShare",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,
+	{
+		name="img_win_bg",type=1,typeName="Image",time=51435238,x=0,y=-291,width=600,height=291,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Common/windowsBg.png",gridLeft=50,gridRight=50,gridTop=85,gridBottom=50,
+		{
+			name="view_title",type=0,typeName="View",time=51437228,x=0,y=0,width=600,height=85,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+			{
+				name="text_title",type=4,typeName="Text",time=51437278,x=0,y=5,width=164,height=46,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=255,colorGreen=247,colorBlue=200,string=[[分享到]]
+			}
+		},
+		{
+			name="btn_close",type=2,typeName="Button",time=51852720,x=-20,y=-20,width=68,height=68,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,file="Common/windowsClose.png"
+		},
+		{
+			name="Image1",type=1,typeName="Image",time=59661923,x=0,y=86,width=500,height=150,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Common/windowsFrame.png",gridLeft=20,gridRight=20,gridTop=20,gridBottom=20,
+			{
+				name="spite",type=1,typeName="Image",time=59662425,x=0,y=-2,width=459,height=2,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Common/windowsLightLine.png"
+			},
+			{
+				name="btn_left",type=2,typeName="Button",time=59706117,x=-120,y=0,width=212,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/blank.png",
+				{
+					name="Image2",type=1,typeName="Image",time=59706145,x=48,y=0,width=112,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG2.png",gridLeft=10,gridRight=10,gridTop=0,gridBottom=0
+				},
+				{
+					name="Image3",type=1,typeName="Image",time=59706154,x=0,y=0,width=50,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG1.png"
+				},
+				{
+					name="Image4",type=1,typeName="Image",time=59706157,x=158,y=0,width=50,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG3.png"
+				},
+				{
+					name="Text1",type=4,typeName="Text",time=59706700,x=0,y=0,width=212,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=34,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[飞信好友]]
+				}
+			},
+			{
+				name="btn_right",type=2,typeName="Button",time=59706286,x=120,y=0,width=212,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/blank.png",
+				{
+					name="Image5",type=1,typeName="Image",time=59706803,x=48,y=0,width=112,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG2.png"
+				},
+				{
+					name="Image6",type=1,typeName="Image",time=59706807,x=0,y=0,width=50,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG1.png"
+				},
+				{
+					name="Image7",type=1,typeName="Image",time=59706810,x=158,y=0,width=50,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG3.png"
+				},
+				{
+					name="Text2",type=4,typeName="Text",time=59706831,x=0,y=0,width=212,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=34,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[朋友圈]]
+				}
+			}
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_fetionShare.lua"]=1;

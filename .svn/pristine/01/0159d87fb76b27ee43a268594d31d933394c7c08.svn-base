@@ -1,0 +1,119 @@
+package ge.db;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import ge.net.Sync;
+import ge.pthread.SwapThread;
+
+public class TData implements Runnable {
+
+	// ---------------------------------------------------------------
+	private ConcurrentLinkedQueue<Table<?>> tables = new ConcurrentLinkedQueue<Table<?>>();
+	private ConcurrentHashMap<String, Table<?>> map = new ConcurrentHashMap<String, Table<?>>();
+
+	protected void init() {
+		Field[] fields = this.getClass().getDeclaredFields();
+		for (Field field : fields) {
+			try {
+				if (field.getType().equals(Table.class)) {
+					Table<?> o = (Table<?>) field.get(this);
+					tables.add(o);
+					map.put(o.name, o);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public Table<?> table(String name) {
+		return map.get(name);
+	}
+
+	public void Get(Sync sync) {
+		if (sync != null) {
+			Iterator<Table<?>> it = tables.iterator();
+			while (it.hasNext()) {
+				it.next().Get(sync);
+			}
+		}
+	}
+
+	public void addListener(Sync sync) {
+		if (sync != null) {
+			Iterator<Table<?>> it = tables.iterator();
+			while (it.hasNext()) {
+				it.next().addListener(sync);
+			}
+		}
+	}
+
+	public void removeListener(Sync sync) {
+		if (sync != null) {
+			Iterator<Table<?>> it = tables.iterator();
+			while (it.hasNext()) {
+				it.next().removeListener(sync);
+			}
+		}
+	}
+
+	public void fill(Fill fillData, HashMap<String, Object> var) {
+		Iterator<Table<?>> it = tables.iterator();
+		while (it.hasNext()) {
+			fillData.fill(it.next(), var);
+		}
+	}
+
+	private boolean isEmpty = true;
+
+	public final boolean isEmpty() {
+		return isEmpty;
+	}
+
+	public void forceLoad() {
+		Iterator<Table<?>> it = tables.iterator();
+		while (it.hasNext()) {
+			it.next().forceLoad();
+		}
+	}
+
+	public void load() {
+		if (isEmpty) {
+			Iterator<Table<?>> it = tables.iterator();
+			while (it.hasNext()) {
+				it.next().load();
+			}
+			isEmpty = false;
+		}
+	}
+
+	/**
+	 * 保存数据，交给另外线程处理
+	 */
+	public void save() {
+		SwapThread.IT.push(this);
+	}
+
+	/**
+	 * save
+	 */
+	public void run() {
+		Iterator<Table<?>> it = tables.iterator();
+		while (it.hasNext()) {
+			it.next().save();
+		}
+	}
+
+	protected void clear() {
+		Iterator<Table<?>> it = tables.iterator();
+		while (it.hasNext()) {
+			it.next().clear();
+		}
+		tables.clear();
+		map.clear();
+	}
+}

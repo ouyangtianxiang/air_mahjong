@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<DatabaseUserName>myuser</DatabaseUserName>
+	<DatabasePassword>mypassword</DatabasePassword>
+	<DatabaseIP>183.131.83.214</DatabaseIP>
+	<DatabasePort>3306</DatabasePort>
+	<DatabaseName>ncmj</DatabaseName>
+	<ServerPort>8888</ServerPort>
+</root>

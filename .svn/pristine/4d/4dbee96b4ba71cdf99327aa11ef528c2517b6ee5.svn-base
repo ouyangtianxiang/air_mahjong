@@ -1,0 +1,30 @@
+package ge.net;
+
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+import javax.servlet.annotation.WebListener;
+import javax.servlet.http.HttpServletRequest;
+
+@WebListener
+public class RequestListener implements ServletRequestListener {
+
+	public void requestInitialized(ServletRequestEvent sre) {
+		// 将所有request请求都携带上httpSession
+		((HttpServletRequest) sre.getServletRequest()).getSession();
+		System.out.println(sre.getServletRequest().getRemoteAddr());
+		System.out.println(sre.getServletRequest().getRemoteHost());
+		System.out.println(sre.getServletRequest().getRemotePort());
+
+		System.out.println("-------2222222222");
+	}
+
+	public RequestListener() {
+		// TODO Auto-generated constructor stub
+		System.out.println("-------3333333333");
+	}
+
+	public void requestDestroyed(ServletRequestEvent arg0) {
+		// TODO Auto-generated method stub
+		System.out.println("-------1111111111");
+	}
+}

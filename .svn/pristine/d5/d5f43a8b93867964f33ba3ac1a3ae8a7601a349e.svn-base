@@ -1,0 +1,29 @@
+const { ccclass, property } = cc._decorator;
+import Tile from "./Tile";
+import Reply from "./Reply";
+
+@ccclass
+export default class Chi extends cc.Component {
+
+    @property({ type: Tile })
+    tile1: Tile;
+    @property({ type: Tile })
+    tile2: Tile;
+    @property({ type: Tile })
+    tile3: Tile;
+
+    private value: number;
+    private reply: Reply;
+
+    init(a: number, b: number, c: number, value: number, reply: Reply) {
+        this.tile1.value(a);
+        this.tile2.value(b);
+        this.tile3.value(c);
+        this.value = value;
+        this.reply = reply;
+    }
+
+    click() {
+        this.reply.send(1, this.value);
+    }
+}

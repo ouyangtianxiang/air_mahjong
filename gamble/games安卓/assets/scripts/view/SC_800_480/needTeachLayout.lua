@@ -1,0 +1,20 @@
+needTeachLayout=
+{
+	name="needTeachLayout",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignCenter,
+	{
+		name="bgview",type=1,typeName="Image",time=53167284,x=0,y=0,width=800,height=455,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/windowsBg.png",gridLeft=80,gridRight=80,gridTop=80,gridBottom=80,
+		{
+			name="btn_close",type=2,typeName="Button",time=53171836,x=752,y=-23,width=68,height=68,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/windowsClose.png"
+		},
+		{
+			name="Text1",type=4,typeName="Text",time=53244560,x=0,y=-150,width=216,height=60,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=32,textAlign=kAlignCenter,colorRed=250,colorGreen=240,colorBlue=200,string=[[你会玩四川麻将吗？]]
+		},
+		{
+			name="notNeedTeach",type=2,typeName="Button",time=53179772,x=121,y=126,width=218,height=224,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="donotTeach.png",packFile="MahjongPinTu/TeachPin.lua"
+		},
+		{
+			name="needTeach",type=2,typeName="Button",time=53179771,x=452,y=126,width=218,height=224,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="neddTeach.png",packFile="MahjongPinTu/TeachPin.lua"
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_needTeachLayout.lua"]=1;

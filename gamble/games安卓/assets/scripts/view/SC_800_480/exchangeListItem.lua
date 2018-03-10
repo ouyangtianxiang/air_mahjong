@@ -1,0 +1,22 @@
+exchangeListItem=
+{
+	name="exchangeListItem",type=0,typeName="View",time=0,x=0,y=0,width=567,height=157,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,
+	{
+		name="img_icon",type=1,typeName="Image",time=77869041,x=15,y=15,width=116,height=116,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="newHall/mall/coinIcon.png"
+	},
+	{
+		name="img_promotion",type=1,typeName="Image",time=77869045,x=2,y=0,width=105,height=103,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="newHall/mall/mark_chaozhi.png"
+	},
+	{
+		name="text_name",type=4,typeName="Text",time=77869050,x=140,y=30,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=32,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[]]
+	},
+	{
+		name="text_price",type=4,typeName="Text",time=77869054,x=35,y=-30,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,fontSize=32,textAlign=kAlignRight,colorRed=255,colorGreen=200,colorBlue=0,string=[[]]
+	},
+	{
+		name="text_desp",type=4,typeName="Text",time=77869057,x=140,y=90,width=380,height=28,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=28,textAlign=kAlignLeft,colorRed=255,colorGreen=239,colorBlue=206,string=[[]]
+	},
+	{
+		name="text_nums",type=4,typeName="Text",time=77869060,x=35,y=30,width=0,height=0,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,fontSize=28,textAlign=kAlignRight,colorRed=255,colorGreen=239,colorBlue=206,string=[[]]
+	}
+}

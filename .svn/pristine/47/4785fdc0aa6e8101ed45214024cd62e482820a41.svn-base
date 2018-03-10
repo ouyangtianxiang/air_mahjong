@@ -1,0 +1,23 @@
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        RoomId: {
+            default: null,
+            type: cc.Label
+        },
+    },
+
+    // use this for initialization
+    onLoad: function () {
+
+    },
+
+    init: function (roomId) {
+        this.RoomId.string = roomId;
+    },
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+});

@@ -1,0 +1,24 @@
+package game.room;
+
+import java.util.Arrays;
+
+import game.data.bean.T_tile;
+
+public class T {
+	public static int type(T_tile a) {
+		return a.value / 10;
+	}
+
+	public static boolean loop(T_tile a) {
+		return a.value > 30;
+	}
+
+	public static int code(int... tiles) {
+		Arrays.sort(tiles);
+		int v = 0;
+		for (int i : tiles) {
+			v = v * 10 + i;
+		}
+		return v;
+	}
+}

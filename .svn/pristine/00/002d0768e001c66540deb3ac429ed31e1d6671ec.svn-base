@@ -1,0 +1,20 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class TTable extends cc.Component {
+
+
+    @property({ default: null, type: cc.Node })
+    img: cc.Node;
+
+    onLoad() {
+
+        cc.director.getCollisionManager().enabled = true;
+        cc.director.getCollisionManager().enabledDebugDraw = true;
+        for (var i = 0; i < 10; i++) {
+            var o: cc.Node = cc.instantiate(this.img);
+            this.img.parent.addChild(o, 100-i * 10);
+        }
+
+    }
+}

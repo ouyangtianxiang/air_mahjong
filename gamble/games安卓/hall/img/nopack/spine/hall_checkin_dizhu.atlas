@@ -1,0 +1,69 @@
+
+hall_checkin_dizhu.png
+size: 391,391
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+nt_diploma_qiandao_spine_dizhu1
+  rotate: true
+  xy: 221, 13
+  size: 87, 93
+  orig: 87, 93
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_dizhu10
+  rotate: true
+  xy: 316, 28
+  size: 72, 54
+  orig: 72, 54
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_dizhu1_1
+  rotate: false
+  xy: 313, 167
+  size: 76, 81
+  orig: 76, 81
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_dizhu2
+  rotate: false
+  xy: 2, 232
+  size: 208, 157
+  orig: 208, 157
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_dizhu3
+  rotate: false
+  xy: 212, 250
+  size: 146, 139
+  orig: 146, 139
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_dizhu4
+  rotate: true
+  xy: 221, 102
+  size: 146, 90
+  orig: 146, 90
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_dizhu6
+  rotate: true
+  xy: 124, 23
+  size: 207, 95
+  orig: 207, 95
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_dizhu6_1
+  rotate: false
+  xy: 313, 102
+  size: 65, 63
+  orig: 65, 63
+  offset: 0, 0
+  index: -1
+nt_diploma_qiandao_spine_dizhu9
+  rotate: true
+  xy: 2, 9
+  size: 221, 120
+  orig: 221, 120
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,19 @@
+exitGameWnd=
+{
+	name="exitGameWnd",type=0,typeName="View",time=0,x=2,y=1,width=1280,height=800,visible=1,fillParentWidth=5,fillParentHeight=5,nodeAlign=kAlignTopLeft,
+	{
+		name="img_bg",type=1,typeName="Image",time=75535876,x=0,y=0,width=400,height=250,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/window_noLight_noClose.png",gridLeft=50,gridRight=50,gridTop=50,gridBottom=50,
+		{
+			name="Text1",type=4,typeName="Text",time=75536360,x=0,y=-87,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[温馨提示]]
+		},
+		{
+			name="image_frame",type=1,typeName="Image",time=75536173,x=0,y=-5,width=320,height=110,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/windowsFrame.png",gridLeft=20,gridRight=20,gridTop=20,gridBottom=20,
+			{
+				name="test_tips",type=4,typeName="Text",time=75536289,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[是否退出游戏]]
+			}
+		},
+		{
+			name="Button1",type=2,typeName="Button",time=75536441,x=-100,y=80,width=125,height=55,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/subViewBtnR.png",gridLeft=25,gridRight=25,gridTop=25,gridBottom=25
+		}
+	}
+}

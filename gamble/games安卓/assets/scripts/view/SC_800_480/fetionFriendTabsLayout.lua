@@ -1,0 +1,20 @@
+fetionFriendTabsLayout=
+{
+	name="fetionFriendTabsLayout",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="tab_view",type=0,typeName="View",time=50724821,x=0,y=0,width=731,height=106,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,
+		{
+			name="tab_1",type=2,typeName="Button",time=50729702,x=482,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/blank.png",
+			{
+				name="tab_bg",type=1,typeName="Image",time=50725347,x=0,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewTag.png"
+			},
+			{
+				name="tagTextL",type=4,typeName="Text",time=57548991,x=0,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=250,colorGreen=220,colorBlue=60,string=[[好友]]
+			},
+			{
+				name="tagTextD",type=4,typeName="Text",time=57549019,x=0,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=255,colorGreen=240,colorBlue=207,string=[[好友]]
+			}
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_fetionFriendTabsLayout.lua"]=1;

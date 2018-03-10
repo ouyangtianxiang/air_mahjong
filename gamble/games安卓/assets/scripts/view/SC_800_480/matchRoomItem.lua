@@ -1,0 +1,32 @@
+local matchRoomItem=
+{
+	name="matchRoomItem",type=0,typeName="View",time=0,x=0,y=0,width=266,height=360,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="Button1",type=2,typeName="Button",time=106902462,x=0,y=0,width=266,height=360,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Hall/chooseLevel/match_default_1.png",
+		{
+			name="Image2",type=1,typeName="Image",time=106904345,x=0,y=25,width=224,height=54,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Hall/chooseLevel/match_default.png"
+		},
+		{
+			name="Text1",type=4,typeName="Text",time=106904348,x=0,y=35,width=0,height=40,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=28,textAlign=kAlignCenter,colorRed=255,colorGreen=250,colorBlue=105,string=[[20,000金币]],colorA=1
+		},
+		{
+			name="View1",type=0,typeName="View",time=106904381,x=0,y=70,width=210,height=30,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,
+			{
+				name="Image3",type=1,typeName="Image",time=106904406,x=0,y=2,width=28,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Hall/chooseLevel/coin.png"
+			},
+			{
+				name="Text1",type=4,typeName="Text",time=106904417,x=40,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255
+			}
+		},
+		{
+			name="View2",type=0,typeName="View",time=106904493,x=0,y=37,width=210,height=30,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,
+			{
+				name="Image3",type=1,typeName="Image",time=106904494,x=0,y=2,width=28,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Hall/chooseLevel/people.png"
+			},
+			{
+				name="Text1",type=4,typeName="Text",time=106904495,x=40,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255
+			}
+		}
+	}
+}
+return matchRoomItem;

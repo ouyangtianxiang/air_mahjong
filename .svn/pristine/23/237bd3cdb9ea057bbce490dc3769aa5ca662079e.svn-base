@@ -1,0 +1,26 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class Setting extends cc.Component {
+
+    @property(cc.Label)
+    label: cc.Label;
+
+    @property({
+        default: 'hello'
+    })
+    text: string = 'hello';
+
+    onLoad() {
+        // init logic
+
+    }
+
+    exit() {
+        cc.game.end();
+    }
+
+    close() {
+        this.node.destroy();
+    }
+}

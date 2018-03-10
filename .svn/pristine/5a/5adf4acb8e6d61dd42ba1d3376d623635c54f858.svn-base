@@ -1,0 +1,241 @@
+module.exports = function (arrayBuffer) {
+    var data=new DataView(arrayBuffer);
+    var pos=0;
+
+    this.flip=function(){
+    }
+
+    this.clear = function () {
+    }
+
+	this.getUByte = function () {
+        var value=data.getUint8(pos);
+        pos+=1;
+        return value;
+	}
+
+	this.getBoolean = function () {
+        var value=data.getBoolean(pos);
+        pos+=1;
+        return value;
+	}
+
+	this.getByte = function () {
+        var value=data.getInt8(pos);
+        pos+=1;
+        return value;
+	}
+
+	this.getShort = function () {
+        var value=data.getShort(pos);
+        pos+=2;
+        return value;
+	}
+
+	this.getInt = function () {
+        var value=data.getInt32(pos);
+        pos+=4;
+        return value;
+	}
+
+	this.getFloat = function () {
+        var value=data.getFloat32(pos);
+        pos+=4;
+        return value;
+	}
+
+	this.getDouble = function () {
+        var value=data.getFloat64(pos);
+        pos+=4;
+        return value;
+	}
+
+	this.getUTF = function () {
+        var len=this.getShort();
+        var value=data.getUTF(len);
+        pos+=len;
+        return value;
+	}
+
+	this.getData = function () {
+		return data;
+	}
+
+	this.putBoolean = function (value) {
+		examinePut(1);
+		data.put((byte) (value ? 1 : 0));
+	}
+
+	this. putByte = function (value) {
+		examinePut(1);
+		data.put(value);
+	}
+
+	this.putShort = function (value) {
+		examinePut(2);
+		data.putShort(value);
+	}
+
+	this.putInt = function (value) {
+		examinePut(4);
+		data.putInt = function (value);
+	}
+
+	this.putLong = function (value) {
+		examinePut(8);
+		data.putLong(value);
+	}
+
+	this.putFloat = function (value) {
+		examinePut(4);
+		data.putFloat(value);
+	}
+
+	this.putDouble = function (value) {
+		examinePut(8);
+		data.putDouble(value);
+	}
+
+	this.putBytes = function (value) {
+		examinePut(value.length);
+		data.put(value);
+	}
+
+	this.putBuffer = function (value) {
+		synchronized (value) {
+			examinePut(value.remaining());
+			while (value.remaining() > 0) {
+				data.put(value.data.get());
+			}
+		}
+	}
+
+	this.putUTF = function (value) {
+		try {
+			byte[] b = value.getBytes("UTF-8");
+			int len = b.length;
+			putShort((short) len);
+			examinePut(len);
+			data.put(b);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	this.putObj = function (o) {
+		if (o instanceof Byte) {
+			this.putByte((Byte) o);
+		} else if (o instanceof Boolean) {
+			this.putBoolean((Boolean) o);
+		} else if (o instanceof Short) {
+			this.putShort((Short) o);
+		} else if (o instanceof Integer) {
+			this.putInt((Integer) o);
+		} else if (o instanceof Long) {
+			this.putLong((Long) o);
+		} else if (o instanceof Float) {
+			this.putFloat((Float) o);
+		} else if (o instanceof Double) {
+			this.putDouble((Double) o);
+		} else if (o instanceof String) {
+			this.putUTF((String) o);
+		} else if (o instanceof Buffer) {
+			this.putBuffer((Buffer) o);
+		} else {
+			throw new Error("不支持的类型：" + o.getClass().getName());
+		}
+	}
+
+	this.putArray = function (value) {
+		for (Object o : value) {
+			putObj(o);
+		}
+	}
+
+
+
+
+}
+
+
+
+
+public class Buffer {
+
+	public ByteBuffer data = null;
+
+	public Buffer() {
+		this(1024);
+	}
+
+	public Buffer(int capacity) {
+		allocate(capacity);
+	}
+
+	private void allocate(int capacity) {
+		data = ByteBuffer.allocate(capacity);
+		data.order(ByteOrder.LITTLE_ENDIAN);
+	}
+
+	public synchronized void flip() {
+		data.flip();
+	}
+
+	public synchronized void clear() {
+		data.clear();
+	}
+
+	public int capacity() {
+		return data.capacity();
+	}
+
+	public int limit() {
+		return data.limit();
+	}
+
+	public synchronized void limit(int newLimit) {
+		data.limit(newLimit);
+	}
+
+	public int position() {
+		return data.position();
+	}
+
+	public synchronized void position(int pos) {
+		data.position(pos);
+	}
+
+	public int remaining() {
+		return data.remaining();
+	}
+
+	public synchronized void rewind() {
+		data.rewind();
+	}
+
+	public void mark() {
+		mark = position();
+	}
+
+	private int mark = 0;
+
+	public void reset() {
+		position(mark);
+	}
+
+	private void examinePut(int l) {
+		while (remaining() < l) {
+			if (limit() < capacity()) {
+				limit(capacity());
+			} else {
+				ByteBuffer tmp = data;
+				allocate(data.capacity() * 2);
+				tmp.flip();
+				data.put(tmp);
+				tmp.clear();
+			}
+		}
+	}
+
+
+}

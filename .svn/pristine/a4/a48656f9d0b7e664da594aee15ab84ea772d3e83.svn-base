@@ -1,0 +1,34 @@
+package fire;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/StartServer")
+public class ServletTest extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("doget方法执行");
+		String data = "中国";
+		OutputStream outputStream = resp.getOutputStream();// 获取OutputStream输出流
+		resp.setHeader("content-type", "text/html;charset=UTF-8");// 通过设置响应头控制浏览器以UTF-8的编码显示数据，如果不加这句话，那么浏览器显示的将是乱码
+
+		System.out.println("11111111");
+		int id = DB.Key("gms_game_server", "id");
+		System.out.println("222222222");
+		data += ":" + id;
+		byte[] dataByteArr = data.getBytes("UTF-8");// 将字符转换成字节数组，指定以UTF-8编码进行转换
+		outputStream.write(dataByteArr);// 使用OutputStream流向客户端输出字节数组
+		System.out.println("333333333333");
+	}
+}

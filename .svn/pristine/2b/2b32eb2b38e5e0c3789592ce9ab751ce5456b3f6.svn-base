@@ -1,0 +1,22 @@
+package game.room.task;
+
+import game.room.Room;
+import game.utils.Protocol;
+
+public class StartGame extends Task {
+
+	public StartGame(Room room) {
+		super(room);
+	}
+
+	public void start() {
+		super.start(2000);
+	}
+
+	@Override
+	public void run() {
+		room.call(Protocol.NCMJ_START);
+		room.drawTile.start(room.banker(), (byte) 0);
+	}
+
+}

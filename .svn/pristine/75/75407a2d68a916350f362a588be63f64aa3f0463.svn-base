@@ -1,0 +1,70 @@
+package game.room.ncmahjong;
+
+import game.data.bean.T_tile;
+
+public class TTT extends T {
+
+	public final int code;
+	public boolean ok;
+	public boolean chi;
+	public final T_tile a;
+	public final T_tile b;
+	public final T_tile c;
+
+	public TTT(T_tile a, T_tile b, T_tile c) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+
+		boolean _a = a.jing > 0;
+		boolean _b = b.jing > 0;
+		boolean _c = c.jing > 0;
+
+		ok = ttt(a, b, c);
+		if (!ok) {
+			any = true;
+			if (!_a && !_b && _c) {
+				ok = ttt(a, b);
+			} else if (_a && !_b && !_c) {
+				ok = ttt(b, c);
+			} else if (!_a && _b && !_c) {
+				ok = ttt(a, c);
+			} else if (!(!_a && !_b && !_c)) {
+				ok = true;
+			}
+		}
+		code = ok ? code(a.value, b.value, c.value) : 0;
+	}
+
+	private boolean ttt(T_tile a, T_tile b) {
+		if (type(a) == type(b)) {
+			return Math.abs(a.value - b.value) <= 2 || loop(a);
+		}
+		return false;
+	}
+
+	private boolean isChi(T_tile a, T_tile b, T_tile c) {
+		if (type(a) == type(b) && type(a) == type(c)) {
+			if (a.value != b.value && a.value != c.value && b.value != c.value) {
+				chi = true;
+				if (loop(a)) {
+					return true;
+				} else {
+					return Math.max(a.value, Math.max(b.value, c.value)) == (a.value + b.value + c.value) / 3f + 1;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean ttt(T_tile a, T_tile b, T_tile c) {
+		if (a.value == b.value && a.value == c.value) {
+			return true;
+		}
+		return isChi(a, b, c);
+	}
+
+	public String toString() {
+		return "[" + a.value + ":" + b.value + ":" + c.value + "]";
+	}
+}

@@ -1,0 +1,20 @@
+const { ccclass, property } = cc._decorator;
+import Buffer from "./Buffer"
+import EventHandle from "./EventHandle"
+
+@ccclass
+export default class IMEvent<T> {
+    private event: cc.EventTarget = new cc.EventTarget();
+
+    addEventListener(type: string, listener: (buffer: T) => void, thisArg: any, once: boolean = false): EventHandle {
+        return new EventHandle(type, listener, thisArg, this.event, once);
+    }
+
+    addFieldListener(type: string, listener: (obj: T, old: number) => void, thisArg: any): EventHandle {
+        return new EventHandle(type, listener, thisArg, this.event, false);
+    }
+
+    dispatchEvent(type: string, obj: T, value?: any): void {
+        this.event.emit(type, [obj, value]);
+    }
+}

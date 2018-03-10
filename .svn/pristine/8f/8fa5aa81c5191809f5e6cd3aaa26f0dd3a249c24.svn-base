@@ -1,0 +1,2298 @@
+require = function t(e, o, i) {
+function n(a, r) {
+if (!o[a]) {
+if (!e[a]) {
+var c = "function" == typeof require && require;
+if (!r && c) return c(a, !0);
+if (s) return s(a, !0);
+var p = new Error("Cannot find module '" + a + "'");
+throw p.code = "MODULE_NOT_FOUND", p;
+}
+var l = o[a] = {
+exports: {}
+};
+e[a][0].call(l.exports, function(t) {
+var o = e[a][1][t];
+return n(o || t);
+}, l, l.exports, t, e, o, i);
+}
+return o[a].exports;
+}
+for (var s = "function" == typeof require && require, a = 0; a < i.length; a++) n(i[a]);
+return n;
+}({
+Buffer: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "b207cU6oZlP3Yh/gFCDu1hI", "Buffer");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, function() {
+function t(t) {
+this.pos = 0;
+this.data = new DataView(t);
+}
+t.prototype.remaining = function() {
+return this.data.byteLength - this.pos;
+};
+t.prototype.getData = function() {
+return this.data.buffer;
+};
+t.prototype.getBoolean = function() {
+return 1 == this.getByte();
+};
+t.prototype.getUByte = function() {
+var t = this.data.getUint8(this.pos);
+this.pos += 1;
+return t;
+};
+t.prototype.getByte = function() {
+var t = this.data.getInt8(this.pos);
+this.pos += 1;
+return t;
+};
+t.prototype.getUShort = function() {
+var t = this.data.getUint16(this.pos, !0);
+this.pos += 2;
+return t;
+};
+t.prototype.getShort = function() {
+var t = this.data.getInt16(this.pos, !0);
+this.pos += 2;
+return t;
+};
+t.prototype.getInt = function() {
+var t = this.data.getInt32(this.pos, !0);
+this.pos += 4;
+return t;
+};
+t.prototype.getUInt = function() {
+var t = this.data.getUint32(this.pos, !0);
+this.pos += 4;
+return t;
+};
+t.prototype.getLong = function() {
+var t = this.getUInt();
+return 4294967296 * this.getUInt() + t;
+};
+t.prototype.getFloat = function() {
+var t = this.data.getFloat32(this.pos, !0);
+this.pos += 4;
+return t;
+};
+t.prototype.getDouble = function() {
+var t = this.data.getFloat64(this.pos, !0);
+this.pos += 8;
+return t;
+};
+t.prototype.getUTF = function() {
+var t = this.getShort(), e = new Uint8Array(this.data.buffer, this.pos, t);
+this.pos += t;
+var o, i, n, s, a;
+o = "";
+t = e.length;
+i = 0;
+for (;i < t; ) switch ((n = e[i++]) >> 4) {
+case 0:
+case 1:
+case 2:
+case 3:
+case 4:
+case 5:
+case 6:
+case 7:
+o += String.fromCharCode(n);
+break;
+
+case 12:
+case 13:
+s = e[i++];
+o += String.fromCharCode((31 & n) << 6 | 63 & s);
+break;
+
+case 14:
+s = e[i++];
+a = e[i++];
+o += String.fromCharCode((15 & n) << 12 | (63 & s) << 6 | (63 & a) << 0);
+}
+return o;
+};
+t.prototype.putBoolean = function(t) {
+this.putByte(t ? 1 : 0);
+};
+t.prototype.putUByte = function(t) {
+this.examinePut(1);
+this.data.setUint8(this.pos, t);
+this.pos += 1;
+};
+t.prototype.putByte = function(t) {
+this.examinePut(1);
+this.data.setInt8(this.pos, t);
+this.pos += 1;
+};
+t.prototype.putUShort = function(t) {
+this.examinePut(2);
+this.data.setUint16(this.pos, t, !0);
+this.pos += 2;
+};
+t.prototype.putShort = function(t) {
+this.examinePut(2);
+this.data.setInt16(this.pos, t, !0);
+this.pos += 2;
+};
+t.prototype.putUInt = function(t) {
+this.examinePut(4);
+this.data.setUint32(this.pos, t, !0);
+this.pos += 4;
+};
+t.prototype.putInt = function(t) {
+this.examinePut(4);
+this.data.setInt32(this.pos, t, !0);
+this.pos += 4;
+};
+t.prototype.putLong = function(t) {
+this.putUInt(t % 4294967296);
+this.putUInt(Math.floor(t / 4294967296));
+};
+t.prototype.putFloat = function(t) {
+this.examinePut(4);
+this.data.setFloat32(this.pos, t, !0);
+this.pos += 4;
+};
+t.prototype.putDouble = function(t) {
+this.examinePut(8);
+this.data.setFloat64(this.pos, t, !0);
+this.pos += 8;
+};
+t.prototype.putUTF = function(t) {
+for (var e = [], o = 0, i = 0; i < t.length; i++) {
+var n = t.charCodeAt(i);
+if (n < 128) e[o++] = n; else if (n < 2048) {
+e[o++] = n >> 6 | 192;
+e[o++] = 63 & n | 128;
+} else if (55296 == (64512 & n) && i + 1 < t.length && 56320 == (64512 & t.charCodeAt(i + 1))) {
+n = 65536 + ((1023 & n) << 10) + (1023 & t.charCodeAt(++i));
+e[o++] = n >> 18 | 240;
+e[o++] = n >> 12 & 63 | 128;
+e[o++] = n >> 6 & 63 | 128;
+e[o++] = 63 & n | 128;
+} else {
+e[o++] = n >> 12 | 224;
+e[o++] = n >> 6 & 63 | 128;
+e[o++] = 63 & n | 128;
+}
+}
+this.putShort(o);
+for (i = 0; i < o; i++) this.putUByte(e[i]);
+};
+t.prototype.getObj = function(t) {
+switch (t) {
+case 1:
+return this.getBoolean();
+
+case 2:
+return this.getByte();
+
+case 3:
+return this.getShort();
+
+case 4:
+return this.getInt();
+
+case 5:
+return this.getLong();
+
+case 6:
+return this.getFloat();
+
+case 7:
+return this.getDouble();
+
+case 8:
+return this.getUTF();
+}
+};
+t.prototype.putObj = function(t, e) {
+switch (e) {
+case 1:
+this.putBoolean(t);
+break;
+
+case 2:
+this.putByte(t);
+break;
+
+case 3:
+this.putShort(t);
+break;
+
+case 4:
+this.putInt(t);
+break;
+
+case 5:
+this.putLong(t);
+break;
+
+case 6:
+this.putFloat(t);
+break;
+
+case 7:
+this.putDouble(t);
+break;
+
+case 8:
+this.putUTF(t);
+}
+};
+t.prototype.putArray = function(t, e) {
+t.length != e.length && console.error("参数不数量一至", t.length, e.length);
+for (var o = 0; o < e.length; o++) this.putObj(e[o], t[o]);
+};
+t.prototype.examinePut = function(t) {
+for (;this.remaining() < t; ) {
+for (var e = new DataView(new ArrayBuffer(2 * this.data.byteLength)), o = 0; o < this.data.byteLength; o++) e.setUint8(o, this.data.getUint8(o));
+this.data = e;
+}
+};
+t.prototype.flip = function() {};
+return t = __decorate([ n ], t);
+}());
+o.default = s;
+cc._RF.pop();
+}, {} ],
+CardDrafting: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "2bbb2UcOA9LxbQLNWxDAKmY", "CardDrafting");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("./Pai"), r = t("../net/Protocol"), c = t("../net/Data"), p = t("../desktop/Desktop"), l = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.create = function(t) {
+var e = cc.instantiate(this.pia);
+e.getComponent(a.default).init(this, t, this.pa);
+this.node.addChild(e);
+};
+e.prototype.onLoad = function() {
+var t = this;
+console.log("1111111111");
+p.default.it.t_tile.getList(function(t) {
+return -1 == t.index;
+}).forEach(function(e) {
+t.create(e);
+});
+};
+e.prototype.init = function() {};
+e.prototype.save = function(t) {
+console.log("222222222");
+c.default.it.im.Call(r.default.NCMJ_CARD_DRAFTING, null, null, t);
+this.node.destroy();
+};
+__decorate([ s({
+type: cc.SpriteAtlas
+}) ], e.prototype, "pa", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "pia", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = l;
+cc._RF.pop();
+}, {
+"../desktop/Desktop": "Desktop",
+"../net/Data": "Data",
+"../net/Protocol": "Protocol",
+"./Pai": "Pai"
+} ],
+Chi: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "14ea1bRnJtBoZ+Y5s+YI040", "Chi");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("./Tile"), r = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.init = function(t, e, o, i, n) {
+this.tile1.value(t);
+this.tile2.value(e);
+this.tile3.value(o);
+this.value = i;
+this.reply = n;
+};
+e.prototype.click = function() {
+this.reply.send(1, this.value);
+};
+__decorate([ s({
+type: a.default
+}) ], e.prototype, "tile1", void 0);
+__decorate([ s({
+type: a.default
+}) ], e.prototype, "tile2", void 0);
+__decorate([ s({
+type: a.default
+}) ], e.prototype, "tile3", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = r;
+cc._RF.pop();
+}, {
+"./Tile": "Tile"
+} ],
+CreateRoom: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "9bb2c77PdlFRZbQGMwhj1Oj", "CreateRoom");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../utils/Global"), r = t("../net/Protocol"), c = t("../net/Data"), p = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e.p = [ 0, 0, 0, 0, 0, 0, 0, 0 ];
+return e;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+for (var t = [ {
+name: "游戏局数",
+d: [ "8局(3张房卡)", "16局(6张房卡)", "24局(9张房卡)", "32局(12张房卡)" ]
+}, {
+name: "人数",
+d: [ "2人", "3人", "4人" ]
+}, {
+name: "爬楼",
+d: [ "牌爬精不爬(逐层下)", "牌爬精不爬(快速下)", "不爬楼" ]
+}, {
+name: "回头一笑",
+d: [ "上下回头", "上回头", "不回头" ]
+}, {
+name: "下精玩法",
+d: [ "同一首歌(弃牌也算)", "同一首歌(弃牌不算)", "埋地雷(弃牌也算)", "埋地雷(弃牌不算)", "翻下精", "无下精" ]
+}, {
+name: "平胡",
+d: [ "有精点炮可平胡", "有精点炮不能平胡" ]
+}, {
+name: "杠精玩法",
+d: [ "有杠精", "有杠精" ]
+}, {
+name: "抄庄",
+d: [ "抄庄", "不抄庄" ]
+} ], e = 0; e < t.length - 1; e++) cc.instantiate(this.item).parent = this.item.parent;
+var o = this.item.parent.children;
+for (var i in o) this.fill(o[i], t[i], parseInt(i));
+};
+e.prototype.fill = function(t, e, o) {
+t.getChildByName("Label").getComponent(cc.Label).string = e.name;
+for (var i = t.getChildByName("ToggleGroup"), n = i.getChildByName("toggle"), s = 0; s < e.d.length - 1; s++) cc.instantiate(n).parent = n.parent;
+var a = i.children;
+for (var r in a) {
+var c = a[r];
+if (c) {
+c.name = r;
+c.tag = o;
+this.fill2(c, e.d[r]);
+}
+}
+};
+e.prototype.fill2 = function(t, e) {
+t.getChildByName("Label").getComponent(cc.Label).string = e;
+};
+e.prototype.init = function() {};
+e.prototype.onToggle = function(t) {
+this.p[t.target.tag] = t.target.name;
+console.log(t.target.tag, t.target.name);
+};
+e.prototype.onCreate = function(t) {
+var e = t.detail.getInt();
+a.default.GotoScene("Desktop", e);
+};
+e.prototype.onClick = function() {
+c.default.it.im.Call(r.default.NCMJ_CREATE, this.onCreate, this, this.p[0], this.p[1], this.p[2], this.p[3], this.p[4], this.p[5], this.p[6], this.p[7]);
+};
+e.prototype.onClose = function() {
+this.node.destroy();
+};
+__decorate([ s({
+type: cc.Node
+}) ], e.prototype, "item", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = p;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../net/Protocol": "Protocol",
+"../utils/Global": "Global"
+} ],
+DataView: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "7274aD5kiJML60upBIRca50", "DataView");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, t("../utils/Window")), a = t("../net/Data"), r = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+var t = this.node.getChildByName("Layout"), e = t.children[0];
+for (var o in a.default.it.tableMap) {
+var i = cc.instantiate(e);
+i.getComponent(cc.Label).string = o;
+i.parent = t;
+i.name = o;
+i.on(cc.Node.EventType.TOUCH_START, function(t) {
+console.log(t.target.name + "---==");
+new s.default("TableView", t.target.name);
+}, this);
+}
+e.destroy();
+};
+e.prototype.init = function() {};
+e.prototype.close = function() {
+this.node.destroy();
+};
+return e = __decorate([ n ], e);
+}(t("../utils/IWindow").default);
+o.default = r;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../utils/IWindow": "IWindow",
+"../utils/Window": "Window"
+} ],
+Data: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "24035NHZz1FOYTY2kL4e7kk", "Data");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, t("./IM")), a = t("../utils/Global"), r = t("./Protocol"), c = t("./Table"), p = t("../utils/Window"), l = function() {
+function t() {
+this.tables = [];
+this.tableMap = {};
+this.name = "data1234";
+}
+e = t;
+t.prototype.Connent = function(t, e) {
+this.onConnent = e;
+this.im = new s.default(this, "ws://" + t + ":8080/Server/websocket2");
+};
+t.prototype.onOpen = function(t) {
+console.log("连接成功" + this.name);
+};
+t.prototype.onError = function(t) {
+new p.default("Tips", "连接失败！");
+};
+t.prototype.onClose = function(t) {
+new p.default("Tips", "连接断开！");
+};
+t.prototype.onServerTime = function(t, e) {
+this.onConnent();
+console.log("TIME:" + t + " " + e);
+};
+t.prototype.onUserData = function(t) {
+console.log("onUserData()");
+a.default.KeyEvent();
+a.default.GotoScene("Hall");
+};
+t.prototype.onLogin = function(t) {
+this.userId = t.detail.getInt();
+this.im.Call(r.default.LOGIN_USER_DATA, this.onUserData, this);
+};
+t.prototype.Login = function(t) {
+cc.sys.localStorage.setItem("passId", t);
+console.log("passId:", t);
+this.im.Call(r.default.LOGIN, this.onLogin, this, "ssss", 19, t, 456);
+};
+t.prototype.Init = function(t) {
+var e = t.getUByte(), o = t.getUTF(), i = this.tableMap[o];
+if (null == i) {
+i = new c.default(o);
+this.tableMap[o] = i;
+}
+i.Init(e, t);
+this.tables[e] = i;
+};
+t.prototype.Insert = function(t) {
+var e = t.getUByte(), o = this.tables[e];
+null != o && o.Insert(t);
+};
+t.prototype.Delete = function(t) {
+var e = t.getUByte(), o = this.tables[e];
+null != o && o.Delete(t);
+};
+t.prototype.Update = function(t) {
+var e = t.getUByte(), o = this.tables[e];
+null != o && o.Update(t);
+};
+t.prototype.Table = function(t) {
+var e = this.tableMap[t];
+if (null == e) {
+e = new c.default(t);
+this.tableMap[t] = e;
+}
+return e;
+};
+t.it = new e();
+return t = e = __decorate([ n ], t);
+var e;
+}();
+o.default = l;
+cc._RF.pop();
+}, {
+"../utils/Global": "Global",
+"../utils/Window": "Window",
+"./IM": "IM",
+"./Protocol": "Protocol",
+"./Table": "Table"
+} ],
+Desktop: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "5f9daq4YgVBYInvqbFZKuId", "Desktop");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../utils/Music"), r = t("../utils/Global"), c = t("../net/Protocol"), p = t("../net/Data"), l = t("./Extractive"), u = t("../utils/Window"), d = t("./UI"), h = t("./Time"), f = t("./Player"), y = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e.players = [];
+e.array = [];
+return e;
+}
+__extends(e, t);
+o = e;
+e.prototype.init = function(t) {
+this.roomId = t[0];
+o.it = this;
+r.default.PA = this.pa;
+r.default.Pointer = this.pointer;
+this.t_room = p.default.it.Table("T_room");
+this.t_tile = p.default.it.Table("T_tile");
+this.t_state = p.default.it.Table("T_state");
+this.t_tile.event.on("update", this.onTile, this);
+this.t_state.event.on("insert", this.onState, this);
+this.t_state.event.on("update", this.onState, this);
+this.t_room.event.on("update", this.onRoom, this);
+p.default.it.im.event.once(c.default.NCMJ_EXIT, this.onExit, this);
+p.default.it.im.event.on(c.default.NCMJ_OPTIONS, this.onOpions, this);
+p.default.it.im.event.on(c.default.NCMJ_HU, this.onHU, this);
+p.default.it.im.event.on(c.default.NCMJ_ALL_PREPARE, this.onPrepareAll, this);
+p.default.it.im.event.on(c.default.NCMJ_START, this.onStart, this);
+p.default.it.im.event.on(c.default.NCMJ_CARD_DRAFTING, this.onCardDrafting, this);
+this.clear();
+this.room = this.t_room.getObj(this.roomId);
+this.state = this.t_state.getObj(p.default.it.userId);
+this.ui.init(this);
+if (2 == this.room.num) {
+this.players[1].node.active = !1;
+this.players[2].node.active = !1;
+this.players.splice(2, 1);
+this.players.splice(1, 1);
+} else if (3 == this.room.num) {
+this.players[2].node.active = !1;
+this.players.splice(2, 1);
+}
+for (var e = 0; e < this.room.num; e++) {
+var i = (e + this.state.index) % this.room.num;
+this.array[i] = this.players[e];
+this.array[i].index = i;
+}
+this.t_state.getList().forEach(this.State.bind(this));
+this.onRoom();
+a.default.bgMusic(2);
+};
+e.prototype.onHU = function(t) {
+if (this.time) {
+this.time.node.destroy();
+this.time = null;
+}
+this.ui.showNext();
+};
+e.prototype.onPrepareAll = function(t) {
+this.array.forEach(function(t) {
+return t.startGame();
+});
+};
+e.prototype.onStart = function(t) {
+this.players[0].sort();
+var e = cc.instantiate(this.timePrefab);
+this.node.addChild(e);
+this.time = e.getComponent(h.default);
+};
+e.prototype.onCardDrafting = function(t) {
+new u.default("CardDrafting");
+};
+e.prototype.onOpions = function(t) {
+new u.default("Reply", t.detail);
+};
+e.prototype.onRoom = function(t) {
+var e = this.array[this.room.play];
+this.time && this.time.Countdown(this.room.time, e);
+this.ui.onData();
+};
+e.prototype.onTile = function(t) {
+var e = t.detail;
+if (5 == e.index) {
+var o = cc.instantiate(this.extractivePrefab);
+this.node.addChild(o);
+this.extractive = o.getComponent(l.default);
+this.extractive.obj(e);
+} else this.array.forEach(function(t) {
+t.Brand(e);
+});
+};
+e.prototype.onState = function(t) {
+this.State(t.detail);
+};
+e.prototype.State = function(t) {
+this.ui.onData();
+this.array[t.index].info.state(t, this.room);
+};
+e.prototype.onExit = function(t) {
+t.detail.getByte();
+cc.director.loadScene("Hall");
+};
+e.prototype.clear = function() {
+if (this.extractive) {
+this.extractive.node.destroy();
+this.extractive = null;
+}
+this.players.forEach(function(t) {
+return t.clear();
+});
+};
+e.prototype.onDisable = function() {
+p.default.it.im.event.off(c.default.NCMJ_EXIT, this.onExit, this);
+p.default.it.im.event.off(c.default.NCMJ_OPTIONS, this.onOpions, this);
+p.default.it.im.event.off(c.default.NCMJ_HU, this.onHU, this);
+p.default.it.im.event.off(c.default.NCMJ_ALL_PREPARE, this.onPrepareAll, this);
+p.default.it.im.event.off(c.default.NCMJ_START, this.onStart, this);
+p.default.it.im.event.off(c.default.NCMJ_CARD_DRAFTING, this.onStart, this);
+};
+__decorate([ s({
+type: [ f.default ]
+}) ], e.prototype, "players", void 0);
+__decorate([ s({
+type: cc.SpriteAtlas
+}) ], e.prototype, "pa", void 0);
+__decorate([ s({
+type: d.default
+}) ], e.prototype, "ui", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "extractivePrefab", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "timePrefab", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "pointer", void 0);
+return e = o = __decorate([ n ], e);
+var o;
+}(cc.Component);
+o.default = y;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../net/Protocol": "Protocol",
+"../utils/Global": "Global",
+"../utils/Music": "Music",
+"../utils/Window": "Window",
+"./Extractive": "Extractive",
+"./Player": "Player",
+"./Time": "Time",
+"./UI": "UI"
+} ],
+Extractive: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "ce2e5l6PdBJl4+o4awNDWYh", "Extractive");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("./Tile"), r = t("../utils/Global"), c = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.action = function() {
+this.node.scale = 3;
+var t = cc.scaleTo(.5, 1, 1);
+t.easing(cc.easeBackInOut());
+var e = cc.delayTime(1), o = cc.director.getWinSizeInPixels(), i = 100 + this.node.width * (1 - this.node.anchorX), n = 5 + this.node.height * (1 - this.node.anchorY), s = cc.moveTo(.5, -(o.width / 2 - i), o.height / 2 - n);
+s.easing(cc.easeBackOut());
+var a = cc.sequence(t, e, s);
+this.node.runAction(a);
+};
+e.prototype.obj = function(t) {
+r.default.Main = t.value;
+r.default.Vice = this.Vice(t.value);
+this.main.obj(t);
+this.vice.value(r.default.Vice);
+this.action();
+};
+e.prototype.Vice = function(t) {
+var e = [ 9, 9, 9, 4, 3 ], o = Math.floor(t / 10);
+return t % 10 == e[o] ? 10 * o + 1 : t + 1;
+};
+__decorate([ s({
+type: a.default
+}) ], e.prototype, "main", void 0);
+__decorate([ s({
+type: a.default
+}) ], e.prototype, "vice", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = c;
+cc._RF.pop();
+}, {
+"../utils/Global": "Global",
+"./Tile": "Tile"
+} ],
+Gang: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "17644ET9bpCGbQeOB0a6qVC", "Gang");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("./Tile"), r = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.init = function(t, e) {
+this.tile1.value(t);
+this.reply = e;
+this.value = t;
+};
+e.prototype.click = function() {
+this.reply.send(4, this.value);
+};
+__decorate([ s({
+type: a.default
+}) ], e.prototype, "tile1", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = r;
+cc._RF.pop();
+}, {
+"./Tile": "Tile"
+} ],
+Global: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "ece69Oeso5JEKTCy9z2ZAzh", "Global");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, t("./Window")), a = function() {
+function t() {}
+e = t;
+t.KeyEvent = function() {
+cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN.toString(), e.onKeyDown);
+};
+t.onKeyDown = function(t) {
+switch (t.keyCode) {
+case 6:
+case 27:
+(null == e.dataView || null != e.dataView.node && !e.dataView.node.isValid) && (e.dataView = new s.default("DataView"));
+}
+};
+t.GotoScene = function(t) {
+for (var e = [], o = 1; o < arguments.length; o++) e[o - 1] = arguments[o];
+cc.director.loadScene(t, function(o, i) {
+var n = i.getChildByName("Canvas").getComponent(t);
+n.init instanceof Function && n.init(e);
+});
+};
+t.StringIP = function(t) {
+return (t >> 24 & 255) + "." + (t >> 16 & 255) + "." + (t >> 8 & 255) + "." + (255 & t);
+};
+return t = e = __decorate([ n ], t);
+var e;
+}();
+o.default = a;
+cc._RF.pop();
+}, {
+"./Window": "Window"
+} ],
+Hall: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "b61ca700ZFO0IpVqjiM62WT", "Hall");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../utils/Music"), r = t("../utils/Window"), c = t("../net/Data"), p = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+var t = c.default.it.Table("U_data").getObj();
+this.RoomCard.string = t.roomCard;
+this.UserID.string = "ID:" + t.userId;
+a.default.bgMusic(1);
+};
+e.prototype.createRoom = function() {
+new r.default("CreateRoom");
+};
+e.prototype.intoRoom = function() {
+new r.default("IntoRoom");
+};
+e.prototype.btnClick = function(t, e) {
+e && new r.default(e);
+};
+__decorate([ s(cc.Label) ], e.prototype, "UserID", void 0);
+__decorate([ s(cc.Label) ], e.prototype, "RoomCard", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = p;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../utils/Music": "Music",
+"../utils/Window": "Window"
+} ],
+HashMap: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "c76a5N4iGVPxpzkEen949ff", "HashMap");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, function() {
+function t() {
+this.map = {};
+}
+Object.defineProperty(t.prototype, "size", {
+get: function() {
+var t = 0;
+for (var e in this.map) t++;
+return t;
+},
+enumerable: !0,
+configurable: !0
+});
+t.prototype.Put = function(t, e) {
+this.map[t] = e;
+};
+t.prototype.Get = function(t) {
+return this.map[t];
+};
+t.prototype.remove = function(t) {
+var e = this.map[t];
+delete this.map[t];
+return e;
+};
+t.prototype.toArray = function() {
+var t = [];
+for (var e in this.map) t.push(this.map[e]);
+return t;
+};
+t.prototype.clear = function() {
+for (var t in this.map) this.map[t].node.destroy();
+this.map = {};
+};
+return t = __decorate([ n ], t);
+}());
+o.default = s;
+cc._RF.pop();
+}, {} ],
+IM: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "478d3S1JnpIjZ80LT9Dh84p", "IM");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, t("./Buffer")), a = t("../utils/Window"), r = function() {
+function t(t, e) {
+this.event = new cc.EventTarget();
+this.PARAM_TYPE = [];
+this.data = t;
+this.socket = new WebSocket(e);
+this.wait = new a.default("Wait", "正在连接服务器");
+this.socket.onopen = function(e) {
+t.onOpen(e);
+};
+this.socket.onerror = function(e) {
+t.onError(e);
+};
+this.socket.onclose = function(e) {
+t.onClose(e);
+};
+this.socket.onmessage = this.onMessage.bind(this);
+}
+t.prototype.onMessage = function(t) {
+if (t.data instanceof ArrayBuffer) this.handler(t.data); else if (t.data instanceof Blob) {
+var e = new FileReader();
+e.readAsArrayBuffer(t.data);
+e.onload = function(t) {
+this.handler(e.result);
+}.bind(this);
+}
+};
+t.prototype.handler = function(t) {
+var e = new s.default(t), o = e.getUByte();
+switch (o) {
+case 0:
+this.data.Init(e);
+break;
+
+case 1:
+this.data.Insert(e);
+break;
+
+case 2:
+this.data.Delete(e);
+break;
+
+case 3:
+this.data.Update(e);
+break;
+
+case 4:
+for (;e.remaining() > 0; ) {
+for (var i = e.getUByte(), n = e.getByte(), a = [], r = 0; r < n; r++) a[r] = e.getByte();
+this.PARAM_TYPE[i] = a;
+}
+break;
+
+case 5:
+var c = e.getLong(), p = e.getUTF();
+this.data.onServerTime(c, p);
+this.wait.close();
+break;
+
+case 9:
+throw "ServerError:\n" + e.getUTF();
+
+default:
+this.wait.close(o);
+this.event.emit(o.toString(), e);
+}
+};
+t.prototype.Call = function(t, e, o) {
+for (var i = [], n = 3; n < arguments.length; n++) i[n - 3] = arguments[n];
+if (null != e) {
+this.event.once(t, e, o);
+this.wait = new a.default("Wait", t, t);
+}
+var r = new s.default(new ArrayBuffer(256));
+r.putUByte(t);
+i.length > 0 && r.putArray(this.PARAM_TYPE[t], i);
+r.flip();
+this.socket.send(r.getData());
+};
+t.prototype.close = function() {
+this.socket.close();
+};
+return t = __decorate([ n ], t);
+}();
+o.default = r;
+cc._RF.pop();
+}, {
+"../utils/Window": "Window",
+"./Buffer": "Buffer"
+} ],
+IPos: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "7cfd5mKNf9HwIxgLUeDkWsY", "IPos");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.pos = function(t, e) {
+this.node.x = t;
+this.node.y = e;
+this.node.zIndex = -e;
+};
+return e = __decorate([ n ], e);
+}(cc.Component));
+o.default = s;
+cc._RF.pop();
+}, {} ],
+IWindow: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "f7051KOUYtJTao5wec09Yaz", "IWindow");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.init = function(t) {};
+e.prototype.close = function(t) {
+void 0 === t && (t = 0);
+};
+return e;
+}(cc.Component);
+o.default = i;
+cc._RF.pop();
+}, {} ],
+InputBox: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "c71fbGB2LVONK0I/fBFi/Qf", "InputBox");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.init = function(t) {
+this.label.string = t[0];
+this.callback = t[1];
+t[2] && (this.edit.string = t[2]);
+};
+e.prototype.click = function() {
+this.callback(this.edit.string);
+this.close();
+};
+e.prototype.close = function() {
+this.node.destroy();
+};
+__decorate([ s(cc.EditBox) ], e.prototype, "edit", void 0);
+__decorate([ s(cc.Label) ], e.prototype, "label", void 0);
+return e = __decorate([ n ], e);
+}(t("./IWindow").default);
+o.default = a;
+cc._RF.pop();
+}, {
+"./IWindow": "IWindow"
+} ],
+IntoRoom: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "a76b2VHb25MG68BP2F7TO5P", "IntoRoom");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../utils/Global"), r = t("../net/Protocol"), c = t("../net/Data"), p = t("../utils/Window"), l = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e.label = [];
+e.str = "";
+return e;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+this.fill();
+};
+e.prototype.fill = function() {
+for (var t = 0; t < this.label.length; t++) this.label[t].string = this.str[t];
+};
+e.prototype.init = function() {};
+e.prototype.onKey = function(t, e) {
+switch (e) {
+case "D":
+if (!(this.str.length > 0)) return;
+this.str = this.str.substr(0, this.str.length - 1);
+break;
+
+case "C":
+this.str = "";
+break;
+
+default:
+if (this.str.length < this.label.length) {
+this.str += e;
+this.str.length == this.label.length && this.intoRoom();
+}
+}
+this.fill();
+console.log(this.str);
+};
+e.prototype.onIntoRoom = function(t) {
+var e = t.detail.getByte();
+if (e >= 0) {
+var o = t.detail.getInt();
+a.default.GotoScene("Desktop", o);
+} else -1 == e ? new p.default("Tips", "房间已满！") : -2 == e && new p.default("Tips", "房间不存在！");
+};
+e.prototype.intoRoom = function() {
+c.default.it.im.Call(r.default.NCMJ_INTO, this.onIntoRoom, this, parseInt(this.str));
+};
+e.prototype.onClose = function() {
+this.node.destroy();
+};
+__decorate([ s([ cc.Label ]) ], e.prototype, "label", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = l;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../net/Protocol": "Protocol",
+"../utils/Global": "Global",
+"../utils/Window": "Window"
+} ],
+Loading: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "774d2vKLeNH26gv4bHnpHW+", "Loading");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e._customManifestStr = JSON.stringify({
+packageUrl: "http://mj.game1982.com/build/jsb-default/",
+remoteManifestUrl: "http://mj.game1982.com/build/jsb-default/project.manifest",
+remoteVersionUrl: "http://mj.game1982.com/build/jsb-default/version.manifest",
+version: "0.0.0.0",
+assets: {},
+searchPaths: []
+});
+return e;
+}
+__extends(e, t);
+e.prototype.versionCompareHandle = function(t, e) {
+this.labelVersion.string = t + "->" + e;
+var o = parseInt(t.split(".").join("")), i = parseInt(e.split(".").join(""));
+return -Math.abs(o - i);
+};
+e.prototype.updateCb = function(t) {
+switch (t.getEventCode()) {
+case jsb.EventAssetsManager.UPDATE_PROGRESSION:
+this.fileLabel.string = t.getDownloadedFiles() + " / " + t.getTotalFiles() + "(" + t.getPercent() + ")";
+this.byteLabel.string = t.getDownloadedBytes() + " / " + t.getTotalBytes() + "(" + t.getPercentByFile() + ")";
+break;
+
+case jsb.EventAssetsManager.ERROR_NO_LOCAL_MANIFEST:
+case jsb.EventAssetsManager.ERROR_DOWNLOAD_MANIFEST:
+case jsb.EventAssetsManager.ERROR_PARSE_MANIFEST:
+case jsb.EventAssetsManager.ERROR_DECOMPRESS:
+case jsb.EventAssetsManager.ERROR_UPDATING:
+case jsb.EventAssetsManager.UPDATE_FAILED:
+this.labelInfo.string = t.getEventCode() + ":" + t.getMessage();
+this._assetsManager.downloadFailedAssets();
+break;
+
+case jsb.EventAssetsManager.ALREADY_UP_TO_DATE:
+this.labelInfo.string = "已经是最新版本！";
+cc.director.loadScene("Login");
+break;
+
+case jsb.EventAssetsManager.UPDATE_FINISHED:
+this.labelInfo.string = "更新完成！. " + t.getMessage();
+cc.eventManager.removeListener(this._updateListener);
+this._updateListener = null;
+var e = jsb.fileUtils.getSearchPaths(), o = this._assetsManager.getLocalManifest().getSearchPaths();
+Array.prototype.unshift(e, o);
+cc.sys.localStorage.setItem("HotUpdateSearchPaths", JSON.stringify(e));
+jsb.fileUtils.setSearchPaths(e);
+cc.audioEngine.stopAll();
+cc.game.restart();
+}
+};
+e.prototype.onLoad = function() {
+if (cc.sys.isNative) {
+this._storagePath = (jsb.fileUtils ? jsb.fileUtils.getWritablePath() : "/") + "remote-asset";
+cc.log("Storage path for remote asset : " + this._storagePath);
+this._assetsManager = new jsb.AssetsManager("", this._storagePath, this.versionCompareHandle.bind(this));
+this._assetsManager.retain();
+cc.sys.os === cc.sys.OS_ANDROID && this._assetsManager.setMaxConcurrentTask(2);
+this._updateListener = new jsb.EventListenerAssetsManager(this._assetsManager, this.updateCb.bind(this));
+cc.eventManager.addListener(this._updateListener, 1);
+if (this._assetsManager.getState() === jsb.AssetsManager.State.UNINITED) {
+var t = new jsb.Manifest(this._customManifestStr, this._storagePath);
+this._assetsManager.loadLocalManifest(t, this._storagePath);
+}
+this._assetsManager.update();
+}
+};
+e.prototype.onDisable = function() {
+if (this._updateListener) {
+cc.eventManager.removeListener(this._updateListener);
+this._updateListener = null;
+}
+this._assetsManager.release();
+};
+__decorate([ s(cc.Label) ], e.prototype, "labelVersion", void 0);
+__decorate([ s(cc.Label) ], e.prototype, "labelInfo", void 0);
+__decorate([ s(cc.Label) ], e.prototype, "fileLabel", void 0);
+__decorate([ s(cc.Label) ], e.prototype, "byteLabel", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = a;
+cc._RF.pop();
+}, {} ],
+Login: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "4d9bejC4KlNq7+nWaHnSNUb", "Login");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../utils/Music"), r = t("../net/Data"), c = t("../utils/Window"), p = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+this.loginBtn.active = !1;
+var t = cc.sys.localStorage.getItem("host");
+t && (this.host.string = t);
+};
+e.prototype.onConnent = function() {
+this.loginBtn.active = !0;
+this.serverBtn.active = !1;
+this.host.node.active = !1;
+cc.sys.localStorage.setItem("host", this.host.string);
+};
+e.prototype.Connent = function() {
+r.default.it.Connent(this.host.string, this.onConnent.bind(this));
+};
+e.prototype.onInput = function(t) {
+r.default.it.Login(t);
+};
+e.prototype.login = function() {
+a.default.effect(2);
+var t = cc.sys.localStorage.getItem("passId");
+console.log(t, "passID");
+new c.default("InputBox", "请输入用户ID：", this.onInput.bind(this), t);
+};
+e.prototype.test = function() {
+a.default.voice("gang");
+};
+__decorate([ s({
+type: cc.Node
+}) ], e.prototype, "loginBtn", void 0);
+__decorate([ s({
+type: cc.Node
+}) ], e.prototype, "serverBtn", void 0);
+__decorate([ s({
+type: cc.EditBox
+}) ], e.prototype, "host", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = p;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../utils/Music": "Music",
+"../utils/Window": "Window"
+} ],
+Music: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "301c5wJLLBEQ6pGHd5KPHcM", "Music");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, function() {
+function t() {}
+e = t;
+t.onBGMusic = function(t, o) {
+e.bgID > 0 && cc.audioEngine.stop(e.bgID);
+e.bgID = cc.audioEngine.play(o, !0, 1);
+};
+t.bgMusic = function(t) {
+cc.loader.load(cc.url.raw("resources/sound/bg/" + t + ".mp3"), e.onBGMusic);
+};
+t.onEffect = function(t, e) {
+cc.audioEngine.play(e, !1, 1);
+};
+t.effect = function(t) {
+cc.loader.load(cc.url.raw("resources/sound/effect/" + t + ".mp3"), e.onEffect);
+};
+t.onVoice = function(t, e) {
+cc.audioEngine.play(e, !1, 1);
+};
+t.voice = function(t) {
+cc.loader.load(cc.url.raw("resources/sound/voice/" + e.language + "/" + e.sex + "/" + t + ".mp3"), e.onVoice);
+};
+t.bgID = 0;
+t.language = "nanchang";
+t.sex = "woman";
+return t = e = __decorate([ n ], t);
+var e;
+}());
+o.default = s;
+cc._RF.pop();
+}, {} ],
+Pai: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "10191M6lidGZ79M4TSh7Qkl", "Pai");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+};
+e.prototype.onTouchStart = function(t) {
+cc.log("Drag stated ...", this.obj.id);
+this.cd.save(this.obj.id);
+};
+e.prototype.init = function(t, e, o) {
+this.cd = t;
+this.obj = e;
+this.img.spriteFrame = o.getSpriteFrame(e.value);
+if (e.jing > 0) {
+this.jing.node.active = !0;
+2 == e.jing && (this.jing.node.color = cc.color(0, 0, 255, 255));
+} else this.jing.node.active = !1;
+};
+__decorate([ s({
+type: cc.Sprite
+}) ], e.prototype, "img", void 0);
+__decorate([ s({
+type: cc.Sprite
+}) ], e.prototype, "jing", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = a;
+cc._RF.pop();
+}, {} ],
+PengORHu: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "2d491tEfU5Iorh20MFDICre", "PengORHu");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.init = function(t, e, o) {
+this.type = t;
+this.value = e;
+this.reply = o;
+};
+e.prototype.click = function() {
+this.reply.send(this.type, this.value);
+};
+return e = __decorate([ n ], e);
+}(cc.Component));
+o.default = s;
+cc._RF.pop();
+}, {} ],
+PlayerInfo: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "130a9+JihlPJrb+i3pHaKBu", "PlayerInfo");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onImage = function(t, e) {
+this.icon.spriteFrame.setTexture(e);
+};
+e.prototype.onLoad = function() {
+this.clear();
+};
+e.prototype.startGame = function(t) {
+this.ok.active = !1;
+this.nickname.node.active = !1;
+this.banker.active = !1;
+this.node.runAction(cc.moveTo(.5, t));
+};
+e.prototype.state = function(t, e) {
+this.ok.active = 1 == t.state;
+this.nickname.string = t.nickname;
+this.score.string = t.score;
+this.banker.active = t.index == e.banker;
+cc.loader.load(t.url, this.onImage.bind(this));
+};
+e.prototype.clear = function() {
+this.ok.active = !1;
+this.nickname.string = "";
+this.score.string = "";
+this.banker.active = !1;
+};
+__decorate([ s({
+type: cc.Node
+}) ], e.prototype, "ok", void 0);
+__decorate([ s({
+type: cc.Sprite
+}) ], e.prototype, "icon", void 0);
+__decorate([ s({
+type: cc.Node
+}) ], e.prototype, "banker", void 0);
+__decorate([ s({
+type: cc.Label
+}) ], e.prototype, "nickname", void 0);
+__decorate([ s({
+type: cc.Label
+}) ], e.prototype, "score", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = a;
+cc._RF.pop();
+}, {} ],
+Player: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "b20e2ZW2y1NHooFpHdXWhoD", "Player");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../utils/Global"), r = t("./Tile"), c = t("./Tiles"), p = t("./PlayerInfo"), l = t("../utils/HashMap"), u = t("../utils/Music"), d = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e.azimuth = 0;
+e.p0 = cc.rect();
+e.p1 = cc.rect();
+e.p2 = cc.rect();
+e.mv = new cc.Vec2();
+e.horizontal = !0;
+e.num = 9;
+e.iconPos = new cc.Vec2(0, 0);
+e.rank = !1;
+e.map = new l.default();
+e.map2 = new l.default();
+e.groups = new l.default();
+return e;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+var t = cc.instantiate(this.infoPrefab);
+this.info = t.getComponent(p.default);
+this.node.addChild(t);
+};
+e.prototype.startGame = function() {
+this.info.startGame(this.iconPos);
+};
+e.prototype.pushTiles = function(t) {
+var e = this.groups.Get(t.order);
+if (null == e) {
+var o = cc.instantiate(this.Tiles);
+e = o.getComponent(c.default);
+this.node.addChild(o);
+e.init(t.state);
+e.order = t.order;
+e.pos(this.p0.x + this.groups.size * this.p0.width, this.p0.y + this.groups.size * this.p0.height);
+this.groups.Put(t.order, e);
+}
+e.push(t);
+return e;
+};
+e.prototype.pushTile = function(t) {
+var e = this.map.Get(t.id);
+if (null == e) {
+var o = cc.instantiate(this.H);
+e = o.getComponent(r.default);
+this.node.addChild(o);
+var i = this.pos(this.map.size);
+e.pos(i.x, i.y);
+this.map.Put(t.id, e);
+}
+e.obj(t);
+return e;
+};
+e.prototype.pushTile2 = function(t) {
+if (null == (o = this.map2.Get(t.id))) {
+var e = cc.instantiate(this.W), o = e.getComponent(r.default);
+this.node.addChild(e);
+this.horizontal ? o.pos(this.p2.x + this.map2.size % this.num * this.p2.width, this.p2.y + Math.floor(this.map2.size / this.num) * this.p2.height) : o.pos(this.p2.x + Math.floor(this.map2.size / this.num) * this.p2.width, this.p2.y + this.map2.size % this.num * this.p2.height);
+this.map2.Put(t.id, o);
+}
+o.obj(t);
+return o;
+};
+e.prototype.Brand = function(t) {
+if (t.index == this.index) switch (t.state) {
+case 0:
+this.pushTile(t);
+break;
+
+case 1:
+(e = this.pushTile(t)).moveBy(this.mv.x, this.mv.y);
+break;
+
+case 2:
+break;
+
+case 3:
+case 4:
+case 5:
+case 6:
+case 7:
+case 8:
+this.pushTiles(t);
+this.removeTile(t);
+break;
+
+case 10:
+u.default.voice(t.value);
+this.removeTile(t);
+var e = this.pushTile2(t), o = cc.instantiate(a.default.Pointer);
+e.node.addChild(o);
+break;
+
+case 11:
+this.pushTile2(t);
+} else {
+this.removeTile(t);
+this.removeTile2(t);
+}
+};
+e.prototype.update = function() {
+if (this.rank) {
+this.rank = !1;
+this.sort();
+}
+};
+e.prototype.pos = function(t) {
+var e = this.p1.x + t * this.p1.width + this.groups.size * this.p0.width, o = this.p1.y + t * this.p1.height + this.groups.size * this.p0.height;
+return new cc.Vec2(e, o);
+};
+e.prototype.sort = function() {
+var t = this.map.toArray();
+t.sort(function(t, e) {
+return t.o.id - e.o.id;
+});
+for (var e = 0; e < t.length; e++) {
+var o = this.pos(e);
+t[e].moveTo(o.x, o.y);
+}
+};
+e.prototype.removeTile = function(t) {
+var e = this.map.Get(t.id);
+if (e) {
+this.map.remove(t.id);
+e.node.destroy();
+this.rank = !0;
+}
+};
+e.prototype.removeTile2 = function(t) {
+var e = this.map2.Get(t.id);
+if (e) {
+this.map2.remove(t.id);
+e.node.destroy();
+this.rank = !0;
+}
+};
+e.prototype.clear = function() {
+this.map.clear();
+this.map2.clear();
+this.groups.clear();
+};
+__decorate([ s() ], e.prototype, "azimuth", void 0);
+__decorate([ s({
+type: cc.Prefab,
+tooltip: "竖牌Prefab"
+}) ], e.prototype, "H", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "W", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "Tiles", void 0);
+__decorate([ s({
+type: cc.Rect
+}) ], e.prototype, "p0", void 0);
+__decorate([ s({
+type: cc.Rect
+}) ], e.prototype, "p1", void 0);
+__decorate([ s({
+type: cc.Rect
+}) ], e.prototype, "p2", void 0);
+__decorate([ s({
+type: cc.Vec2
+}) ], e.prototype, "mv", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "infoPrefab", void 0);
+__decorate([ s() ], e.prototype, "horizontal", void 0);
+__decorate([ s() ], e.prototype, "num", void 0);
+__decorate([ s({
+type: cc.Vec2
+}) ], e.prototype, "iconPos", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = d;
+cc._RF.pop();
+}, {
+"../utils/Global": "Global",
+"../utils/HashMap": "HashMap",
+"../utils/Music": "Music",
+"./PlayerInfo": "PlayerInfo",
+"./Tile": "Tile",
+"./Tiles": "Tiles"
+} ],
+Pointer: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "016d92b+8dCroTbvHQA0bNW", "Pointer");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+o = e;
+e.prototype.onLoad = function() {
+o.it && o.it.node && o.it.node.destroy();
+o.it = this;
+this.up();
+};
+e.prototype.up = function() {
+this.node.runAction(cc.sequence(cc.moveTo(.3, 0, 20), cc.callFunc(this.down, this)));
+};
+e.prototype.down = function() {
+this.node.runAction(cc.sequence(cc.moveTo(.3, 0, 0), cc.callFunc(this.up, this)));
+};
+return e = o = __decorate([ n ], e);
+var o;
+}(cc.Component));
+o.default = s;
+cc._RF.pop();
+}, {} ],
+Protocol: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "bb5d0UMRixGd5rEaVsPWnEt", "Protocol");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = function() {
+function t() {}
+t.LOGIN = "10";
+t.LOGIN_SYSTEM_DATA = "11";
+t.LOGIN_USER_DATA = "12";
+t.NCMJ_BYTEO = "13";
+t.NCMJ_CREATE = "14";
+t.NCMJ_PREPARE = "15";
+t.NCMJ_PLAY = "16";
+t.NCMJ_REPLY = "17";
+t.NCMJ_EXIT = "18";
+t.NCMJ_INTO = "19";
+t.NCMJ_OPTIONS = "20";
+t.NCMJ_HU = "21";
+t.NCMJ_START = "22";
+t.NCMJ_ALL_PREPARE = "23";
+t.NCMJ_CARD_DRAFTING = "24";
+return t;
+}();
+o.default = i;
+cc._RF.pop();
+}, {} ],
+Reply: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "d49d2WdPd1Kaphjq3D9GTxN", "Reply");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../net/Protocol"), r = t("../net/Data"), c = t("./Chi"), p = t("./Gang"), l = t("./PengORHu"), u = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {};
+e.prototype.showGang = function(t) {
+if (t > 0) {
+var e = cc.instantiate(this.Gang), o = e.getComponent(p.default);
+this.node.addChild(e);
+o.init(t, this);
+}
+};
+e.prototype.showChi = function(t, e, o, i) {
+var n = cc.instantiate(this.Chi), s = n.getComponent(c.default);
+this.node.addChild(n);
+s.init(t, e, o, i, this);
+};
+e.prototype.showBtn = function(t, e, o) {
+var i = cc.instantiate(t), n = i.getComponent(l.default);
+this.node.addChild(i);
+n.init(e, o, this);
+};
+e.prototype.init = function(t) {
+var e = t[0];
+this.selfmo = e.getBoolean();
+var o = e.getBoolean();
+if (this.selfmo) {
+var i = e.getByte(), n = e.getByte(), s = e.getByte();
+this.showGang(i);
+this.showGang(n);
+this.showGang(s);
+} else {
+for (var a = e.getByte(), r = e.getByte(), c = e.getByte(), p = Math.floor(c / 3), l = 0; l < p; l++) {
+var u = e.getByte(), d = e.getByte(), h = e.getByte();
+this.showChi(u, d, h, l);
+}
+r >= 3 && this.showBtn(this.Pang, 2, a);
+4 == r && this.showGang(a);
+}
+o && this.showBtn(this.Hu, 8, a);
+};
+e.prototype.onReply = function() {
+this.node.destroy();
+};
+e.prototype.send = function(t, e) {
+r.default.it.im.Call(a.default.NCMJ_REPLY, this.onReply, this, this.selfmo, t, e);
+};
+e.prototype.guo = function() {
+this.send(0, 0);
+};
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "Pang", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "Gang", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "Chi", void 0);
+__decorate([ s({
+type: cc.Prefab
+}) ], e.prototype, "Hu", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = u;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../net/Protocol": "Protocol",
+"./Chi": "Chi",
+"./Gang": "Gang",
+"./PengORHu": "PengORHu"
+} ],
+Setting: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "46aa57c4otDQ4rL5bJovlgM", "Setting");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e.text = "hello";
+return e;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {};
+e.prototype.init = function(t) {};
+e.prototype.exit = function() {
+cc.game.end();
+};
+e.prototype.close = function() {
+this.node.destroy();
+};
+__decorate([ s(cc.Label) ], e.prototype, "label", void 0);
+__decorate([ s() ], e.prototype, "text", void 0);
+return e = __decorate([ n ], e);
+}(t("../utils/IWindow").default);
+o.default = a;
+cc._RF.pop();
+}, {
+"../utils/IWindow": "IWindow"
+} ],
+SoundEffect: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "247acJoHgFPnblaOUhzkavG", "SoundEffect");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, t("../utils/Music")), a = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onTouchStart = function(t) {
+s.default.effect(2);
+};
+e.prototype.onLoad = function() {
+this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchStart, this);
+};
+e.prototype.onDisable = function() {
+this.node.off(cc.Node.EventType.TOUCH_END, this.onTouchStart, this);
+};
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = a;
+cc._RF.pop();
+}, {
+"../utils/Music": "Music"
+} ],
+TableView: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "ffce1w1ShpHH5+FKioTS9y7", "TableView");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../net/Data"), r = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {};
+e.prototype.init = function(t) {
+var e = t[0];
+this.label.string = e;
+console.log("tableName:" + e);
+for (var o = a.default.it.tableMap[e], i = this.Row.children[0], n = 0; n < o.names.length - 1; n++) (l = cc.instantiate(i)).parent = this.Row;
+for (var s = this.Row.children, n = 0; n < s.length; n++) (u = (l = s[n]).getComponent(cc.Label)).string = o.names[n];
+for (var r in o.data) {
+var c = cc.instantiate(this.Row);
+c.parent = this.content;
+for (var s = c.children, p = o.data[r], n = 0; n < s.length; n++) {
+var l = s[n], u = l.getComponent(cc.Label);
+u.string = p[o.names[n]];
+}
+}
+};
+e.prototype.close = function() {
+this.node.destroy();
+};
+__decorate([ s(cc.Node) ], e.prototype, "Row", void 0);
+__decorate([ s(cc.Node) ], e.prototype, "content", void 0);
+__decorate([ s(cc.Label) ], e.prototype, "label", void 0);
+return e = __decorate([ n ], e);
+}(t("../utils/IWindow").default);
+o.default = r;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../utils/IWindow": "IWindow"
+} ],
+Table: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "0e3d889OS9HL77vD9UkIBTj", "Table");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, function() {
+function t(t) {
+this.data = {};
+this.names = [];
+this.types = [];
+this.key = 0;
+this.cols = 0;
+this.event = new cc.EventTarget();
+this.name = t;
+}
+t.prototype.Init = function(t, e) {
+this.hc = t;
+this.key = e.getByte();
+console.log("key:" + this.key);
+this.cols = e.getShort();
+for (var o = 0; o < this.cols; o++) {
+this.names[o] = e.getUTF();
+this.types[o] = e.getByte();
+}
+};
+t.prototype.Insert = function(t) {
+for (var e = t.getShort(), o = 0; o < e; o++) {
+for (var i = {}, n = 0; n < this.cols; n++) i[this.names[n]] = t.getObj(this.types[n]);
+this.data[i[this.names[this.key]]] = i;
+this.event.emit("insert", i);
+}
+};
+t.prototype.Delete = function(t) {
+if (t.remaining() > 0) {
+var e = t.getObj(this.types[this.key]), o = this.data[e];
+delete this.data[e];
+this.event.emit("delete", o);
+} else {
+this.data = {};
+this.event.emit("clear");
+}
+};
+t.prototype.Update = function(t) {
+for (var e = t.getObj(this.types[this.key]), o = this.data[e]; t.remaining() > 0; ) {
+var i = t.getByte();
+o[this.names[i]] = t.getObj(this.types[i]);
+}
+this.event.emit("update", o);
+};
+t.prototype.getObj = function(t) {
+if (null == t) for (var e in this.data) return this.data[e];
+return this.data[t];
+};
+t.prototype.getList = function(t) {
+var e = [];
+for (var o in this.data) {
+var i = this.data[o];
+(null == t || t(i)) && e.push(i);
+}
+return e;
+};
+return t = __decorate([ n ], t);
+}());
+o.default = s;
+cc._RF.pop();
+}, {} ],
+TileTouch: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "f2859y75U5C0Yz2BlCngDlC", "TileTouch");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, t("./Desktop")), a = t("../net/Protocol"), r = t("../net/Data"), c = t("./Tile"), p = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e._prepare = !1;
+e.isMove = !1;
+return e;
+}
+__extends(e, t);
+o = e;
+e.prototype.prepare = function(t) {
+if (this._prepare != t) {
+this._prepare = t;
+t ? this.node.y += 50 : this.node.y -= 50;
+}
+};
+e.prototype.onMove = function() {
+this.isMove = !1;
+};
+e.prototype.moveTo = function(t, e) {
+this._prepare = !1;
+this.node.stopAllActions();
+this.isMove = !0;
+var o = this.node.x - t;
+if (o > 120) {
+var i = cc.moveBy(.1, 0, 98), n = cc.moveBy(o / 1200, -o, 0), s = cc.moveTo(.1, t, e), a = cc.callFunc(this.onMove, this);
+this.node.runAction(cc.sequence(i, n, s, a));
+} else {
+var r = cc.moveTo(.3, t, e), c = cc.callFunc(this.onMove, this);
+this.node.runAction(cc.sequence(r, c));
+}
+};
+e.prototype.onTouchStart = function(t) {
+if (!this.isMove) if (this._prepare) {
+if (s.default.it.room.play == s.default.it.state.index) {
+var e = this.node.getComponent(c.default);
+r.default.it.im.Call(a.default.NCMJ_PLAY, null, null, e.o.id);
+}
+} else {
+o.it && o.it.prepare(!1);
+this.prepare(!0);
+o.it = this;
+}
+};
+e.prototype.onLoad = function() {
+this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+};
+e.prototype.onDisable = function() {
+this.node.off(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+o.it == this && (o.it = null);
+};
+return e = o = __decorate([ n ], e);
+var o;
+}(cc.Component);
+o.default = p;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../net/Protocol": "Protocol",
+"./Desktop": "Desktop",
+"./Tile": "Tile"
+} ],
+Tiles: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "d6f2c2STRlGoKx6vTHr6YLA", "Tiles");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("./Tile"), r = t("./IPos"), c = t("../utils/Music"), p = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e.tiles = [];
+e.i = 0;
+return e;
+}
+__extends(e, t);
+e.prototype.push = function(t) {
+this.tiles[this.i].obj(t);
+this.tiles[this.i].node.active = !0;
+this.i++;
+};
+e.prototype.onLoad = function() {
+this.tiles.forEach(function(t) {
+return t.node.active = !1;
+});
+};
+e.prototype.init = function(t) {
+switch (t) {
+case 3:
+c.default.voice("chi");
+break;
+
+case 4:
+c.default.voice("pang");
+break;
+
+case 5:
+c.default.voice("gang");
+break;
+
+case 6:
+c.default.voice("angang");
+break;
+
+case 7:
+c.default.voice("hu");
+}
+};
+__decorate([ s({
+type: [ a.default ]
+}) ], e.prototype, "tiles", void 0);
+return e = __decorate([ n ], e);
+}(r.default);
+o.default = p;
+cc._RF.pop();
+}, {
+"../utils/Music": "Music",
+"./IPos": "IPos",
+"./Tile": "Tile"
+} ],
+Tile: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "18056UmgiZPsZ3AegUSKxIo", "Tile");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../utils/Global"), r = t("./TileTouch"), c = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+this.touch = this.getComponent(r.default);
+};
+e.prototype.value = function(t) {
+this.img && (this.img.spriteFrame = a.default.PA.getSpriteFrame(t));
+};
+e.prototype.obj = function(t) {
+this.o = t;
+this.value(t.value);
+if (this.jing) if (t.jing > 0) {
+this.jing.node.active = !0;
+2 == t.jing && (this.jing.node.color = cc.color(0, 0, 255, 255));
+} else this.jing.node.active = !1;
+};
+e.prototype.moveTo = function(t, e) {
+this.node.x == t && this.node.y == e || (this.touch ? this.touch.moveTo(t, e) : this.pos(t, e));
+};
+e.prototype.moveBy = function(t, e) {
+this.node.x == t && this.node.y == e || this.node.runAction(cc.moveBy(.1, t, e));
+};
+__decorate([ s({
+type: cc.Sprite
+}) ], e.prototype, "img", void 0);
+__decorate([ s({
+type: cc.Sprite
+}) ], e.prototype, "jing", void 0);
+return e = __decorate([ n ], e);
+}(t("./IPos").default);
+o.default = c;
+cc._RF.pop();
+}, {
+"../utils/Global": "Global",
+"./IPos": "IPos",
+"./TileTouch": "TileTouch"
+} ],
+Time: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "84dbfgOh9dMZJZ3WhoOqTmN", "Time");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../utils/Music"), r = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+this.node.scale = .3;
+var t = cc.scaleTo(.5, 1, 1);
+t.easing(cc.easeBackInOut());
+this.node.runAction(t);
+};
+e.prototype.Countdown = function(t, e) {
+if (e) {
+a.default.effect(1);
+this.time.string = t;
+this.playTips.active = !0;
+this.playTips.rotation = e.azimuth;
+} else {
+this.time.string = "";
+this.playTips.active = !1;
+}
+};
+__decorate([ s({
+type: cc.Label
+}) ], e.prototype, "time", void 0);
+__decorate([ s({
+type: cc.Node
+}) ], e.prototype, "playTips", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = r;
+cc._RF.pop();
+}, {
+"../utils/Music": "Music"
+} ],
+Tips: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "59730lZ4axG/o/MvD1ofL7Q", "Tips");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.init = function(t) {
+this.label.string = t[0];
+};
+e.prototype.close = function() {
+this.node.destroy();
+};
+__decorate([ s(cc.Label) ], e.prototype, "label", void 0);
+return e = __decorate([ n ], e);
+}(t("./IWindow").default);
+o.default = a;
+cc._RF.pop();
+}, {
+"./IWindow": "IWindow"
+} ],
+UI: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "3314fvUj4pN2pfK6jbVXvWs", "UI");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = t("../net/Data"), r = t("../net/Protocol"), c = function(t) {
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+__extends(e, t);
+e.prototype.onLoad = function() {
+this.NextBtn.active = !1;
+};
+e.prototype.init = function(t) {
+this.desktop = t;
+this.RoomId.string = "房间号：" + t.roomId;
+};
+e.prototype.onData = function() {
+if (this.desktop.state.state != this.desktop.room.curLevel) {
+this.PrepareBtn.active = 0 == this.desktop.state.state;
+this.NextBtn.active = this.desktop.state.state > 0;
+} else {
+this.PrepareBtn.active = !1;
+this.NextBtn.active = !1;
+}
+this.level.string = "局数(" + this.desktop.room.curLevel + "/" + this.desktop.room.sumLevel + ")";
+this.remainingTile.string = "剩余(" + this.desktop.room.remainingTile + ")张";
+};
+e.prototype.prepare = function() {
+this.desktop.clear();
+a.default.it.im.Call(r.default.NCMJ_PREPARE);
+};
+e.prototype.showNext = function() {
+this.NextBtn.active = !0;
+};
+e.prototype.exit = function() {
+a.default.it.im.Call(r.default.NCMJ_EXIT, null, null, 0);
+};
+__decorate([ s({
+type: cc.Label
+}) ], e.prototype, "RoomId", void 0);
+__decorate([ s({
+type: cc.Label
+}) ], e.prototype, "remainingTile", void 0);
+__decorate([ s({
+type: cc.Label
+}) ], e.prototype, "level", void 0);
+__decorate([ s({
+type: cc.Node
+}) ], e.prototype, "PrepareBtn", void 0);
+__decorate([ s({
+type: cc.Node
+}) ], e.prototype, "NextBtn", void 0);
+return e = __decorate([ n ], e);
+}(cc.Component);
+o.default = c;
+cc._RF.pop();
+}, {
+"../net/Data": "Data",
+"../net/Protocol": "Protocol"
+} ],
+Wait: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "22816ZWGclM5IbaHeYAdQ+9", "Wait");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = i.property, a = function(t) {
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e.code = 0;
+return e;
+}
+__extends(e, t);
+e.prototype.init = function(t) {
+this.code = t[1];
+t[0] && (this.label.string = t[0]);
+};
+e.prototype.update = function(t) {
+this.img.rotation += 30;
+};
+e.prototype.close = function(t) {
+void 0 === t && (t = 0);
+0 != t && this.code != t || this.node.destroy();
+};
+__decorate([ s(cc.Label) ], e.prototype, "label", void 0);
+__decorate([ s(cc.Node) ], e.prototype, "img", void 0);
+return e = __decorate([ n ], e);
+}(t("./IWindow").default);
+o.default = a;
+cc._RF.pop();
+}, {
+"./IWindow": "IWindow"
+} ],
+Window: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "68b7fkhcGBNCKcNl0tfSlr3", "Window");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = cc._decorator, n = i.ccclass, s = (i.property, function() {
+function t(t) {
+for (var e = [], o = 1; o < arguments.length; o++) e[o - 1] = arguments[o];
+this.isColse = !1;
+this.name = t;
+this.param = e;
+cc.loader.loadRes("window/" + t, this.onLoadRes.bind(this));
+}
+t.prototype.onLoadRes = function(t, e) {
+if (!this.isColse) {
+this.node = cc.instantiate(e);
+cc.director.getScene().addChild(this.node);
+this.script = this.node.getComponent(this.name);
+this.script.init(this.param);
+}
+};
+t.prototype.close = function(t) {
+void 0 === t && (t = 0);
+this.isColse = !0;
+null != this.node && this.script.close(t);
+};
+return t = __decorate([ n ], t);
+}());
+o.default = s;
+cc._RF.pop();
+}, {} ]
+}, {}, [ "CardDrafting", "Chi", "Desktop", "Extractive", "Gang", "IPos", "Pai", "PengORHu", "Player", "PlayerInfo", "Pointer", "Reply", "Tile", "TileTouch", "Tiles", "Time", "UI", "CreateRoom", "Hall", "IntoRoom", "Setting", "Loading", "Login", "Buffer", "Data", "IM", "Protocol", "Table", "DataView", "TableView", "Global", "HashMap", "IWindow", "InputBox", "Music", "SoundEffect", "Tips", "Wait", "Window" ]);

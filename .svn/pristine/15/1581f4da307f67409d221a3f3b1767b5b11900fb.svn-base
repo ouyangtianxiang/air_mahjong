@@ -1,0 +1,34 @@
+package game.room;
+
+import java.util.TimerTask;
+
+public class Tick {
+	private Room room;
+	private TimerTask task;
+
+	public Tick(Room room) {
+		this.room = room;
+	}
+
+	public void start(byte index) {
+		task = new TimerTask() {
+			byte t = 30;
+
+			public void run() {
+				room.room.play = index;
+				room.room.time = t--;
+				room.room.update();
+				if (t < 0) {
+					cancel();
+				}
+			}
+
+		};
+		room.timer.schedule(task, 100, 1000);
+	}
+
+	public void cancel() {
+		task.cancel();
+		room.timer.purge();
+	}
+}

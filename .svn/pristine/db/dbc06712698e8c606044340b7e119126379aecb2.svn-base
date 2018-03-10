@@ -1,0 +1,36 @@
+package game.room.task;
+
+import game.data.bean.T_tile;
+import game.room.Room;
+
+public class Perflop extends Task {
+
+	public Perflop(Room room) {
+		super(room);
+	}
+
+	byte n;
+
+	public void start() {
+		n = 0;
+		super.start(100, 100);
+	}
+
+	@Override
+	public void run() {
+		System.out.println("发牌:" + n);
+		for (byte i = 0; i < room.num; i++) {
+			T_tile o = room.array.remove(0);
+			o.order = 0;
+			o.index = i;
+			o.update();
+			room.map[i].perflop(o);
+		}
+		n++;
+		if (n >= 13) {
+			cancel();
+			room.extractive.start();
+		}
+	}
+
+}

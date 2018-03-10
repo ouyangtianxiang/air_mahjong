@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<project name="javaTest" default="ipa" basedir=".">
+
+	<property name="FLEX_HOME" value="C:\Program Files (x86)\Adobe\Adobe Flash Builder 4.7\eclipse\plugins\com.adobe.flash.compiler_4.7.0.349722\AIRSDK" />
+
+	<!-- 确定flexTasks.jar && for 循环支持 的位置 -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	
+
+	<!-- 编译swf部分 -->
+	<target name="SWF">
+		<mxmlc file="src\game\Loading.as" output="bin/Loading.swf" configname="air">
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml" />
+			<source-path path-element="src" />
+			<compiler.debug>false</compiler.debug>
+		</mxmlc>
+	</target>
+	
+	<!-- 打包apk部分 -->
+	<target name="ipa" depends="SWF">
+		<echo>packageing for ios......</echo>
+		<java jar="${FLEX_HOME}\lib\adt.jar" fork="true" failonerror="true">
+			<arg value="-package" />
+			<arg value="-target" />
+			<arg value="ipa-test-interpreter" />
+			<arg value="-provisioning-profile" />
+			<arg value="keys/unitygamecom.mobileprovision" />
+			<arg value="-storetype" />
+			<arg value="pkcs12" />
+			<arg value="-keystore" />
+			<arg value="keys/ios0(1).p12" />
+			<arg value="-storepass" />
+			<arg value="111111" />
+			<arg value="Loading.ipa" />
+			<arg value="bin/GameIOS-app.xml" />
+			<arg value="-C" />
+			<arg value="bin" />
+			<arg value="." />
+		</java>
+		<echo>ios end</echo>
+	</target>
+
+</project>

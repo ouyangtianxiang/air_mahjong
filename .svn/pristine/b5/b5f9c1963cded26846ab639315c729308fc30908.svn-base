@@ -1,0 +1,12 @@
+export default class Protocol{
+	public static LOGIN:number=10;
+	public static LOGIN_SYSTEM_DATA:number=11;
+	public static LOGIN_USER_DATA:number=12;
+	public static NCMJ_BYTEO:number=13;
+	public static NCMJ_CREATE:number=14;
+	public static NCMJ_PREPARE:number=15;
+	public static NCMJ_PLAY:number=16;
+	public static NCMJ_REPLY:number=17;
+	public static NCMJ_EXIT:number=18;
+	public static NCMJ_INTO:number=19;
+}

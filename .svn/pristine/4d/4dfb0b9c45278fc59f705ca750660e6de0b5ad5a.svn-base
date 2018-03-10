@@ -1,0 +1,41 @@
+package game.room.task;
+
+import game.application.Player;
+import game.data.bean.T_tile;
+import game.room.Room;
+import game.utils.Protocol;
+
+public class DrawTile extends Task {
+
+	public DrawTile(Room room) {
+		super(room);
+	}
+
+	private Player player;
+	private boolean gangHua;
+
+	public void start(Player player, boolean gangHua) {
+		this.player = player;
+		this.gangHua = gangHua;
+		if (player.vip) {
+			player.call(Protocol.NCMJ_CARD_DRAFTING);
+		} else {
+			super.start(500);
+		}
+	}
+
+	@Override
+	public void run() {
+		drawTile(0);
+	}
+
+	public void drawTile(int id) {
+		System.out.println("抓牌");
+		T_tile o = room.getTile(id);
+		o.state = 1;
+		o.order = 101;
+		o.index = player.index;
+		o.update();
+		player.selfDrawn(o, gangHua);
+	}
+}

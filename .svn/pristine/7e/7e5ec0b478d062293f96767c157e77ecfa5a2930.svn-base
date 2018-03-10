@@ -1,0 +1,52 @@
+const { ccclass, property } = cc._decorator;
+import { U_data } from "../net/Bean"
+
+@ccclass
+export default class PlayerInfo extends cc.Component {
+
+    ok: cc.Node;
+    icon: cc.Sprite;
+    banker: cc.Node;
+    nickname: cc.Label;
+    score: cc.Label;
+
+    onLoad() {
+
+        this.icon = this.node.getChildByName("icon").getComponent<cc.Sprite>(cc.Sprite);
+        this.nickname = this.node.getChildByName("nickname").getComponent<cc.Label>(cc.Label);
+        this.score = this.node.getChildByName("score").getComponent<cc.Label>(cc.Label);
+        this.ok = this.node.getChildByName("ok");
+        this.banker = this.node.getChildByName("banker");
+        this.clear();
+    }
+
+    startGame(pos: cc.Vec2) {
+        this.ok.active = false;
+        this.nickname.node.active = false;
+
+        this.node.runAction(cc.moveTo(0.5, pos));
+    }
+
+    onImage(err, texture) {
+        this.icon.spriteFrame.setTexture(texture)
+    }
+
+    state(o, room) {
+        this.ok.active = o.state == 1;
+        this.nickname.string = o.nickname;
+        this.banker.active = o.index == room.banker;
+        cc.loader.load(o.url, this.onImage.bind(this));
+    }
+
+    addLevel(o: any) {
+
+        this.score.string = o.score + o.jing;
+    }
+
+    clear() {
+        this.ok.active = false;
+        this.nickname.string = "";
+        this.score.string = "0";
+        this.banker.active = false;
+    }
+}

@@ -1,0 +1,20 @@
+package game.room;
+
+import game.data.bean.T_tile;
+
+public class TTT {
+
+	public final T_tile a;
+	public final T_tile b;
+	public final T_tile c;
+
+	public TTT(T_tile a, T_tile b, T_tile c) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+	}
+
+	public String toString() {
+		return "[" + a.value + ":" + b.value + ":" + c.value + "]";
+	}
+}

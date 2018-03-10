@@ -1,0 +1,44 @@
+rankListItem3=
+{
+	name="rankListItem3",type=0,typeName="View",time=0,x=0,y=0,width=1180,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="item_view",type=0,typeName="View",time=50747657,x=0,y=0,width=1180,height=120,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+		{
+			name="text_name",type=4,typeName="Text",time=50747988,x=230,y=0,width=360,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=30,textAlign=kAlignLeft,colorRed=255,colorGreen=240,colorBlue=207,string=[[樱桃小丸子]]
+		},
+		{
+			name="text_score",type=4,typeName="Text",time=50748169,x=630,y=0,width=300,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=30,textAlign=kAlignLeft,colorRed=255,colorGreen=198,colorBlue=0,string=[[124,568,756]]
+		},
+		{
+			name="img_line",type=1,typeName="Image",time=50809340,x=0,y=0,width=0,height=2,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignBottom,file="rank/horizontal_line.png"
+		},
+		{
+			name="view_place",type=0,typeName="View",time=50809629,x=0,y=0,width=110,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+			{
+				name="img_place",type=1,typeName="Image",time=50747573,x=0,y=0,width=70,height=88,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="rank/place_1.png"
+			},
+			{
+				name="text_place",type=4,typeName="Text",time=50809758,x=0,y=0,width=90,height=35,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignCenter,colorRed=255,colorGreen=240,colorBlue=207,string=[[未上榜]]
+			}
+		},
+		{
+			name="btn_image",type=2,typeName="Button",time=50810986,x=110,y=0,width=90,height=90,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Common/blank.png",
+			{
+				name="img_photo",type=1,typeName="Image",time=50747906,x=0,y=0,width=90,height=90,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="ui/image.png"
+			}
+		},
+		{
+			name="img_coin_icon",type=1,typeName="Image",time=50813339,x=580,y=0,width=47,height=46,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Common/coinMid.png"
+		},
+		{
+			name="Text1",type=4,typeName="Text",time=51962034,x=874,y=0,width=72,height=27,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=220,colorBlue=0,string=[[已比赛]]
+		},
+		{
+			name="Text2",type=4,typeName="Text",time=51962180,x=989,y=0,width=24,height=27,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=0,string=[[局]]
+		},
+		{
+			name="times",type=4,typeName="Text",time=51962262,x=380,y=0,width=13,height=27,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[0]]
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_rankListItem3.lua"]=1;

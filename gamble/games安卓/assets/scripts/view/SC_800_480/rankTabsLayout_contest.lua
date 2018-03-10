@@ -1,0 +1,29 @@
+rankTabsLayout_contest=
+{
+	name="rankTabsLayout_contest",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="tab_view",type=0,typeName="View",time=50724821,x=0,y=0,width=671,height=106,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,
+		{
+			name="spl_2",type=1,typeName="Image",time=50725232,x=415,y=0,width=2,height=32,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Common/subViewSplite2.png"
+		},
+		{
+			name="tab_2",type=2,typeName="Button",time=50729640,x=211,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/blank.png",
+			{
+				name="tab_bg",type=1,typeName="Image",time=50725004,x=0,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewTag.png"
+			},
+			{
+				name="tab_t",type=1,typeName="Image",time=50726210,x=0,y=0,width=174,height=38,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="rank/tab_2_1.png"
+			}
+		},
+		{
+			name="tab_3",type=2,typeName="Button",time=50729702,x=422,y=0,width=199,height=105,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/blank.png",
+			{
+				name="tab_bg",type=1,typeName="Image",time=50725347,x=0,y=0,width=199,height=105,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewTag.png"
+			},
+			{
+				name="tab_t",type=1,typeName="Image",time=50726241,x=0,y=0,width=174,height=38,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="rank/tab_3_1.png"
+			}
+		}
+	}
+}
+--m_xxreference["D:_Mahjong_SCMahjong_Lua_SCMahjong_Lua_1.6_Resource_scripts_view_SC_800_480_rankTabsLayout_contest.lua"]=1;

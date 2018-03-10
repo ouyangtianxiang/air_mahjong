@@ -1,0 +1,52 @@
+module.exports = function (where) {
+
+    var i;
+    var k;
+    var v;
+
+    var kv = null;
+    kv = where.split("!");
+    if (kv != null && kv.length == 2) {
+        i = '!';
+        k = kv[0];
+        v = kv[1];
+        return;
+    }
+    kv = where.split("=");
+    if (kv != null && kv.length == 2) {
+        i = '=';
+        k = kv[0];
+        v = kv[1];
+        return;
+    }
+    kv = where.split("<");
+    if (kv != null && kv.length == 2) {
+        i = '<';
+        k = kv[0];
+        v = kv[1];
+        return;
+    }
+    kv = where.split(">");
+    if (kv != null && kv.length == 2) {
+        i = '>';
+        k = kv[0];
+        v = kv[1];
+        return;
+    }
+
+    this.fairly = function (o) {
+        var value = o[k];
+        switch (i) {
+            case '!':
+                return (value != v);
+            case '=':
+                return (value == v);
+            case '<':
+                return (value < v);
+            case '>':
+                return (value > v);
+            default:
+                return false;
+        }
+    }
+}

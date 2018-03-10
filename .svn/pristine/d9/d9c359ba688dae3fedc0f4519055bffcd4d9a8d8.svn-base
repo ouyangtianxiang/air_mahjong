@@ -1,0 +1,73 @@
+const { ccclass, property } = cc._decorator;
+
+import Global2 from "../utils/Global2";
+import Protocol2 from "../net/Protocol2";
+import Data2 from "../net/Data2";
+
+@ccclass
+export default class Desktop extends cc.Component {
+
+    @property(cc.Label)
+    label: [cc.Label];
+
+    str = "";
+
+
+    // use this for initialization
+    onLoad() {
+        this.fill();
+    }
+    //str: "",
+
+    fill() {
+        for (var i = 0; i < this.label.length; i++) {
+            this.label[i].string = this.str[i];
+        }
+    }
+
+    init() {
+
+    }
+
+    onKey(event, value) {
+        switch (value) {
+            case 'D':
+                if (this.str.length > 0) {
+                    this.str = this.str.substr(0, this.str.length - 1);
+                } else {
+                    return;
+                }
+                break;
+            case 'C':
+                this.str = "";
+                break;
+            default:
+                if (this.str.length < this.label.length) {
+                    this.str += value;
+                    if (this.str.length == this.label.length) {
+                        this.intoRoom();
+                    }
+                }
+
+        }
+        this.fill();
+        console.log(this.str);
+    }
+
+    onIntoRoom(event) {
+        var roomId = event.detail.getInt();
+        if (roomId > 0) {
+            Global2.GotoScene("Desktop", roomId);
+        } else {
+            Global2.ShowWindow("Tips", "房间不存在！")
+        }
+    }
+
+    intoRoom() {
+        Data2.it.im.Call(Protocol2.NCMJ_INTO, this.onIntoRoom, this, parseInt(this.str), 1);
+    }
+
+    onClose() {
+        this.node.destroy();
+    }
+}

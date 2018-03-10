@@ -1,0 +1,36 @@
+package game.room.ncmahjong.task;
+
+import game.data.bean.T_tile;
+import game.room.ncmahjong.Room;
+
+public class Perflop extends Task {
+
+	public Perflop(Room room) {
+		super(room);
+	}
+
+	byte n;
+
+	public void start() {
+		n = 0;
+		super.start(500, 100);
+	}
+
+	@Override
+	public void run() {
+		System.out.println("发牌:" + n);
+		for (byte i = 0; i < room.num; i++) {
+			T_tile o = room.getTile(0);
+			o.order = 100;
+			o.index = i;
+			o.update();
+			room.map[i].perflop(o);
+		}
+		n++;
+		if (n >= 13) {
+			cancel();
+			room.extractive.start();
+		}
+	}
+
+}

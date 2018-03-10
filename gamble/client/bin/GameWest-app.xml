@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/26.0">
+
+	<id>GameWest.debug</id>
+
+	<filename>GameWest</filename>
+
+	<name>西-debug</name>
+
+	<versionNumber>0.0.0</versionNumber>
+
+	<initialWindow>
+		<content>GameWest.swf</content>
+		<aspectRatio>landscape</aspectRatio>
+		<renderMode>direct</renderMode>
+		<depthAndStencil>true</depthAndStencil>
+		<autoOrients>true</autoOrients>
+		<fullScreen>true</fullScreen>
+		<visible>true</visible>
+	</initialWindow>
+	<icon>
+	</icon>
+</application>

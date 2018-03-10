@@ -1,0 +1,114 @@
+package test;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Vector;
+
+public class MJ {
+
+	private static int tid(int... tiles) {
+		Arrays.sort(tiles);
+		int v = 0;
+		for (int i : tiles) {
+			v = v * 10 + i;
+		}
+		return v;
+	}
+
+	private static TT gTT(Tile a, Tile b) {
+		if (a.isCanTwo(b)) {
+			return new TT(a, b);
+		}
+		return null;
+	}
+
+	private static TTT gTTT(Tile a, Tile b, Tile c) {
+		if (a.isCanThree(b, c)) {
+			return new TTT(a, b, c);
+		}
+		return null;
+	}
+
+	private static HashMap<Integer, TT> TTs(Tile[] array) {
+		HashMap<Integer, TT> map = new HashMap<>();
+		for (int i = 0; i < array.length; i++) {
+			for (int j = i + 1; j < array.length; j++) {
+				Tile a = array[i];
+				Tile b = array[j];
+				int sid = tid(a.value, b.value);
+				if (!map.containsKey(sid)) {
+					TT t = gTT(a, b);
+					if (t != null) {
+						map.put(sid, t);
+					}
+				}
+			}
+		}
+		return map;
+	}
+
+	private static HashMap<Integer, TTT> TTTs(Vector<Tile> array) {
+		HashMap<Integer, TTT> map = new HashMap<>();
+		int len = array.size();
+		for (int i = 0; i < len; i++) {
+			for (int j = (i + 1); j < len; j++) {
+				for (int k = (j + 1); k < len; k++) {
+					Tile a = array.get(i);
+					Tile b = array.get(j);
+					Tile c = array.get(k);
+					int sid = tid(a.value, b.value, c.value);
+					if (!map.containsKey(sid)) {
+						TTT t = gTTT(a, b, c);
+						if (t != null) {
+							map.put(sid, t);
+						}
+					}
+				}
+			}
+		}
+		return map;
+	}
+
+	public MJ() throws Exception {
+		/**
+		 * ➀➁➂➃➄➅➆➇➈➊➋➌➍➎➏➐➑➒㊀㊁㊂㊃㊄㊅㊆㊇㊈东南西北中发白
+		 */
+		String str = "➀➀➈➀➁➁➁➁➂➂➂➂➃➃";
+		Tile[] tiles = new Tile[str.length()];
+		for (int i = 0; i < tiles.length; i++) {
+			tiles[i] = new Tile(str.charAt(i));
+		}
+
+		HashMap<Integer, TT> tts = TTs(tiles);
+		Iterator<Entry<Integer, TT>> it = tts.entrySet().iterator();
+		while (it.hasNext()) {
+			TT tt = it.next().getValue();
+			System.out.println(tt);
+			Vector<Tile> list = new Vector<>(tiles.length);
+			list.copyInto(tiles);
+			list.remove(tt.a);
+			list.remove(tt.b);
+
+			HashMap<Integer, TTT> ttts = TTTs(list);
+			Iterator<Entry<Integer, TTT>> its = ttts.entrySet().iterator();
+
+			while (its.hasNext()) {
+				TTT ttt = its.next().getValue();
+				System.out.println(ttt);
+			}
+			System.out.println("-----------------------");
+
+		}
+	}
+
+	public static void main(String[] args) {
+		try {
+			new MJ();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}

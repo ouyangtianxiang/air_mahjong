@@ -1,0 +1,17 @@
+package test;
+
+public class TT {
+
+	public final Tile a;
+	public final Tile b;
+
+	public TT(Tile a, Tile b) {
+		this.a = a;
+		this.b = b;
+	}
+
+	public String toString() {
+		return "(" + a + ":" + b + ")";
+	}
+
+}

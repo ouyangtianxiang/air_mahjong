@@ -1,0 +1,145 @@
+package game.application;
+
+import java.util.concurrent.ConcurrentHashMap;
+
+import game.data.bean.U_data;
+import game.data.bean.U_info;
+import game.room.RoomManage;
+import game.room.ncmahjong.MJPlayer;
+import game.room.ncmahjong.Room;
+import game.utils.Protocol;
+import ge.annotation.RemoteMethod;
+import ge.db.Table;
+import ge.net.Handler;
+
+public class Session extends Handler {
+	private Table<U_data> u_data;
+	private U_data ud;
+	public int userId = 0;
+	private int loginTime;
+	private int ip;
+
+	/**
+	 * 登录游戏
+	 */
+	@RemoteMethod(Protocol.LOGIN)
+	public void login(String accessToken, int channe, String passId, short areaId) {
+		System.out.println("login:" + accessToken + " " + channe + " " + passId + " " + areaId);
+		// call(Protocol.LOGIN, 1234);
+		login(passId, "");
+	}
+
+	/**
+	 * 登录失败
+	 * 
+	 */
+	public void loginFail() {
+		call(Protocol.LOGIN, -1);
+	}
+
+	private static ConcurrentHashMap<Integer, Session> online = new ConcurrentHashMap<Integer, Session>();
+
+	public void login(String passId, String info) {
+		loginTime = (int) (System.currentTimeMillis() / 1000);
+		ip = client.ip;
+
+		Table<U_info> table = new Table<U_info>(U_info.class, "passId", passId);
+		table.load();
+		U_info u_info = table.get();
+		if (u_info == null) {
+			u_info = new U_info(table, 0, passId, "", loginTime, loginTime, ip);
+		}
+		userId = u_info.id;
+
+		u_data = new Table<U_data>(U_data.class, "userId", userId);
+		u_data.load();
+		ud = u_data.get();
+		if (ud == null) {
+			ud = new U_data(u_data, u_info.id, (byte) 1, 100, 999, 0);
+			ud.save();
+		}
+		u_info.ip = ip;
+		u_info.regTime = loginTime;
+		u_info.update();
+		u_info.save();
+
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>");
+		call(Protocol.LOGIN, userId);
+	}
+
+	/**
+	 * 请求用户数据
+	 */
+	@RemoteMethod(Protocol.LOGIN_USER_DATA)
+	public Object[] user() {
+		System.out.println("user:" + client);
+		u_data.addListener(this);
+		return Result((byte) 0);
+	}
+
+	public MJPlayer mjPlayer;
+
+	@RemoteMethod(Protocol.NCMJ_CREATE)
+	public Object[] create(byte a, byte b, byte c, byte d, byte e, byte f, byte g, byte h) {
+		Room room = RoomManage.it.CreateNCMJ(userId, a, b, c, d, e, f, g, h);
+		mjPlayer = room.into(this);
+		return Result(mjPlayer.index, room.code);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_INTO)
+	public Object[] into(int roomId) {
+		Room room = RoomManage.it.Find(roomId);
+		if (room != null) {
+			mjPlayer = room.into(this);
+			if (mjPlayer != null) {
+				return Result(mjPlayer.index, room.code);
+			}
+			return Result((byte) -1);
+		}
+		return Result((byte) -2);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_USER_VIP)
+	public void CardDrafting(short id) {
+		mjPlayer.CardDrafting(id);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_PREPARE)
+	public Object[] prepare() {
+		mjPlayer.prepare();
+		return Result(0);
+	}
+
+	// 出牌
+	@RemoteMethod(Protocol.NCMJ_PLAY)
+	public void play(short id) {
+		mjPlayer.play(id);
+	}
+
+	// type:0:过,1:吃,2:碰,4:杠,8:胡
+	@RemoteMethod(Protocol.NCMJ_REPLY)
+	public Object[] reply(boolean selfmo, short id) {
+		mjPlayer.reply(selfmo, id);
+		return Result(0);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_EXIT)
+	public void exit(byte type) {
+		mjPlayer.exit(type);
+	}
+
+	public void gameRoom(int code) {
+		ud.roomCode = code;
+		ud.update();
+	}
+
+	protected void clear() {
+		if (u_data != null) {
+			u_data.removeListener(this);
+			u_data = null;
+		}
+		if (mjPlayer != null) {
+			mjPlayer.clear();
+		}
+	}
+}

@@ -1,0 +1,64 @@
+const { ccclass, property } = cc._decorator;
+import Table from "../net/Table";
+import Global from "../utils/Global";
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+
+@ccclass
+export default class NewClass extends cc.Component {
+
+
+    t_play: Table;
+
+    onLoad() {
+        this.node.active = false;
+        this.t_play = Data.it.Table("T_play");
+        this.t_play.event.on("update", this.onPlay, this);
+
+    }
+
+    onPlay(event: cc.Event.EventCustom) {
+
+    }
+
+    onReply() {
+
+    }
+    /**
+     * 碰
+     */
+    pang() {
+        Data.it.im.Call(Protocol.NCMJ_REPLY, this.onReply, this, 1, 0);
+    }
+
+    /**
+     * 扛
+     */
+    gang() {
+        Data.it.im.Call(Protocol.NCMJ_REPLY, this.onReply, this, 1, 0);
+
+    }
+
+    /**
+     * 吃
+     * @param n 
+     */
+    chi(n) {
+        Data.it.im.Call(Protocol.NCMJ_REPLY, this.onReply, this, 1, 0);
+
+    }
+    /**
+     * 胡
+     */
+    hu() {
+        Data.it.im.Call(Protocol.NCMJ_REPLY, this.onReply, this, 1, 0);
+
+    }
+    /**
+     * 过
+     */
+    guo() {
+        Data.it.im.Call(Protocol.NCMJ_REPLY, this.onReply, this, 1, 0);
+
+    }
+}

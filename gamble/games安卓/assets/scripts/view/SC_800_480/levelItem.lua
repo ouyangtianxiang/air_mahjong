@@ -1,0 +1,32 @@
+local levelItem=
+{
+	name="levelItem",type=0,typeName="View",time=0,x=0,y=0,width=266,height=355,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="Button1",type=2,typeName="Button",time=90647653,x=0,y=0,width=266,height=355,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Hall/chooseLevel/item1.png",
+		{
+			name="panda",type=1,typeName="Image",time=90647687,x=0,y=5,width=154,height=180,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Hall/chooseLevel/game1.png"
+		},
+		{
+			name="Image2",type=1,typeName="Image",time=90647739,x=0,y=55,width=224,height=54,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Hall/chooseLevel/game_default.png"
+		},
+		{
+			name="View1",type=0,typeName="View",time=90647887,x=0,y=50,width=210,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,
+			{
+				name="Image3",type=1,typeName="Image",time=90647950,x=0,y=2,width=28,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Hall/chooseLevel/coin.png"
+			},
+			{
+				name="Text1",type=4,typeName="Text",time=90648090,x=40,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255
+			}
+		},
+		{
+			name="View2",type=0,typeName="View",time=90648135,x=0,y=17,width=210,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,
+			{
+				name="Image3",type=1,typeName="Image",time=90648136,x=0,y=2,width=28,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Hall/chooseLevel/people.png"
+			},
+			{
+				name="Text1",type=4,typeName="Text",time=90648138,x=40,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=24,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255
+			}
+		}
+	}
+}
+return levelItem;

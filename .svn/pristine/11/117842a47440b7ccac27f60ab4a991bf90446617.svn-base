@@ -1,0 +1,127 @@
+2017-07-25T14:57:18.506Z - normal: Load ~/.CocosCreator/settings.json
+2017-07-25T14:57:18.510Z - normal: checking language setting...
+2017-07-25T14:57:18.510Z - normal: Language: zh
+2017-07-25T14:57:19.961Z - success: protocol editor-framework registered
+2017-07-25T14:57:19.961Z - success: protocol app registered
+2017-07-25T14:57:19.961Z - success: protocol theme registered
+2017-07-25T14:57:19.961Z - success: protocol profile registered
+2017-07-25T14:57:19.961Z - success: protocol packages registered
+2017-07-25T14:57:19.961Z - success: protocol unpack registerred
+2017-07-25T14:57:19.962Z - success: protocol disable-commonjs registerred
+2017-07-25T14:57:20.308Z - normal: connected!
+2017-07-25T14:57:20.319Z - normal: Check project E:\air_mahjong\Client
+2017-07-25T14:57:20.338Z - normal: Initializing Cocos2d
+2017-07-25T14:57:20.593Z - normal: Initializing Asset Database
+2017-07-25T14:57:20.625Z - success: protocol uuid registerred
+2017-07-25T14:57:20.625Z - success: protocol db registerred
+2017-07-25T14:57:20.625Z - success: protocol thumbnail registerred
+2017-07-25T14:57:20.625Z - normal: Loading editor/builtin packages
+2017-07-25T14:57:20.652Z - success: anysdk loaded
+2017-07-25T14:57:20.781Z - success: assets loaded
+2017-07-25T14:57:20.783Z - success: builder loaded
+2017-07-25T14:57:20.787Z - success: hierarchy loaded
+2017-07-25T14:57:20.790Z - success: inspector loaded
+2017-07-25T14:57:20.791Z - success: keystore loaded
+2017-07-25T14:57:20.794Z - success: node-library loaded
+2017-07-25T14:57:20.795Z - success: package-asset loaded
+2017-07-25T14:57:20.797Z - success: preferences loaded
+2017-07-25T14:57:20.810Z - success: project-importer loaded
+2017-07-25T14:57:20.812Z - success: project-settings loaded
+2017-07-25T14:57:20.814Z - success: ui-kit loaded
+2017-07-25T14:57:20.816Z - success: ui-grid loaded
+2017-07-25T14:57:20.819Z - success: scene loaded
+2017-07-25T14:57:20.820Z - success: sprite-editor loaded
+2017-07-25T14:57:20.823Z - success: store loaded
+2017-07-25T14:57:20.827Z - success: timeline loaded
+2017-07-25T14:57:20.827Z - normal: Loading builtin packages
+2017-07-25T14:57:20.830Z - success: asset-db-debugger loaded
+2017-07-25T14:57:20.831Z - success: code-editor loaded
+2017-07-25T14:57:20.832Z - success: color-picker loaded
+2017-07-25T14:57:20.835Z - success: console loaded
+2017-07-25T14:57:20.837Z - success: package-manager loaded
+2017-07-25T14:57:20.842Z - success: sdkbox loaded
+2017-07-25T14:57:20.844Z - success: tester loaded
+2017-07-25T14:57:20.847Z - success: ui-kit-preview-extra loaded
+2017-07-25T14:57:20.849Z - success: ui-kit-preview loaded
+2017-07-25T14:57:20.850Z - success: ui-tree loaded
+2017-07-25T14:57:21.728Z - normal: Initializing project E:\air_mahjong\Client
+2017-07-25T14:57:21.730Z - normal: Loading packages
+2017-07-25T14:57:21.733Z - normal: Watching packages
+2017-07-25T14:57:21.745Z - normal: Run Application
+2017-07-25T14:57:23.376Z - success: preview server running at http://localhost:7456
+2017-07-25T14:57:23.376Z - normal: Compiling scripts...
+2017-07-25T14:57:25.101Z - normal: Compiled project javascript file successfully
+2017-07-25T14:57:29.232Z - normal: 1.5.2
+2017-07-25T14:57:34.420Z - normal: Simulator: SCREEN DPI = 96, SCREEN SCALE = 1.00
+2017-07-25T14:57:34.420Z - normal: Simulator: WORKAREA WIDTH 1912.00, HEIGHT 1003.00
+2017-07-25T14:57:34.420Z - normal: Simulator: FRAME SCALE = 1.00
+2017-07-25T14:57:34.607Z - normal: Simulator: Ready for GLSL
+2017-07-25T14:57:34.607Z - normal: Simulator: Ready for OpenGL 2.0
+2017-07-25T14:57:34.607Z - normal: Simulator: 
+2017-07-25T14:57:34.607Z - normal: Simulator: {
+2017-07-25T14:57:34.607Z - normal: Simulator: 	gl.version: 4.0.0 - Build 9.18.10.3234
+2017-07-25T14:57:34.608Z - normal: Simulator: 	gl.supports_NPOT: true
+2017-07-25T14:57:34.608Z - normal: Simulator: 	cocos2d.x.version: 1.5.2
+2017-07-25T14:57:34.608Z - normal: Simulator: 	cocos2d.x.compiled_with_profiler: false
+2017-07-25T14:57:34.608Z - normal: Simulator: 	cocos2d.x.build_type: DEBUG
+2017-07-25T14:57:34.609Z - normal: Simulator: 	cocos2d.x.compiled_with_gl_state_cache: true
+2017-07-25T14:57:34.609Z - normal: Simulator: 	gl.max_texture_size: 8192
+2017-07-25T14:57:34.609Z - normal: Simulator: 	gl.supports_OES_packed_depth_stencil: false
+2017-07-25T14:57:34.610Z - normal: Simulator: 	gl.vendor: Intel
+2017-07-25T14:57:34.610Z - normal: Simulator: 	gl.renderer: Intel(R) HD Graphics 4400
+2017-07-25T14:57:34.610Z - normal: Simulator: 	gl.max_texture_units: 80
+2017-07-25T14:57:34.610Z - normal: Simulator: 	gl.supports_ETC1: false
+2017-07-25T14:57:34.610Z - normal: Simulator: 	gl.supports_PVRTC: false
+2017-07-25T14:57:34.611Z - normal: Simulator: 	gl.supports_BGRA8888: false
+2017-07-25T14:57:34.611Z - normal: Simulator: 	gl.supports_discard_framebuffer: false
+2017-07-25T14:57:34.611Z - normal: Simulator: 	gl.supports_vertex_array_object: true
+2017-07-25T14:57:34.611Z - normal: Simulator: 	gl.supports_OES_map_buffer: false
+2017-07-25T14:57:34.611Z - normal: Simulator: 	gl.supports_OES_depth24: false
+2017-07-25T14:57:34.611Z - normal: Simulator: }
+2017-07-25T14:57:34.611Z - normal: Simulator: 
+2017-07-25T14:57:34.612Z - normal: Simulator: 
+2017-07-25T14:57:34.612Z - normal: Simulator: cocos2d: warning, Director::setProjection() failed because size is 0
+2017-07-25T14:57:34.628Z - normal: Simulator: Project Config:
+2017-07-25T14:57:34.629Z - normal: Simulator:     project dir: C:\CocosCreator\resources\cocos2d-x\simulator\win32\
+2017-07-25T14:57:34.629Z - normal: Simulator:     writable path: $(PROJDIR)\
+2017-07-25T14:57:34.630Z - normal: Simulator:     script file: $(PROJDIR)\main.js
+2017-07-25T14:57:34.630Z - normal: Simulator:     frame size: 960 x 640
+2017-07-25T14:57:34.630Z - normal: Simulator:     frame scale: 1.00
+2017-07-25T14:57:34.630Z - normal: Simulator:     show console: NO
+2017-07-25T14:57:34.631Z - normal: Simulator:     write debug log: NO ()
+2017-07-25T14:57:34.631Z - normal: Simulator:     listen: 
+2017-07-25T14:57:34.631Z - normal: Simulator:     debugger: none
+2017-07-25T14:57:34.632Z - normal: Simulator:     add searching path:
+2017-07-25T14:57:34.632Z - normal: Simulator: 
+2017-07-25T14:57:34.632Z - normal: Simulator: 
+2017-07-25T14:57:34.632Z - normal: Simulator: 
+2017-07-25T14:57:34.632Z - normal: Simulator: ------------------------------------------------
+2017-07-25T14:57:34.632Z - normal: Simulator: LOAD Js FILE: main.js
+2017-07-25T14:57:34.633Z - normal: Simulator: ------------------------------------------------
+2017-07-25T14:57:34.820Z - normal: Simulator: Cocos2d-x-lite v1.5.2
+2017-07-25T14:57:35.062Z - error: Simulator: 468:mutating the [[Prototype]] of an object will cause your code to run very slowly; instead create the object with the correct initial [[Prototype]] value using Object.create
+    at a (E:\air_mahjong\Client\library\bundle.project.js?009:NaN:0)
+2017-07-25T14:57:35.063Z - normal: Simulator: 
+2017-07-25T14:57:35.074Z - normal: Simulator: iShow!
+2017-07-25T14:57:44.064Z - normal: Simulator: Send Text WS was opened.
+2017-07-25T14:57:44.137Z - normal: Simulator: response text msg: 4
+2017-07-25T14:57:44.138Z - normal: Simulator: response text msg: 5
+2017-07-25T15:36:38.926Z - failed: [db-task][sync-changes] Failed to import asset E:\air_mahjong\Client\assets\Script\net\Buffer.js, message: Compile error: SyntaxError: unknown: Unexpected token, expected { (81:32)
+  79 | 	this.putInt = function (value) {
+  80 | 		examinePut(4);
+> 81 | 		data.putInt = function (value);
+     | 		                              ^
+  82 | 	}
+  83 | 
+  84 | 	this.putLong = function (value) {
+    at Parser.pp$5.raise (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:4443:13)
+    at Parser.pp.unexpected (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:1755:8)
+    at Parser.pp.expect (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:1743:33)
+    at Parser.pp$1.parseBlock (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:2240:8)
+    at Parser.pp$3.parseFunctionBody (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:4224:22)
+    at Parser.pp$1.parseFunction (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:2380:8)
+    at Parser.pp$3.parseFunctionExpression (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:3750:17)
+    at Parser.pp$3.parseExprAtom (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:3712:19)
+    at Parser.pp$3.parseExprSubscripts (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:3484:19)
+    at Parser.pp$3.parseMaybeUnary (C:\CocosCreator\resources\app.asar\node_modules\babylon\lib\index.js:3464:19)
+2017-07-25T15:36:54.248Z - info: shutdown preview server

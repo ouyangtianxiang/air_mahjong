@@ -1,0 +1,10 @@
+
+export default interface IPos {
+    pos(x: number, y: number);
+    posX(x: number);
+    posY(y: number);
+    moveToX(x: number);
+    moveToY(y: number);
+    moveByX(x: number);
+    moveByY(y: number);
+}

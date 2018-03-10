@@ -1,0 +1,68 @@
+package fire;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DB {
+
+	static {
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} catch (Exception e) {
+			System.out.println("@@@11111111111111");
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static Connection Conn() {
+		Connection conn = null;
+		try {
+			String ip = "127.0.0.1";
+			String port = "3306";
+			String name = "fire-ams";
+			String username = "root";
+			String password = "root1234";
+			String url = "jdbc:mysql://" + ip + ":" + port + "/" + name + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false";
+			conn = (Connection) DriverManager.getConnection(url, username, password);
+		} catch (SQLException e) {
+			System.out.println("@@@22222222222222222");
+			System.out.println(e.getMessage());
+		}
+		return conn;
+	}
+
+	public static synchronized int Key(String tableName, String name) {
+		Statement st = null;
+		ResultSet rs = null;
+		try {
+			st = DB.Conn().createStatement();
+			String sql = "SELECT MAX(" + name + ") AS e FROM " + tableName;
+			rs = st.executeQuery(sql);
+			int v = 0;
+			if (rs.next()) {
+				v = rs.getInt(1);
+			}
+			return v;
+		} catch (Exception e) {
+			System.out.println("@@@3333333333333333333");
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+				if (st != null) {
+					st.close();
+					st = null;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
+	}
+}

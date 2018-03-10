@@ -1,0 +1,64 @@
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        label: {
+            default: null,
+            type: cc.Label
+        },
+        // defaults, set visually when attaching this script to the Canvas
+        text: 'Hello, World!'
+    },
+
+    im:null,
+    
+    connent:function(){
+        var IM=require("./net/IM.js");
+        this.im=new IM();
+    },
+    
+    
+    test:function(){
+        const Room=require("./room.js");
+
+var room1=new Room("100");
+room1.setName("txoy1");
+room1.sayHello();
+
+
+var room=new Room("99");
+room.setName("txoy");
+room.sayHello();
+room["sayHello"]();
+    },
+
+
+    onLoad: function () {
+        this.label.string = this.text;
+        
+    },
+
+    // called every frame
+    update: function (dt) {
+
+    },
+    // called every frame
+    onDestroy: function (dt) {
+        console.log("onDestroyXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    },
+    
+    send:function(){
+       var buf = new ArrayBuffer(12);
+       var dv=new DataView(buf);
+       dv.setInt32(0,123);
+       dv.setInt32(4,333);
+       dv.setInt32(8,652);
+       var bufint32=new Int32Array([1,2,3,4]);
+       var arr=[1,2,'aaa',44.5];
+        this.ws.send(buf);
+    },
+    
+    colse:function(){
+        this.im.close();
+    }
+});

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<project name="javaTest" default="SWF" basedir=".">
+
+	<property name="FLEX_HOME" value="G:\AIRSDK" />
+
+	<!-- 确定flexTasks.jar && for 循环支持 的位置 -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	
+
+	<!-- 编译swf部分 -->
+	<target name="SWF">
+		<mxmlc file="src\game\Loading.as" output="bin/Loading.swf" configname="air">
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml" />
+			<source-path path-element="src" />
+			<compiler.debug>true</compiler.debug>
+		</mxmlc>
+	</target>
+	
+
+</project>

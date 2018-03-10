@@ -1,0 +1,28 @@
+module.exports = function (value) {
+
+    var socket = new WebSocket("ws://localhost:8080/Server/websocket2");
+
+    socket.onopen = function (event) {
+        console.log("Send Text WS was opened.");
+    };
+    socket.onmessage = function (event) {
+        var dv = new DataView(event.data);
+        var code=dv.getInt8(0);
+        new Buffer(event.data);
+        console.log("response text msg: " + code);
+    };
+    socket.onerror = function (event) {
+        console.log("Send Text fired an error");
+    };
+    socket.onclose = function (event) {
+        console.log("WebSocket instance closed.");
+    };
+
+    this.send = function (buffer) {
+        socket.send(buffer);
+    };
+
+    this.close = function () {
+        socket.close();
+    }
+}

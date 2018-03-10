@@ -1,0 +1,41 @@
+const { ccclass, property } = cc._decorator;
+import Tile from "./Tile";
+
+@ccclass
+export default class Extractive extends cc.Component {
+
+    @property({ type: Tile })
+    main: Tile;
+
+    @property({ type: Tile })
+    vice: Tile;
+
+    widget: cc.Widget;
+    action() {
+        this.node.scale = 3;
+        var action0 = cc.scaleTo(0.5, 1, 1);
+        action0.easing(cc.easeBackInOut());
+        var delay = cc.delayTime(1);
+
+        var size = cc.director.getWinSizeInPixels();
+        var w = 100 + this.node.width * (1 - this.node.anchorX);
+        var h = 5 + this.node.height * (1 - this.node.anchorY);
+        var action1 = cc.moveTo(0.5, -(size.width / 2 - w), size.height / 2 - h);
+        action1.easing(cc.easeBackOut());
+
+        var seq = cc.sequence(action0, delay, action1);
+        this.node.runAction(seq);
+    }
+
+    obj(o) {
+        this.main.obj(o);
+        this.vice.value(this.Vice(o.value));
+        this.action();
+    }
+
+    Vice(value: number): number {
+        var arr = [9, 9, 9, 4, 3];
+        var p = Math.floor(value / 10);
+        return value % 10 == arr[p] ? p * 10 + 1 : value + 1;
+    }
+}

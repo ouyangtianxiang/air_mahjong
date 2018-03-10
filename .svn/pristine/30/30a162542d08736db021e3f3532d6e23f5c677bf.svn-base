@@ -1,0 +1,34 @@
+
+const { ccclass, property } = cc._decorator;
+
+import Window from "../utils/Window"
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+
+@ccclass
+export default class Login extends cc.Component {
+    @property(cc.Label)
+    UserID: cc.Label;
+    @property(cc.Label)
+    RoomCard: cc.Label;
+
+    onLoad() {
+        var obj = Data.it.Table("U_data").getObj();
+        this.RoomCard.string = obj.roomCard;
+        this.UserID.string = "ID:" + obj.userId;
+    }
+
+    createRoom() {
+        new Window("CreateRoom");
+    }
+
+    intoRoom() {
+        new Window("IntoRoom");
+    }
+
+    btnClick(event, data) {
+        if (data) {
+            new Window(data);
+        }
+    }
+}

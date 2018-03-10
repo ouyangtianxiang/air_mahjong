@@ -1,0 +1,18 @@
+package test;
+
+public class TTT {
+
+	public final Tile a;
+	public final Tile b;
+	public final Tile c;
+
+	public TTT(Tile a, Tile b, Tile c) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+	}
+
+	public String toString() {
+		return "[" + a + ":" + b + ":" + c + "]";
+	}
+}

@@ -1,0 +1,25 @@
+const { ccclass, property } = cc._decorator;
+import Tile from "./Tile"
+
+@ccclass
+export default class Eat extends cc.Component {
+
+    @property({ default: null, type: Tile })
+    Brand1: Tile;
+    @property({ default: null, type: Tile })
+    Brand2: Tile;
+    @property({ default: null, type: Tile })
+    Brand3: Tile;
+
+    onLoad() {
+
+    }
+
+    init(a: number, b: number, c: number) {
+        this.node.active = a * b * c > 0;
+
+        this.Brand1.value(a);
+        this.Brand2.value(b);
+        this.Brand3.value(c);
+    }
+}

@@ -1,0 +1,75 @@
+package game.data.bean;
+
+import ge.annotation.Delete;
+import ge.annotation.Insert;
+import ge.annotation.PrimaryKey;
+import ge.annotation.SyncKey;
+import ge.annotation.Type;
+import ge.annotation.Types;
+import ge.annotation.Update;
+import ge.db.Bean;
+import ge.db.Table;
+
+/**
+ *  (3)
+ */
+@SyncKey(0)
+@PrimaryKey(0)
+@Types({ Type.INT, Type.BYTE, Type.BYTE })
+@Insert("insert into t_state values(?,?,?)")
+@Update("update t_state set index=?,state=? where userId=?")
+@Delete("delete from t_state where userId=?")
+public class T_state extends Bean {
+	/**
+	 * 
+	 * @param userId
+	 *            $
+	 * @param index
+	 *            
+	 * @param state
+	 *            
+	 */
+	public T_state(Table<T_state> table, int userId, byte index, byte state) {
+		super(table, userId, index, state);
+	}
+
+	// init
+	public T_state(Table<T_state> table, Object[] v) {
+		super(table, v);
+	}
+
+	// mysql
+	public T_state(Object[] v, Table<T_state> table) {
+		super(v, table);
+	}
+
+	/**
+	 * $
+	 */
+	public int userId;
+
+	/**
+	 * 
+	 */
+	public byte index;
+
+	/**
+	 * 
+	 */
+	public byte state;
+
+	public interface I {
+		/**
+		 * $
+		 */
+		byte userId = 0;
+		/**
+		 * 
+		 */
+		byte index = 1;
+		/**
+		 * 
+		 */
+		byte state = 2;
+	}
+}

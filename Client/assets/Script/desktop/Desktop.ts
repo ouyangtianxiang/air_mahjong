@@ -1,0 +1,77 @@
+const { ccclass, property } = cc._decorator;
+
+import Music from "../utils/Music";
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import Table from "../net/Table";
+import Extractive from "./Extractive";
+import Reply from "../window/Reply";
+import Buffer from "../net/Buffer";
+import Window from "../utils/Window";
+import UI from "./UI";
+import Time from "./Time";
+import Player from "./Player";
+import EventHandle from "../net/EventHandle"
+import { T_tile, T_state, U_room, U_room_level, T_play } from "../net/Bean";
+
+@ccclass
+export default class Desktop extends cc.Component {
+
+    public static it: Desktop;
+
+    @property({ type: [Player] })
+    players: Player[] = [];
+
+    @property({ type: cc.SpriteAtlas })
+    pa: cc.SpriteAtlas;
+
+    @property({ type: cc.Prefab })
+    pointer: cc.Prefab;
+    reply: Window<Reply>;
+
+    index: number;
+    room: U_room;
+    state: T_state;
+    eh: Array<EventHandle> = [];
+
+    onLoad() {
+        Desktop.it = this;
+        this.index = Data.it.index;
+        console.log("Desktop()================================33333");
+
+        this.eh.push(U_room.table.addEventListener("clear", this.onRoomDelete, this));
+        this.eh.push(T_play.table.addEventListener("insert", this.onPlayInsert, this));
+
+
+        this.room = U_room.table.getObj();
+        this.state = T_state.table.getObj(this.index);
+
+        Music.bgMusic(2);
+    }
+
+
+
+    getIndex(dir: number) {
+        return (dir + this.index) % this.room.num;
+    }
+
+
+    onPlayInsert(o: T_play) {
+        if (this.reply == null || !this.reply.node.isValid) {
+            this.reply = new Window<Reply>("Reply");
+        }
+        this.reply.script.play(o);
+    }
+
+    onRoomDelete(o: U_room) {
+        cc.director.loadScene("Hall");
+    }
+
+    clear() {
+        this.players.forEach(p => p.clear());
+    }
+
+    onDestroy() {
+        this.eh.forEach(eh => eh.remove());
+    }
+}

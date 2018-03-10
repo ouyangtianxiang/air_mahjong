@@ -1,0 +1,18 @@
+const { ccclass, property } = cc._decorator;
+
+import Music from "../utils/Music";
+@ccclass
+export default class SoundEffect extends cc.Component {
+
+    onTouchStart(event: TouchEvent) {        
+        Music.effect(2);
+    }
+
+    onLoad() {
+        this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchStart, this);
+    }
+
+    onDisable() {
+        this.node.off(cc.Node.EventType.TOUCH_END, this.onTouchStart, this);
+    }
+}

@@ -1,0 +1,57 @@
+"use strict";
+cc._RF.push(module, '514b6VGXhRH942zc3EbFdfb', 'Hall');
+// Script/Hall.js
+
+"use strict";
+
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+
+        IntoRoom: {
+            default: null,
+            type: cc.Prefab
+        },
+        CreateRoom: {
+            default: null,
+            type: cc.Prefab
+        },
+
+        UserID: {
+            default: null,
+            type: cc.Label
+        },
+        RoomCard: {
+            default: null,
+            type: cc.Label
+        }
+    },
+
+    // use this for initialization
+    onLoad: function onLoad() {
+        this.UserID.string = "ID:123456789";
+        this.RoomCard.string = "34";
+    },
+
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+
+    createRoom: function createRoom() {
+        var scene = cc.director.getScene();
+        var node = cc.instantiate(this.CreateRoom);
+
+        node.parent = scene;
+    },
+
+    intoRoom: function intoRoom() {
+        var scene = cc.director.getScene();
+        var node = cc.instantiate(this.IntoRoom);
+
+        node.parent = scene;
+    }
+});
+
+cc._RF.pop();

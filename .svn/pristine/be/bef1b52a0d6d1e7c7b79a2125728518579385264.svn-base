@@ -1,0 +1,216 @@
+const { ccclass, property } = cc._decorator;
+
+import Music from "../utils/Music";
+import Global from "../utils/Global";
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import Table from "../net/Table";
+import Extractive from "./Extractive";
+import Reply from "./Reply"
+import Buffer from "../net/Buffer";
+import Window from "../utils/Window"
+import UI from "./UI"
+import Time from "./Time"
+import Player from "./Player"
+
+@ccclass
+export default class Desktop extends cc.Component {
+
+    public static it: Desktop;
+
+    @property({ type: [Player] })
+    players: Player[] = [];
+    array: Player[] = [];
+
+    @property({ type: cc.SpriteAtlas })
+    pa: cc.SpriteAtlas;
+
+    @property({ type: UI })
+    ui: UI;
+
+    @property({ type: cc.Prefab })
+    extractivePrefab: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    timePrefab: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    pointer: cc.Prefab;
+
+    time: Time;
+    extractive: Extractive;
+
+    t_tile: Table;
+    t_state: Table;
+    t_room: Table;
+
+    roomId: number;
+    room: any;
+    state: any;
+
+    init(param: any[]) {
+        this.roomId = param[0];
+        // }
+        // onLoad() {
+
+        Desktop.it = this;
+        Global.PA = this.pa;
+        Global.Pointer = this.pointer;
+
+        this.t_room = Data.it.Table("T_room");
+        this.t_tile = Data.it.Table("T_tile");
+        this.t_state = Data.it.Table("T_state");
+
+        this.t_tile.event.on("update", this.onTile, this);
+        this.t_state.event.on("insert", this.onState, this);
+        this.t_state.event.on("update", this.onState, this);
+        this.t_room.event.on("update", this.onRoom, this);
+
+        Data.it.im.event.once(Protocol.NCMJ_EXIT, this.onExit, this);
+        Data.it.im.event.on(Protocol.NCMJ_OPTIONS, this.onOpions, this);
+        Data.it.im.event.on(Protocol.NCMJ_HU, this.onHU, this);
+        Data.it.im.event.on(Protocol.NCMJ_ALL_PREPARE, this.onPrepareAll, this);
+        Data.it.im.event.on(Protocol.NCMJ_START, this.onStart, this);
+        Data.it.im.event.on(Protocol.NCMJ_CARD_DRAFTING, this.onCardDrafting, this);
+
+        this.clear();
+
+        this.room = this.t_room.getObj(this.roomId);
+        this.state = this.t_state.getObj(Data.it.userId);
+
+        this.ui.init(this);
+
+        if (this.room.num == 2) {
+            this.players[1].node.active = false;
+            this.players[2].node.active = false;
+            this.players.splice(2, 1);
+            this.players.splice(1, 1);
+        } else if (this.room.num == 3) {
+            this.players[2].node.active = false;
+            this.players.splice(2, 1);
+        }
+
+        for (var i = 0; i < this.room.num; i++) {
+            var index = (i + this.state.index) % this.room.num;
+            this.array[index] = this.players[i];
+            this.array[index].index = index;
+        }
+
+        var arr = this.t_state.getList();
+        arr.forEach(this.State.bind(this));
+
+        this.onRoom();
+
+        Music.bgMusic(2);
+    }
+
+    /**
+     * 胡牌
+     */
+    onHU(event: cc.Event.EventCustom) {
+        if (this.time) {
+            this.time.node.destroy();
+            this.time = null;
+        }
+        var buffer: Buffer = event.detail;
+        var size = buffer.getByte();
+
+        var index = buffer.getByte();
+        var FangPao = buffer.getByte();
+        if (FangPao >= 0) {
+            this.array[FangPao].showHUState(101);
+        } else {
+            this.array[index].showHUState(100);
+        }
+        var baWangJing = buffer.getByte();
+        if (baWangJing >= 0) {
+            this.array[baWangJing].showHUState(102);
+        }
+        for (var i = 3; i < size; i++) {
+            var value = buffer.getByte();
+            this.array[index].showHUState(value);
+        }
+
+        var arr = this.t_state.getList();
+        arr.forEach(o => {
+            if (o.jingLevel > 0) {
+                this.array[o.index].showHUState(103, o.jingLevel);
+            }
+        });
+
+    }
+
+    onPrepareAll(event: cc.Event.EventCustom) {
+        this.array.forEach(a => a.startGame());
+    }
+
+    onStart(event: cc.Event.EventCustom) {
+        this.players[0].sort();
+        var timeNode = cc.instantiate(this.timePrefab);
+        this.node.addChild(timeNode);
+        this.time = timeNode.getComponent<Time>(Time);
+    }
+
+    onCardDrafting(event: cc.Event.EventCustom) {
+        new Window("CardDrafting");
+    }
+
+    onOpions(event: cc.Event.EventCustom) {
+        new Window("Reply", event.detail);
+    }
+
+    onRoom(event?: cc.Event.EventCustom) {
+        var p = this.array[this.room.play];
+        if (this.time) {
+            this.time.Countdown(this.room.time, p);
+        }
+        this.ui.onData();
+    }
+
+    onTile(event: cc.Event.EventCustom) {
+        var o = event.detail;
+        if (o.index == 5) {
+            var extNode = cc.instantiate(this.extractivePrefab);
+            this.node.addChild(extNode);
+            this.extractive = extNode.getComponent<Extractive>(Extractive);
+            this.extractive.obj(o);
+        } else {
+            this.array.forEach(p => {
+                p.Brand(o);
+            });
+        }
+    }
+
+    onState(event: cc.Event.EventCustom) {
+        this.State(event.detail);
+    }
+
+    State(o) {
+        this.ui.onData();
+        this.array[o.index].info.state(o, this.room);
+    }
+
+    onExit(event) {
+        var code = event.detail.getByte();
+        if (code == 0) {
+        }
+        cc.director.loadScene("Hall");
+    }
+
+    clear() {
+        if (this.extractive) {
+            this.extractive.node.destroy();
+            this.extractive = null;
+        }
+        this.players.forEach(p => p.clear());
+    }
+
+    onDisable() {
+        Data.it.im.event.off(Protocol.NCMJ_EXIT, this.onExit, this);
+        Data.it.im.event.off(Protocol.NCMJ_OPTIONS, this.onOpions, this);
+        Data.it.im.event.off(Protocol.NCMJ_HU, this.onHU, this);
+        Data.it.im.event.off(Protocol.NCMJ_ALL_PREPARE, this.onPrepareAll, this);
+        Data.it.im.event.off(Protocol.NCMJ_START, this.onStart, this);
+        Data.it.im.event.off(Protocol.NCMJ_CARD_DRAFTING, this.onCardDrafting, this);
+    }
+}

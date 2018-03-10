@@ -1,0 +1,44 @@
+
+var Table = require("./Table.js");
+module.exports = {
+    tables: {},
+    tableMap: {},
+    Init: function (buffer) {
+        var hc = buffer.getUByte();
+        if (this.tables[hc] == null) {
+            var name = buffer.getUTF();
+            var table = new Table(name);
+            table.Init(buffer);
+            this.tableMap[table.name] = table;
+            this.tables[hc] = table;
+        }
+    },
+
+    Insert: function (buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Insert(buffer);
+            console.log("Insert " + table.name);
+        }
+    },
+
+    Delete: function (buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Delete(buffer);
+            console.log("Delete " + table.name);
+        }
+    },
+
+    Update: function (buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Update(buffer);
+            console.log("Update " + table.name);
+        }
+    }
+
+}

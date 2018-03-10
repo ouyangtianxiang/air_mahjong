@@ -1,0 +1,26 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\zip\Adler32.cs">
+    <Files>
+      <File FileName="Assets\Scripts\net\IM.cs" Line="35" Column="1" />
+      <File FileName="Assets\Scripts\Editor\CreateAssetBundles.cs" Line="1" Column="1" />
+      <File FileName="Assets\Source\Generate\UnityEngine_LightWrap.cs" Line="1" Column="1" />
+      <File FileName="Assets\Source\Generate\LuaBinder.cs" Line="1" Column="1" />
+      <File FileName="Assets\Source\Generate\UnityEngine_MonoBehaviourWrap.cs" Line="1" Column="1" />
+      <File FileName="Assets\ToLua\Core\LuaState.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\game\LuaObject.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\game\LuaGame.cs" Line="59" Column="3" />
+      <File FileName="Assets\Scripts\GameMain.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\game\Logo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\game\Loader.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\net\Data.cs" Line="29" Column="28" />
+      <File FileName="Assets\Scripts\net\Bean.cs" Line="11" Column="3" />
+      <File FileName="Assets\Scripts\net\ST.cs" Line="48" Column="1" />
+      <File FileName="Assets\Scripts\zip\Adler32.cs" Line="27" Column="74" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

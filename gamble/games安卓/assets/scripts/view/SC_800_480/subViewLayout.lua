@@ -1,0 +1,10 @@
+subViewLayout=
+{
+	name="subViewLayout",type=0,typeName="View",time=0,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="bg",type=1,typeName="Image",time=32327047,x=0,y=1,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,file="Common/subViewBg.jpg"
+	},
+	{
+		name="innerBg",type=1,typeName="Image",time=50722545,x=0,y=98,width=89,height=802,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTop,file="Common/subViewInnerBg.png",gridLeft=0,gridRight=0,gridTop=3,gridBottom=0
+	}
+}

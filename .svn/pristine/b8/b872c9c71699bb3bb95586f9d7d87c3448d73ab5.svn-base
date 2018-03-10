@@ -1,0 +1,17 @@
+const { ccclass, property } = cc._decorator;
+
+
+@ccclass
+export default class Tips extends cc.Component {
+    @property(cc.Label)
+    label: cc.Label;
+
+    init(msg) {
+        this.lable.string = msg;
+    }
+
+
+    close() {
+        this.node.destroy();
+    }
+}

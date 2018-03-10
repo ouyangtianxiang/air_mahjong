@@ -1,0 +1,68 @@
+var Protocol = require("./net/Protocol.js");
+var Global = require("./utils/Global.js");
+var data = require("./net/Data.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        label: {
+            default: null,
+            type: cc.Label
+        },
+        // defaults, set visually when attaching this script to the Canvas
+        text: 'Hello, World!'
+    },
+
+    connent: function () {
+        data.Connent();
+    },
+
+    onLogin: function (event) {
+        var userId = event.detail.getInt();
+        for (var key in this) {
+            console.log(key + "--" + this[key]);
+        }
+        console.log(this + "-userId:" + userId);
+    },
+
+    test: function () {
+        data.im.Call(Protocol.LOGIN, this.onLogin, this, "ssss", 19, "txoyart", 456);
+    },
+
+
+    onLoad: function () {
+        this.label.string = this.text;
+
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+
+        data.Table("U_data").event.on("insert", function (event) {
+            console.log("===============================++++" + event.detail["userId"]);
+        })
+    },
+
+
+    onKeyDown: function (event) {
+        switch (event.keyCode) {
+            case 27:
+                Global.ShowDataView();
+                break;
+        }
+    },
+
+    // called every frame
+    update: function (dt) {
+
+    },
+    // called every frame
+    onDestroy: function (dt) {
+        console.log("onDestroyXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    },
+
+    send: function () {
+        data.im.Call(Protocol.LOGIN_USER_DATA, null);
+    },
+
+    colse: function () {
+        data.im.close();
+    }
+});

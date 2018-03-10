@@ -1,0 +1,30 @@
+const { ccclass, property } = cc._decorator;
+import Brand from "./Brand";
+import Global from "../utils/Global";
+
+@ccclass
+export default class Extractive extends cc.Component {
+
+    @property({ default: null, type: Brand })
+    main: Brand;
+
+    @property({ default: null, type: Brand })
+    vice: Brand;
+
+    onLoad() {
+
+    }
+
+    obj(o) {
+        Global.Main = o.value;
+        Global.Vice = this.Vice(o.value);
+        this.main.obj(o);
+        this.vice.value(Global.Vice);
+    }
+
+    Vice(value: number): number {
+        var arr = [9, 9, 9, 4, 3];
+        var p = Math.floor(value / 10);
+        return value % 10 == arr[p] ? p * 10 + 1 : value + 1;
+    }
+}

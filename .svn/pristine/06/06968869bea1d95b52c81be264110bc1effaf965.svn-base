@@ -1,0 +1,91 @@
+const { ccclass, property } = cc._decorator;
+import Brand from "./Brand";
+import Global from "../utils/Global";
+
+@ccclass
+export default class Player extends cc.Component {
+    @property({ default: 0 })
+    azimuth = 0;
+
+    @property({ default: null, type: cc.Prefab })
+    H: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    W: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    M: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    E: cc.Prefab;
+
+    @property({ default: null, type: cc.Node })
+    layout1: cc.Node;
+
+    @property({ default: null, type: cc.Node })
+    layout2: cc.Node;
+
+    @property({ default: null, type: cc.Node })
+    ok: cc.Node;
+
+    @property({ default: null, type: cc.Sprite })
+    icon: cc.Sprite;
+
+    @property({ default: null, type: cc.Node })
+    banker: cc.Node;
+
+    @property({ default: null, type: cc.Label })
+    nickname: cc.Label;
+
+    @property({ default: null, type: cc.Label })
+    ip: cc.Label;
+
+    index: number;
+
+    onImage(err, texture) {
+        this.icon.spriteFrame.setTexture(texture)
+    }
+
+    onLoad() {
+    }
+
+    state(o) {
+        this.ok.active = o.state == 1;
+        this.nickname.string = o.nickname;
+        //this.banker.active=
+        this.ip.string = Global.StringIP(o.ip);
+        cc.loader.load(o.url, this.onImage.bind(this));
+
+    }
+    Brand(o) {
+        if (o.index == this.index) {
+            if (o.state == 0) {
+                var tile: cc.Node = cc.instantiate(this.H);
+                tile.name = o.id;
+                tile.zIndex = o.id;
+                this.layout1.addChild(tile);
+                var brand: Brand = tile.getComponent<Brand>(Brand);
+                if (brand) {
+                    brand.obj(o);
+                }
+            } else {
+                var tile: cc.Node = cc.instantiate(this.W);
+                tile.name = o.id;
+                this.layout2.addChild(tile);
+            }
+        } else {
+            var tile = this.layout1.getChildByName(o.id);
+            if (tile) {
+                tile.destroy();
+            }
+        }
+    }
+
+
+    clear() {
+        this.ok.active = false;
+        this.nickname.string = "";
+        this.banker.active = false;
+        this.ip.string = "";
+    }
+}

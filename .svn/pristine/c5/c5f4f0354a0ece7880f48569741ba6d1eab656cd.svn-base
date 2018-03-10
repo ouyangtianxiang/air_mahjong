@@ -1,0 +1,184 @@
+package game.data.bean;
+
+import ge.annotation.Delete;
+import ge.annotation.Insert;
+import ge.annotation.PrimaryKey;
+import ge.annotation.SyncKey;
+import ge.annotation.Update;
+import ge.db.Bean;
+import ge.db.Table;
+
+/**
+ *  (21)
+ */
+@SyncKey(0)
+@PrimaryKey(0)
+@Insert("insert into t_state values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+@Update("update t_state set index=?,state=?,nickname=?,ip=?,url=?,score=?,jingLevel=?,fangPao=?,selfMo=?,tianHU=?,thirteenRotten=?,mevius=?,gangKai=?,qiangGang=?,jingDiao=?,baWangJing=?,deZhongDe=?,deGuo=?,minSevenPairs=?,maxSevenPairs=? where userId=?")
+@Delete("delete from t_state where userId=?")
+public class T_state extends Bean {
+	/**
+	 * 
+	 * @param userId
+	 *            $
+	 * @param index
+	 *            
+	 * @param state
+	 *            状态
+	 * @param nickname
+	 *            昵称
+	 * @param ip
+	 *            IP地址
+	 * @param url
+	 *            头像URL
+	 * @param score
+	 *            分数
+	 * @param jingLevel
+	 *            精冲关
+	 * @param fangPao
+	 *            放炮
+	 * @param selfMo
+	 *            自摸
+	 * @param tianHU
+	 *            天胡
+	 * @param thirteenRotten
+	 *            十三烂
+	 * @param mevius
+	 *            七星
+	 * @param gangKai
+	 *            扛上开花
+	 * @param qiangGang
+	 *            抢杠
+	 * @param jingDiao
+	 *            精吊
+	 * @param baWangJing
+	 *            霸王精
+	 * @param deZhongDe
+	 *            德中德
+	 * @param deGuo
+	 *            德国
+	 * @param minSevenPairs
+	 *            七小对
+	 * @param maxSevenPairs
+	 *            七大对
+	 */
+	public T_state(Table<T_state> table, int userId, byte index, byte state, String nickname, int ip, String url, int score, byte jingLevel, byte fangPao, byte selfMo, byte tianHU, byte thirteenRotten, byte mevius, byte gangKai, byte qiangGang, byte jingDiao, byte baWangJing, byte deZhongDe, byte deGuo, byte minSevenPairs, byte maxSevenPairs) {
+		super(table, userId, index, state, nickname, ip, url, score, jingLevel, fangPao, selfMo, tianHU, thirteenRotten, mevius, gangKai, qiangGang, jingDiao, baWangJing, deZhongDe, deGuo, minSevenPairs, maxSevenPairs);
+	}
+
+	// init
+	public T_state(Table<T_state> table, Object[] v) {
+		super(table, v);
+	}
+
+	// mysql
+	public T_state(Object[] v, Table<T_state> table) {
+		super(v, table);
+	}
+
+	/**
+	 * $
+	 */
+	public int userId;
+
+	/**
+	 * 
+	 */
+	public byte index;
+
+	/**
+	 * 状态
+	 */
+	public byte state;
+
+	/**
+	 * 昵称
+	 */
+	public String nickname;
+
+	/**
+	 * IP地址
+	 */
+	public int ip;
+
+	/**
+	 * 头像URL
+	 */
+	public String url;
+
+	/**
+	 * 分数
+	 */
+	public int score;
+
+	/**
+	 * 精冲关
+	 */
+	public byte jingLevel;
+
+	/**
+	 * 放炮
+	 */
+	public byte fangPao;
+
+	/**
+	 * 自摸
+	 */
+	public byte selfMo;
+
+	/**
+	 * 天胡
+	 */
+	public byte tianHU;
+
+	/**
+	 * 十三烂
+	 */
+	public byte thirteenRotten;
+
+	/**
+	 * 七星
+	 */
+	public byte mevius;
+
+	/**
+	 * 扛上开花
+	 */
+	public byte gangKai;
+
+	/**
+	 * 抢杠
+	 */
+	public byte qiangGang;
+
+	/**
+	 * 精吊
+	 */
+	public byte jingDiao;
+
+	/**
+	 * 霸王精
+	 */
+	public byte baWangJing;
+
+	/**
+	 * 德中德
+	 */
+	public byte deZhongDe;
+
+	/**
+	 * 德国
+	 */
+	public byte deGuo;
+
+	/**
+	 * 七小对
+	 */
+	public byte minSevenPairs;
+
+	/**
+	 * 七大对
+	 */
+	public byte maxSevenPairs;
+
+}

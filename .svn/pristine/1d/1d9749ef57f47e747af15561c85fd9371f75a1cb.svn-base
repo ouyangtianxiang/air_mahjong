@@ -1,0 +1,107 @@
+package game.data.bean;
+
+import ge.annotation.Delete;
+import ge.annotation.Insert;
+import ge.annotation.PrimaryKey;
+import ge.annotation.SyncKey;
+import ge.annotation.Update;
+import ge.db.Bean;
+import ge.db.Table;
+
+/**
+ *  (10)
+ */
+@SyncKey(0)
+@PrimaryKey(0)
+@Insert("insert into t_room values(?,?,?,?,?,?,?,?,?,?)")
+@Update("update t_room set owner=?,num=?,banker=?,play=?,remainingTile=?,time=?,curLevel=?,sumLevel=?,state=? where roomId=?")
+@Delete("delete from t_room where roomId=?")
+public class T_room extends Bean {
+	/**
+	 * 
+	 * @param roomId
+	 *            
+	 * @param owner
+	 *            
+	 * @param num
+	 *            
+	 * @param banker
+	 *            庄家
+	 * @param play
+	 *            当前出牌index
+	 * @param remainingTile
+	 *            剩下的牌数
+	 * @param time
+	 *            计时
+	 * @param curLevel
+	 *            当前盘次
+	 * @param sumLevel
+	 *            总盘数
+	 * @param state
+	 *            
+	 */
+	public T_room(Table<T_room> table, int roomId, int owner, byte num, byte banker, byte play, short remainingTile, byte time, byte curLevel, byte sumLevel, byte state) {
+		super(table, roomId, owner, num, banker, play, remainingTile, time, curLevel, sumLevel, state);
+	}
+
+	// init
+	public T_room(Table<T_room> table, Object[] v) {
+		super(table, v);
+	}
+
+	// mysql
+	public T_room(Object[] v, Table<T_room> table) {
+		super(v, table);
+	}
+
+	/**
+	 * 
+	 */
+	public int roomId;
+
+	/**
+	 * 
+	 */
+	public int owner;
+
+	/**
+	 * 
+	 */
+	public byte num;
+
+	/**
+	 * 庄家
+	 */
+	public byte banker;
+
+	/**
+	 * 当前出牌index
+	 */
+	public byte play;
+
+	/**
+	 * 剩下的牌数
+	 */
+	public short remainingTile;
+
+	/**
+	 * 计时
+	 */
+	public byte time;
+
+	/**
+	 * 当前盘次
+	 */
+	public byte curLevel;
+
+	/**
+	 * 总盘数
+	 */
+	public byte sumLevel;
+
+	/**
+	 * 
+	 */
+	public byte state;
+
+}

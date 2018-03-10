@@ -1,0 +1,51 @@
+module.exports = function (value) {
+
+    this.data = {};
+    this.names = [];
+    this.types = [];
+    this.keys = [];
+    this.name = value;
+    this.cols = 0;
+
+    this.Init = function (buffer) {
+        var keylen = buffer.getByte();
+        for (var i = 0; i < keylen; i++) {
+            this.keys[i] = buffer.getByte();
+        }
+        console.log("keys:" + this.keys.join("-"));
+        this.cols = buffer.getShort();
+        for (var i = 0; i < this.cols; i++) {
+            this.names[i] = buffer.getUTF();
+            this.types[i] = buffer.getByte();
+        }
+    };
+
+    this.Insert = function (buffer) {
+        var size = buffer.getShort();
+        for (var j = 0; j < size; j++) {
+            var obj = {};
+            for (var i = 0; i < this.cols; i++) {
+                obj[this.names[i]] = buffer.getObj(this.types[i]);
+                console.log("obj " + this.names[i] + ":" + obj[this.names[i]]);
+            }
+        }
+    };
+
+    this.Delete = function (buffer) {
+        if (buffer.remaining() > 0) {
+            var key = buffer.getObj(this.types[this.keys[0]]);
+            delete this.data[key];
+        } else {
+            data = {};
+        }
+    };
+
+    this.Update = function (buffer) {
+        var key = buffer.getObj(this.types[this.keys[0]]);
+        var obj = data[key];
+        if (buffer.remaining() > 0) {
+            var i = buffer.getByte();
+            obj[this.names[i]] = buffer.getObj(this.types[i]);
+        }
+    }
+}

@@ -1,0 +1,135 @@
+const { ccclass, property } = cc._decorator;
+import Table from "../net/Table";
+import Global from "../utils/Global";
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import Eat from "./Eat"
+import Buffer from "../net/Buffer";
+import Brand from "./Brand"
+
+@ccclass
+export default class Reply extends cc.Component {
+
+    @property({ default: null, type: cc.Node })
+    PangBtn: cc.Node;
+
+    @property({ default: null, type: cc.Node })
+    GangBtn: cc.Node;
+    @property({ default: null, type: cc.Node })
+    Gangs: cc.Node;
+    @property({ default: null, type: Brand })
+    Gang1: Brand;
+    @property({ default: null, type: Brand })
+    Gang2: Brand;
+    @property({ default: null, type: Brand })
+    Gang3: Brand;
+
+    @property({ default: null, type: cc.Node })
+    ChiBtn: cc.Node;
+    @property({ default: null, type: cc.Node })
+    Chis: cc.Node;
+    @property({ default: null, type: Eat })
+    Chi1: Eat;
+    @property({ default: null, type: Eat })
+    Chi2: Eat;
+    @property({ default: null, type: Eat })
+    Chi3: Eat;
+
+    @property({ default: null, type: cc.Node })
+    HuBtn: cc.Node;
+
+    selfmo: boolean;
+
+    onLoad() {
+        this.PangBtn.active = false;
+        this.GangBtn.active = false;
+        this.ChiBtn.active = false;
+        this.HuBtn.active = false;
+        this.Gangs.active = false;
+        this.Chis.active = false;
+
+        this.Gang1.node.active = false;
+        this.Gang2.node.active = false;
+        this.Gang3.node.active = false;
+
+        this.Chi1.node.active = false;
+        this.Chi2.node.active = false;
+        this.Chi3.node.active = false;
+    }
+
+    init(param) {
+        var buffer: Buffer = param[0];
+        this.selfmo = buffer.getBoolean();
+        var isHu = buffer.getBoolean();
+        this.HuBtn.active = isHu;//胡
+        if (this.selfmo) {
+            var gang1 = buffer.getByte();
+            var gang2 = buffer.getByte();
+            var gang3 = buffer.getByte();
+            if (gang1 > 0) {
+                this.Gang1.value(gang1);
+                this.Gang1.node.active = true;
+                this.Gangs.active = true;
+            }
+            if (gang2 > 0) {
+                this.Gang2.value(gang2);
+                this.Gang2.node.active = true;
+                this.Gangs.active = true;
+            }
+            if (gang3 > 0) {
+                this.Gang3.value(gang3);
+                this.Gang3.node.active = true;
+                this.Gangs.active = true;
+            }
+        } else {
+            var value = buffer.getByte();
+            var pang = buffer.getByte();
+            var chi = buffer.getByte();
+
+            var chi1: number = chi >> 1 & 1;
+            var chi2: number = chi >> 2 & 1;
+            var chi3: number = chi >> 3 & 1;
+
+            this.Chis.active = chi1 + chi2 + chi3 > 1;
+            this.Chi1.init(chi1 == 1, value, -2);
+            this.Chi1.init(chi2 == 1, value, -1);
+            this.Chi1.init(chi3 == 1, value, 0);
+            this.PangBtn.active = pang > 1;//碰        
+            this.GangBtn.active = pang > 2;//扛  
+            this.ChiBtn.active = chi > 0;//吃
+        }
+    }
+
+    onReply() {
+        this.node.destroy();
+    }
+    /**
+     * 
+     * @param type  0:过,1:吃,2:碰,4:杠,8:胡
+     * @param value 
+     */
+    send(type: number, value: number = 0) {
+        Data.it.im.Call(Protocol.NCMJ_REPLY, this.onReply, this, this.selfmo, type, value);
+    }
+
+    //过
+    guo() {
+        this.send(0);
+    }
+    //吃
+    chi(n) {
+        this.send(1, n);
+    }
+    //碰
+    pang() {
+        this.send(2);
+    }
+    //扛
+    gang(n) {
+        this.send(4, n);
+    }
+    //胡
+    hu() {
+        this.send(8);
+    }
+}

@@ -1,0 +1,40 @@
+rankSubview4=
+{
+	name="rankSubview4",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="top_part",type=0,typeName="View",time=50739207,x=0,y=0,width=0,height=120,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft
+	},
+	{
+		name="sub_part",type=0,typeName="View",time=50739261,x=197,y=120,width=0,height=680,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+		{
+			name="sub_view",type=0,typeName="View",time=50739351,x=40,y=0,width=1200,height=680,fillTopLeftX=40,fillTopLeftY=10,fillBottomRightX=40,fillBottomRightY=0,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+			{
+				name="sub_view_1",type=1,typeName="Image",time=50739850,x=0,y=0,width=1200,height=380,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="rank/listview_bg.png",gridLeft=10,gridRight=10,gridTop=10,gridBottom=10,
+				{
+					name="ListView",type=0,typeName="ListView",time=50741275,x=11,y=10,width=1180,height=360,fillTopLeftX=10,fillTopLeftY=10,fillBottomRightX=10,fillBottomRightY=10,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft
+				},
+				{
+					name="text_nodate",type=4,typeName="Text",time=52912905,x=0,y=0,width=182,height=26,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=26,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[暂无排行榜数据]]
+				}
+			},
+			{
+				name="sub_view_2",type=0,typeName="View",time=50740575,x=0,y=380,width=1200,height=100,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+				{
+					name="text_tip",type=4,typeName="Text",time=50741951,x=20,y=0,width=501,height=33,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignLeft,fontSize=28,textAlign=kAlignLeft,colorRed=255,colorGreen=207,colorBlue=148,string=[[]]
+				},
+				{
+					name="button",type=2,typeName="Button",time=52048708,x=0,y=0,width=220,height=80,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,file="Common/windowsBtnG.png",
+					{
+						name="button_title",type=4,typeName="Text",time=52048712,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=32,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[领取奖励]]
+					}
+				}
+			},
+			{
+				name="sub_view_3",type=1,typeName="Image",time=50740639,x=0,y=480,width=1200,height=140,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="rank/listview_bg.png",gridLeft=10,gridRight=10,gridTop=10,gridBottom=10,
+				{
+					name="view_info",type=0,typeName="View",time=50810392,x=0,y=0,width=1180,height=120,fillTopLeftX=10,fillTopLeftY=10,fillBottomRightX=10,fillBottomRightY=10,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignCenter
+				}
+			}
+		}
+	}
+}

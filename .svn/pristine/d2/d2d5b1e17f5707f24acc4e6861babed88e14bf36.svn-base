@@ -1,0 +1,256 @@
+package game.application;
+
+import java.util.HashMap;
+import java.util.Vector;
+
+import game.data.bean.T_tile;
+import game.data.bean.T_state;
+import game.room.Room;
+import game.utils.Protocol;
+import ge.annotation.RemoteMethod;
+import ge.net.Application;
+
+/**
+ * 南昌麻将
+ */
+public class Player extends Application {
+	public Room room = null;
+	public int userId;
+	public byte index;
+
+	private Vector<T_tile> array = new Vector<T_tile>();
+	private Vector<T_tile> gangs = new Vector<T_tile>(4);
+	private T_tile[] chis = new T_tile[4];
+	public T_state state;
+
+	protected void init() {
+		this.userId = UserID();
+	}
+
+	@RemoteMethod(Protocol.NCMJ_CREATE)
+	public Object[] create(byte num) {
+		room = new Room(userId, num);
+		index = room.into(this);
+		return Result(room.roomId);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_INTO)
+	public Object[] into(int roomId) {
+		room = Room.Find(roomId);
+		if (room != null) {
+			index = room.into(this);
+			return Result(index, room.roomId);
+		}
+		return Result((byte) -2);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_SHUFFLE)
+	public Object[] Shuffle(String s0, String s1, String s2, String s3, String c, short jing) {
+		room.Shuffle(s0, s1, s2, s3, c, jing);
+		return Result((byte) 0);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_PREPARE)
+	public Object[] prepare() {
+		room.prepare(this);
+		return Result(0);
+	}
+
+	public byte pr = 0;
+	public boolean reply = false;
+	public byte dis;
+
+	/**
+	 * 出牌
+	 */
+	@RemoteMethod(Protocol.NCMJ_PLAY)
+	public void play(short id) {
+		reply = true;
+		pr = 0;
+		T_tile o = room.play(this, id);
+		array.remove(o);
+	}
+
+	/**
+	 * 应牌
+	 * 
+	 * @param type:0:过,1:吃,2:碰,4:杠,8:胡
+	 */
+	@RemoteMethod(Protocol.NCMJ_REPLY)
+	public Object[] reply(byte type, short value) {
+		reply = true;
+		pr = type;
+		room.reply();
+		return Result(0);
+	}
+
+	/*
+	 * 最高优先级被调
+	 */
+	public void onReply() {
+		if (reply) {
+			switch (pr) {
+			case 0:
+				// 下一轮摸牌
+
+				break;
+			case 1:
+
+				break;
+			case 2:
+
+				break;
+			case 4:
+
+				break;
+			case 8:
+
+				break;
+			}
+		}
+	}
+
+	@RemoteMethod(Protocol.NCMJ_EXIT)
+	public void exit(byte code) {
+		clear();
+		call(Protocol.NCMJ_EXIT, code);
+	}
+
+	protected void clear() {
+		if (room != null) {
+			room.exit(this);
+			room = null;
+		}
+		if (state != null) {
+			state.clear();
+			state = null;
+		}
+		if (array != null) {
+			array.clear();
+		}
+	}
+
+	// ------------------------------------------------------------
+	/*
+	 * 发牌
+	 */
+	public void perflop(T_tile o) {
+		array.add(o);
+	}
+
+	/*
+	 * 自摸
+	 */
+	public void selfDrawn(T_tile obj) {
+		perflop(obj);
+
+		byte[] e = { -1, -1, -1 };
+		byte i = 0;
+		HashMap<Byte, Vector<T_tile>> m = new HashMap<>();
+		for (T_tile o : array) {
+			Vector<T_tile> v = m.get(o.value);
+			if (v == null) {
+				v = new Vector<>(4);
+				m.put(o.value, v);
+			}
+			v.add(o);
+			if (v.size() == 4) {
+				e[i++] = o.value;
+			}
+		}
+		boolean hu = isHu();
+		if (hu || i > 0) {
+			call(Protocol.NCMJ_OPTIONS, true, hu, e[0], e[1], e[2]);
+		}
+	}
+
+	private static byte[] i1 = { -2, -1, 1, 2 };
+	private static byte[] i2 = { 1, 2 };
+
+	public void onPlay(T_tile obj) {
+		this.dis = (byte) ((index + room.room.num - obj.index) % room.room.num);
+		gangs.clear();
+		for (int i = 0; i < chis.length; i++) {
+			chis[i] = null;
+		}
+		for (T_tile o : array) {
+			if (o.value == obj.value) {
+				gangs.add(o);
+			} else {
+				int t = obj.value / 10;
+				switch (t) {
+				case 0:// 万
+				case 1:// 条
+				case 2:// 筒
+					for (int i = 0; i < i1.length; i++) {
+						if (nearby(obj, i1[i], o)) {
+							chis[i] = o;
+						}
+					}
+					break;
+				case 4:// 东南西北
+					for (int i = 0; i < i1.length; i++) {
+						if (nearby(obj, i1[i], 4, o)) {
+							chis[i] = o;
+						}
+					}
+					break;
+				case 5:// 中发白
+					for (int i = 0; i < i2.length; i++) {
+						if (nearby(obj, i2[i], 3, o)) {
+							chis[i] = o;
+						}
+					}
+					break;
+				}
+			}
+		}
+
+		boolean chi1 = chis[0] != null && chis[1] != null;
+		boolean chi2 = chis[1] != null && chis[2] != null;
+		boolean chi3 = chis[2] != null && chis[3] != null;
+		boolean pang = gangs.size() > 1;
+		boolean gang = gangs.size() > 2;
+		reply = false;
+		pr = 0;
+		if (chi1 || chi2 || chi3) {
+			pr = 1;
+		}
+		if (pang) {
+			pr = 2;
+		}
+		if (gang) {
+			pr = 4;
+		}
+
+		boolean hu = isHu();
+		if (hu) {
+			pr = 8;
+		}
+		if (pr > 0) {
+			call(Protocol.NCMJ_OPTIONS, false, hu, obj.value, pang, gang, chi1, chi2, chi3);
+		}
+		System.out.println(
+				1 + "," + hu + "," + obj.value + "," + pang + "," + gang + "," + chi1 + "," + chi2 + "," + chi3);
+	}
+
+	private boolean isHu() {
+		return false;
+	}
+
+	private boolean nearby(T_tile obj, int offset, int n, T_tile o) {
+		int p = obj.value / 10;
+		int g = (obj.value % 10 + offset + n) % n;
+		int p2 = o.value / 10;
+		int g2 = o.value % 10;
+		return p == p2 && g == g2;
+	}
+
+	private boolean nearby(T_tile obj, int offset, T_tile o) {
+		int p = obj.value / 10;
+		int g = obj.value % 10 + offset;
+		int p2 = o.value / 10;
+		int g2 = o.value % 10;
+		return p == p2 && g == g2;
+	}
+}

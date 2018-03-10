@@ -1,0 +1,25 @@
+package ge.net;
+
+import javax.servlet.http.HttpSession;
+import javax.websocket.HandshakeResponse;
+import javax.websocket.server.HandshakeRequest;
+import javax.websocket.server.ServerEndpointConfig;
+
+public class GetHttpSessionConfigurator extends ServerEndpointConfig.Configurator {
+	@Override
+	public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {
+		System.out.println(request.getHttpSession());
+		HttpSession session = (HttpSession) request.getHttpSession();
+		System.out.println();
+		System.out.println("9999----" + config.getUserProperties() + " " + request + " " + response);
+		// config.getUserProperties().put(HttpSession.class.getName(), httpSession);
+	}
+
+	public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
+		T endpoint = super.getEndpointInstance(endpointClass);
+		if (endpoint instanceof TestWS2) {
+			((TestWS2) endpoint).setHttpSession(); // <-- The injection point
+		}
+		return endpoint;
+	}
+}

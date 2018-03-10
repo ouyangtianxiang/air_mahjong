@@ -1,0 +1,32 @@
+local matchSmallPopWindow=
+{
+	name="matchSmallPopWindow",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignCenter,
+	{
+		name="img_win_bg",type=1,typeName="Image",time=68178312,x=0,y=0,width=632,height=426,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/pop_window_small.png",gridLeft=50,gridRight=50,gridTop=85,gridBottom=50,
+		{
+			name="img_win_inner_bg",type=1,typeName="Image",time=68178524,x=0,y=100,width=524,height=196,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Room/roomActivityBg.png",gridLeft=20,gridRight=20,gridTop=20,gridBottom=20,
+			{
+				name="sv_content",type=0,typeName="ScrollView",time=68178774,x=10,y=9,width=500,height=160,fillTopLeftX=10,fillTopLeftY=10,fillBottomRightX=10,fillBottomRightY=10,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft
+			}
+		},
+		{
+			name="view_title",type=0,typeName="View",time=68179109,x=0,y=0,width=800,height=85,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTop,
+			{
+				name="text_title",type=4,typeName="Text",time=68179328,x=0,y=5,width=164,height=46,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=40,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255
+			}
+		},
+		{
+			name="btn_left",type=2,typeName="Button",time=68179631,x=-120,y=35,width=222,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,file="Commonx/red_big_wide_btn.png",
+			{
+				name="Text1",type=4,typeName="Text",time=68179669,x=0,y=-4,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[取消]]
+			}
+		},
+		{
+			name="btn_right",type=2,typeName="Button",time=68179701,x=130,y=35,width=222,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,file="Commonx/green_big_wide_btn.png",
+			{
+				name="Text2",type=4,typeName="Text",time=68179726,x=0,y=-4,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[确定]]
+			}
+		}
+	}
+}
+return matchSmallPopWindow;

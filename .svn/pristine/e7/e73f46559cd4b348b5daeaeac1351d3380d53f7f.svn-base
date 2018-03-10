@@ -1,0 +1,85 @@
+package game.room.ncmahjong;
+
+import java.util.ArrayList;
+
+public class HUState {
+	public byte fangPao;
+
+	public boolean tianHU;
+	public boolean minSevenPairs;
+	public boolean thirteenRotten;
+	public boolean mevius;
+	public boolean deGuo;
+	public boolean maxSevenPairs;
+	public boolean qiangGang;
+	public boolean gangKai;
+	public boolean deZhongDe;
+	public boolean jingDiao;
+
+	private MJPlayer player;
+
+	public HUState(MJPlayer player, byte order, byte fangPao) {
+		this.player = player;
+		this.fangPao = fangPao;
+		tianHU = order == 0;
+	}
+
+	public int score = 1;
+	public int award = 0;
+
+	public ArrayList<Object> statistics(int sumjing, byte baWangJing) {
+		deZhongDe = deGuo && sumjing == 0;
+
+		ArrayList<Object> list = new ArrayList<>();
+		list.add(player.index);
+		list.add(fangPao);
+		list.add(baWangJing);
+		if (fangPao == -1) {
+			score *= 2;
+		}
+		if (tianHU) {
+			score *= 2;
+			list.add((byte) 0);
+		}
+		if (minSevenPairs) {
+			score *= 2;
+			list.add((byte) 1);
+		}
+		if (thirteenRotten) {
+			score *= 2;
+			if (mevius) {
+				score *= 2;
+				list.add((byte) 2);
+			} else {
+				list.add((byte) 3);
+			}
+		}
+		if (deGuo) {
+			score *= 2;
+			award += 5;
+			list.add((byte) 4);
+		}
+		if (maxSevenPairs) {
+			score *= 2;
+			list.add((byte) 5);
+		}
+		if (qiangGang) {
+			score *= 2;
+			list.add((byte) 6);
+		}
+		if (gangKai) {
+			score *= 2;
+			list.add((byte) 7);
+		}
+		if (deZhongDe) {
+			score *= 2;
+			list.add((byte) 8);
+		}
+		if (jingDiao) {
+			score *= 2;
+			award += 5;
+			list.add((byte) 9);
+		}
+		return list;
+	}
+}

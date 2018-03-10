@@ -1,0 +1,128 @@
+const { ccclass, property } = cc._decorator;
+import Tile from "./Tile";
+import Global from "../utils/Global";
+import Music from "../utils/Music";
+
+@ccclass
+export default class Player extends cc.Component {
+    @property({ default: 0 })
+    azimuth = 0;
+
+    @property({ default: null, type: cc.Prefab })
+    H: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    W: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    M: cc.Prefab;
+
+    @property({ default: null, type: cc.Prefab })
+    E: cc.Prefab;
+
+    @property({ default: null, type: cc.Node })
+    layout1: cc.Node;
+
+    @property({ default: null, type: cc.Node })
+    layout2: cc.Node;
+
+    @property({ default: null, type: cc.Node })
+    open: cc.Node;
+
+    @property({ default: null, type: cc.Node })
+    ok: cc.Node;
+
+    @property({ default: null, type: cc.Sprite })
+    icon: cc.Sprite;
+
+    @property({ default: null, type: cc.Node })
+    banker: cc.Node;
+
+    @property({ default: null, type: cc.Label })
+    nickname: cc.Label;
+
+    @property({ default: null, type: cc.Label })
+    score: cc.Label;
+
+    @property({ default: null, type: cc.Label })
+    ip: cc.Label;
+
+    index: number;
+    map: object = {};
+
+    onImage(err, texture) {
+        this.icon.spriteFrame.setTexture(texture)
+    }
+
+    onLoad() {
+    }
+
+    state(o) {
+        this.ok.active = o.state == 1;
+        this.nickname.string = o.nickname;
+        this.score.string = o.score;
+        //this.banker.active=
+        this.ip.string = Global.StringIP(o.ip);
+        cc.loader.load(o.url, this.onImage.bind(this));
+
+    }
+    Brand(o) {
+        var tile: cc.Node = this.map[o.id];
+        if (tile) {
+            delete this.map[o.id];
+            tile.destroy();
+        }
+        if (o.index == this.index) {
+            switch (o.state) {
+                case 0:
+                    tile = cc.instantiate(this.H);
+                    this.layout1.addChild(tile);
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3://吃
+                    tile = cc.instantiate(this.W);
+                    this.layout1.addChild(tile);
+                    break;
+                case 4://碰
+                    tile = cc.instantiate(this.W);
+                    //tile.zIndex = o.id;
+                    this.layout1.addChild(tile);
+                    break;
+                case 5://明杠
+                case 6://暗杠
+                case 7://胡牌TTT
+                case 8://胡牌TT
+                    tile = cc.instantiate(this.W);
+                    this.layout1.addChild(tile);
+                    break;
+                case 10://出牌
+                    Music.voice(o.value);
+                    tile = cc.instantiate(this.W);
+                    this.open.addChild(tile);
+                    break;
+                case 11:
+                    tile = cc.instantiate(this.W);
+                    this.layout2.addChild(tile);
+                    break;
+            }
+            this.map[o.id] = tile;
+            tile.zIndex = o.order * 100 + o.id;
+
+            var brand: Tile = tile.getComponent<Tile>(Tile);
+            if (brand) {
+                brand.obj(o);
+            }
+        }
+    }
+
+
+    clear() {
+        this.ok.active = false;
+        this.nickname.string = "";
+        this.banker.active = false;
+        this.ip.string = "";
+    }
+}

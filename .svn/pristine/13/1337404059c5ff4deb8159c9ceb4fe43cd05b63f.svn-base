@@ -1,0 +1,67 @@
+
+var Global = require("./utils/Global.js");
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+
+        IntoRoom: {
+            default: null,
+            type: cc.Prefab,
+        },
+        CreateRoom: {
+            default: null,
+            type: cc.Prefab,
+        },
+
+        UserID: {
+            default: null,
+            type: cc.Label
+        },
+        RoomCard: {
+            default: null,
+            type: cc.Label
+        },
+    },
+
+    // use this for initialization
+    onLoad: function () {
+        this.UserID.string = "ID:123456789";
+        this.RoomCard.string = "34";
+
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+
+    },
+
+
+    onKeyDown: function (event) {
+        switch (event.keyCode) {
+            case 27:
+                Global.ShowDataView();
+                break;
+        }
+    },
+
+    // called every frame, uncomment this function to activate update callback
+    // update: function (dt) {
+
+    // },
+
+    createRoom: function () {
+        var scene = cc.director.getScene();
+        var node = cc.instantiate(this.CreateRoom);
+
+        node.parent = scene;
+    },
+
+    intoRoom: function () {
+        var scene = cc.director.getScene();
+        var node = cc.instantiate(this.IntoRoom);
+
+        node.parent = scene;
+    },
+
+    showTable: function () {
+    }
+
+});

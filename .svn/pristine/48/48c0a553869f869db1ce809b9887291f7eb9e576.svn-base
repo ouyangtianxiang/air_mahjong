@@ -1,0 +1,262 @@
+package game.room;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Timer;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+
+import game.application.Player;
+import game.data.bean.T_room;
+import game.data.bean.T_state;
+import game.data.bean.T_tile;
+import game.room.task.DrawTile;
+import game.room.task.Extractive;
+import game.room.task.Perflop;
+import game.room.task.Tick;
+import game.utils.Protocol;
+import ge.db.Table;
+import ge.net.Buffer;
+import ge.net.Call;
+
+public class Room extends Call {
+	protected static ConcurrentHashMap<Integer, Room> ROOMS = new ConcurrentHashMap<Integer, Room>();
+
+	public static Room Find(int roomId) {
+		Room room = ROOMS.get(roomId);
+		return room;
+	}
+
+	private synchronized static int CreataID() {
+		int id = 0;
+		do {
+			id = (int) (100000 + Math.random() * 900000);
+		} while (ROOMS.containsKey(id));
+		return id;
+	}
+
+	public Timer timer = new Timer();
+	public Player[] map;
+	public byte banker = 0;
+
+	public final int roomId;
+
+	private Table<T_tile> t_tile = new Table<T_tile>(T_tile.class, null);
+	private Table<T_state> t_state = new Table<T_state>(T_state.class, null);
+	private Table<T_room> t_room = new Table<T_room>(T_room.class, null);
+
+	public Vector<T_tile> array;
+
+	public T_room room;
+	/**
+	 * 正精
+	 */
+	public byte main;
+	/**
+	 * 副精
+	 */
+	public byte vice;
+	/**
+	 * 定时器任务
+	 */
+	public Tick tick;
+	// 发牌
+	public Perflop perflop;
+	public Extractive extractive;
+	public DrawTile drawTile;
+	public byte num;
+
+	public Room(int userId, byte num) {
+		this.roomId = CreataID();
+		this.num = num;
+		map = new Player[num];
+		ROOMS.put(roomId, this);
+		tick = new Tick(this);
+		perflop = new Perflop(this);
+		extractive = new Extractive(this);
+		drawTile = new DrawTile(this);
+
+		room = new T_room(t_room, roomId, userId, num, banker, (byte) -1, (byte) 0, (byte) 0);
+
+		short id = 1;
+		for (byte b : MJ.TILE) {
+			for (int i = 0; i < 4; i++) {
+				new T_tile(t_tile, id++, b, (byte) 0, (byte) 0, (byte) -1);
+			}
+		}
+		array = t_tile.getList(null);
+		for (T_tile o : array) {
+			o.order = (byte) (Math.random() * 127);
+		}
+		array.sort(new Comparator<T_tile>() {
+			public int compare(T_tile a, T_tile b) {
+				return a.order - b.order;
+			}
+		});
+	}
+
+	public Player banker() {
+		return map[banker];
+	}
+
+	private byte index() {
+		for (byte i = 0; i < map.length; i++) {
+			if (map[i] == null) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public synchronized byte into(Player player) {
+		byte i = index();
+		if (i >= 0) {
+			map[i] = player;
+			t_tile.addListener(player);
+			t_state.addListener(player);
+			t_room.addListener(player);
+			String nickname = "txoy " + i;
+			int ip = 0;
+			String url = "http://mj.game1982.com/1.jpg";
+			player.state = new T_state(t_state, player.userId, i, (byte) 0, nickname, ip, url, 0);
+		}
+		return i;
+	}
+
+	/**
+	 * 准备
+	 */
+	public void prepare(Player mj) {
+		T_state ts = t_state.get(mj.userId);
+		ts.state = 1;
+		ts.update();
+
+		for (Player p : map) {
+			if (p == null || p.state.state == 0) {
+				return;
+			}
+		}
+		startGame();
+	}
+
+	/**
+	 * 出牌
+	 */
+	public T_tile play(Player player, short id) {
+		room.play = -1;
+		room.update();
+		tick.cancel();
+		T_tile o = t_tile.get(id);
+		o.state = 10;
+		o.update();
+		for (Player p : map) {
+			if (p != player && p != null) {
+				p.onPlay(o);
+			}
+		}
+		System.out.println(o);
+		return o;
+	}
+
+	/**
+	 * 应牌
+	 */
+	public void reply() {
+		Player p = null;
+		for (Player o : map) {
+			if (p == null || p.pr < o.pr || p.pr == o.pr && p.dis > o.dis) {
+				p = o;
+			}
+		}
+		p.onReply();
+	}
+
+	private void startGame() {
+		perflop.start();
+	}
+
+	public void exit(Player player) {
+		t_state.del(player.userId);
+
+		t_tile.removeListener(player);
+		t_state.removeListener(player);
+		t_room.removeListener(player);
+		map[player.index] = null;
+		if (player.userId == room.owner) {
+			destroy();
+		}
+	}
+
+	public void destroy() {
+		timer.cancel();
+		ROOMS.remove(roomId);
+		for (Player p : map) {
+			if (p != null) {
+				p.exit((byte) 1);
+			}
+		}
+		t_tile.clear();
+		t_state.clear();
+		t_room.clear();
+		t_tile = null;
+		t_state = null;
+		t_room = null;
+	}
+
+	public void Send(Buffer buffer) {
+		for (Player p : map) {
+			if (p != null) {
+				buffer.rewind();
+				p.Send(buffer);
+			}
+		}
+	}
+
+	public void Shuffle(String s0, String s1, String s2, String s3, String c, short jing) {
+		String strs[][] = { s0.split(","), s1.split(","), s2.split(","), s3.split(",") };
+		String cstr[] = c.split(",");
+		array.clear();
+		for (int i = 0; i < 13; i++) {
+			for (int j = 0; j < 4; j++) {
+				T_tile o = t_tile.get(Integer.parseInt(strs[j][i]));
+				array.add(o);
+			}
+		}
+		array.add(t_tile.get(jing));
+		for (String k : cstr) {
+			T_tile o = t_tile.get(Integer.parseInt(k));
+			array.add(o);
+		}
+	}
+
+	public void hu(Player player) {
+		int sumJing = 0;
+		for (Player p : map) {
+			sumJing += p.mj.jing();
+		}
+		for (Player p : map) {
+			p.mj.BaWangJing(sumJing);
+			int score = p.mj.jing * (num - 1) - (sumJing - p.mj.jing);
+			p.state.score += score;
+			p.state.update();
+		}
+
+		ArrayList<Object> array = new ArrayList<Object>();
+		array.add(player.index);
+		array.add(player.isBanker());
+		array.add(player.mj.isSelfMo);
+		array.add(player.mj.isTianHU);
+		array.add(player.mj.isMinSevenPairs);
+		array.add(player.mj.isThirteenRotten);
+		array.add(player.mj.isMevius);
+		array.add(player.mj.FangPao);
+		array.add(player.mj.isDeGuo);
+		array.add(player.mj.isMaxSevenPairs);
+		array.add(player.mj.isQiangGang);
+		array.add(player.mj.isGangHua);
+		array.add(player.mj.isDeZhongDe);
+		array.add(player.mj.isJingDiao);
+		array.add(player.mj.isBaWangJing);
+		call(Protocol.NCMJ_HU, array);
+	}
+}

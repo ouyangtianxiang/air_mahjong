@@ -1,0 +1,195 @@
+package test;
+
+/**
+ *
+ * @author 奔跑 QQ:361817468
+ */
+public class Mahjong {
+	private static Tile22[] remove(Tile22[] tiles, int[] indexs) {
+		int len = tiles.length - indexs.length;
+		if (len > 0) {
+			Tile22[] news = new Tile22[len];
+			int index = 0;
+			for (int i = 0; i < tiles.length; i++) {
+				boolean isAppend = true;
+				for (int j = 0; j < indexs.length; j++) {
+					if (i == indexs[j]) {
+						isAppend = false;
+						break;
+					}
+				}
+				if (isAppend) {
+					news[index] = tiles[i];
+					index++;
+				}
+			}
+			return news;
+		}
+		return null;
+	}
+
+	// 从数组长度为arrayLen的整形数组中任意抽取两个元素，把所有可能的组合的索引列成一个二位数组返回出来
+	private static int[][] tts(int arrayLen) {
+		int len = (arrayLen * (arrayLen - 1)) / 2;
+		if (len > 0) {
+			int[][] indexs = new int[len][2];
+			int index = 0;
+			for (int i = 0; i < arrayLen; i++) {
+				for (int j = (i + 1); j < arrayLen; j++) {
+					indexs[index][0] = i;
+					indexs[index][1] = j;
+					index++;
+				}
+			}
+
+			return indexs;
+		} else {
+			return null;
+		}
+	}
+
+	// 从数组长度为arrayLen的整形数组中任意抽取两个元素，把所有可能的组合的索引列成一个二位数组返回出来
+	private static int[][] ttts(int arrayLen) {
+		int len = (arrayLen * (arrayLen - 1) * (arrayLen - 2)) / 6;
+		if (len > 0) {
+			int[][] indexs = new int[len][3];
+			int index = 0;
+			for (int i = 0; i < arrayLen; i++) {
+				for (int j = (i + 1); j < arrayLen; j++) {
+					for (int k = (j + 1); k < arrayLen; k++) {
+						indexs[index][0] = i;
+						indexs[index][1] = j;
+						indexs[index][2] = k;
+						index++;
+					}
+				}
+			}
+			return indexs;
+		} else {
+			return null;
+		}
+	}
+
+	private static Tile22[][] append(Tile22[][] tileses, Tile22[] tiles) {
+		if (tileses == null) {
+			Tile22[][] re = new Tile22[1][];
+			re[0] = tiles;
+			return re;
+		} else {
+			Tile22[][] re = new Tile22[tileses.length + 1][];
+			System.arraycopy(tileses, 0, re, 0, tileses.length);
+			re[tileses.length] = tiles;
+			return re;
+		}
+	}
+
+	public static Tile22[][] trys(Tile22[] mahjongTiles, int twoNum, int threeNum) {
+		return trys(mahjongTiles, twoNum, threeNum, null);
+	}
+
+	private static Tile22[][] trys(Tile22[] tiles, int twoNum, int threeNum, Tile22[][] tileses) {
+		if (tiles == null) {
+			if (twoNum == 0 && threeNum == 0) {
+				return tileses;
+			} else {
+				return null;
+			}
+		}
+		if (tiles.length == ((twoNum * 2) + (threeNum * 3))) {
+			if (threeNum > 0) {
+				int[][] indexs = ttts(tiles.length);
+				if (indexs == null) {
+					return null;
+				}
+
+				for (int[] index : indexs) {
+					if (tiles[index[0]].isCanThree(tiles[index[1]], tiles[index[2]])) {
+						Tile22[][] cache = append(tileses,
+								new Tile22[] { tiles[index[0]], tiles[index[1]], tiles[index[2]] });
+						Tile22[][] re = trys(remove(tiles, new int[] { index[0], index[1], index[2] }), twoNum,
+								threeNum - 1, cache);
+						if (re != null) {
+							return re;
+						}
+					}
+				}
+			} else if (twoNum > 0) {
+				int[][] indexs = tts(tiles.length);
+				if (indexs == null) {
+
+					return null;
+				}
+				for (int[] index : indexs) {
+					if (tiles[index[0]].isCanTwo(tiles[index[1]])) {
+						Tile22[][] cache = append(tileses, new Tile22[] { tiles[index[0]], tiles[index[1]] });
+						Tile22[][] re = trys(remove(tiles, new int[] { index[0], index[1] }), twoNum - 1, threeNum,
+								cache);
+						if (re != null) {
+							return re;
+						}
+					}
+				}
+			} else {
+				return tileses;
+			}
+		}
+		return null;
+	}
+
+	public static void main(String[] args) throws Exception {
+		/**
+		 * ➀➁➂➃➄➅➆➇➈➊➋➌➍➎➏➐➑➒㊀㊁㊂㊃㊄㊅㊆㊇㊈东南西北中发白
+		 */
+
+		long time = System.currentTimeMillis();
+		String str = "➀➀➀➀➁➁➁➁➂➂➂➂➃西";
+		Tile22[] tiles = new Tile22[str.length()];
+		for (int i = 0; i < tiles.length; i++) {
+			tiles[i] = new Tile22(str.charAt(i));
+		}
+
+		System.out.println("检查所有下列牌:");
+		for (int i = 0; i < tiles.length; i++) {
+			if (i != 0) {
+				System.out.print(",");
+			}
+			System.out.print(tiles[i]);
+		}
+		System.out.println("");
+		Tile22[][] tileses = trys(tiles, 1, 4);
+		if (tileses != null) {
+			System.out.println("检查通过!");
+			System.out.println("组合结果如下:");
+			int twoIndex = 1;
+			int threeIndex = 1;
+			for (Tile22[] row : tileses) {
+				if (row.length == 2) {
+					System.out.print("第" + twoIndex + "对组合：");
+					for (int j = 0; j < row.length; j++) {
+
+						if (j != 0) {
+							System.out.print(",");
+						}
+						System.out.print(row[j]);
+					}
+					System.out.println("");
+					twoIndex++;
+				} else if (row.length == 3) {
+					System.out.print("第" + threeIndex + "趟组合：");
+					for (int j = 0; j < row.length; j++) {
+
+						if (j != 0) {
+							System.out.print(",");
+						}
+						System.out.print(row[j]);
+					}
+					System.out.println("");
+					threeIndex++;
+				}
+			}
+		} else {
+			System.out.println("检查未通过!");
+		}
+		System.out.println(System.currentTimeMillis() - time);
+	}
+}

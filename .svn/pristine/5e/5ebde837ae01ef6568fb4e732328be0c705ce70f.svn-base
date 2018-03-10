@@ -1,0 +1,104 @@
+const { ccclass, property } = cc._decorator;
+import IM from "./IM2";
+import Global2 from "../utils/Global2";
+import Protocol2 from "./Protocol2";
+import Table2 from "./Table2";
+
+@ccclass
+export default class Data2 {
+    public static it: Data2 = new Data2();
+    im: IM;
+    tables: Array<any> = [];
+    tableMap: any = {};
+    userId: number;
+    name: string = "data1234";
+
+    constructor() {
+    }
+
+    Connent() {
+        this.im = new IM(this, "ws://127.0.0.1:8080/Server/websocket2");
+    }
+
+    onOpen(event) {
+        //有可能不回调
+        console.log("连接成功" + this.name);
+    }
+
+    onError(event) {
+        Global2.ShowWindow("Tips", "连接失败！");
+    }
+
+    onClose(event) {
+        Global2.ShowWindow("Tips", "连接断开！");
+    }
+
+    onServerTime(time, str) {
+        console.log("TIME:" + time + " " + str);
+    }
+
+    onUserData(event) {
+        console.log("onUserData()");
+        Global2.KeyEvent();
+        Global2.GotoScene("Hall");
+    }
+
+    onLogin(event) {
+        this.userId = event.detail.getInt();
+        this.im.Call(Protocol2.LOGIN_USER_DATA, this.onUserData, this);
+    }
+
+    Login(passId) {
+        cc.sys.localStorage.setItem('passId', passId);
+        console.log("passId:", passId);
+        this.im.Call(Protocol2.LOGIN, this.onLogin, this, "ssss", 19, passId, 456);
+    }
+
+    Init(buffer) {
+        var hc = buffer.getUByte();
+        var name = buffer.getUTF();
+        var table = this.tableMap[name];
+        if (table == null) {
+            table = new Table2(name);
+            this.tableMap[name] = table;
+        }
+        table.Init(buffer);
+        this.tables[hc] = table;
+    }
+
+    Insert(buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Insert(buffer);
+            console.log("Insert " + table.name);
+        }
+    }
+
+    Delete(buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Delete(buffer);
+            console.log("Delete " + table.name);
+        }
+    }
+
+    Update(buffer) {
+        var hc = buffer.getUByte();
+        var table = this.tables[hc];
+        if (table != null) {
+            table.Update(buffer);
+            console.log("Update " + table.name);
+        }
+    }
+
+    Table(name) {
+        var table = this.tableMap[name];
+        if (table == null) {
+            table = new Table2(name);
+            this.tableMap[name] = table;
+        }
+        return table;
+    }
+}

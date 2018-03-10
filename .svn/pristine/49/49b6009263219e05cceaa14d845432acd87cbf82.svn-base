@@ -1,0 +1,54 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class PlayerInfo extends cc.Component {
+
+    @property({ type: cc.Node })
+    ok: cc.Node;
+
+    @property({ type: cc.Sprite })
+    icon: cc.Sprite;
+
+    @property({ type: cc.Node })
+    banker: cc.Node;
+
+    @property({ type: cc.Label })
+    nickname: cc.Label;
+
+    @property({ type: cc.Label })
+    score: cc.Label;
+
+    @property({ type: cc.Vec2 })
+    pos: cc.Vec2 = new cc.Vec2(0, 0);
+
+    onImage(err, texture) {
+        this.icon.spriteFrame.setTexture(texture)
+    }
+
+    onLoad() {
+        this.clear();
+    }
+
+    startGame() {
+        this.ok.active = false;
+        this.nickname.node.active = false;
+        this.banker.active = false;
+
+        this.node.runAction(cc.moveTo(0.5, this.pos));
+    }
+
+    state(o, room) {
+        this.ok.active = o.state == 1;
+        this.nickname.string = o.nickname;
+        this.score.string = o.score;
+        this.banker.active = o.index == room.banker;
+        cc.loader.load(o.url, this.onImage.bind(this));
+    }
+
+    clear() {
+        this.ok.active = false;
+        this.nickname.string = "";
+        this.score.string = "";
+        this.banker.active = false;
+    }
+}

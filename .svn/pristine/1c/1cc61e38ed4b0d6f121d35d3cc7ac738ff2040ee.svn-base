@@ -1,0 +1,34 @@
+
+const { ccclass, property } = cc._decorator;
+
+import Global2 from "../utils/Global2";
+import Protocol2 from "../net/Protocol2";
+import Data2 from "../net/Data2";
+
+@ccclass
+export default class Login extends cc.Component {
+    @property(cc.Label)
+    UserID: cc.Label;
+    @property(cc.Label)
+    RoomCard: cc.Label;
+
+    onLoad() {
+        var obj = Data2.it.Table("U_data").getObj();
+        this.RoomCard.string = obj.roomCard;
+        this.UserID.string = "ID:" + obj.userId;
+    }
+
+    createRoom() {
+        Global2.ShowWindow("CreateRoom");
+    }
+
+    intoRoom() {
+        Global2.ShowWindow("IntoRoom");
+    }
+
+    btnClick(event, data) {
+        if (data) {
+            Global2.ShowWindow(data);
+        }
+    }
+}

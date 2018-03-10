@@ -1,0 +1,107 @@
+package ge.db;
+
+import ge.Config;
+import ge.annotation.PrimaryKey;
+import ge.log.Log;
+
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+
+public class DB {
+
+	static {
+		try {
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static Map<Thread, Connection> Conns = new HashMap<Thread, Connection>();
+
+	public static Connection Conn() {
+		Thread thread = Thread.currentThread();
+
+		Connection conn = null;
+		if (Conns.containsKey(thread)) {
+			conn = Conns.get(thread);
+		}
+		try {
+			if (conn == null || !conn.isValid(0)) {
+				String ip = Config.get("DatabaseIP");
+				String port = Config.get("DatabasePort");
+				String name = Config.get("DatabaseName");
+				String username = Config.get("DatabaseUsername");
+				String password = Config.get("DatabasePassword");
+				String url = "jdbc:mysql://" + ip + ":" + port + "/" + name + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false";
+				conn = (Connection) DriverManager.getConnection(url, username, password);
+				Log.System(thread, "->", conn);
+				Conns.put(thread, conn);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return conn;
+	}
+
+	private static DB db = new DB();
+
+	public static DB get() {
+
+		return db;
+	}
+
+	private DB() {
+	}
+
+	private HashMap<Class<? extends Bean>, Integer> MaxKey = new HashMap<Class<? extends Bean>, Integer>();
+
+	public synchronized int Key(Class<? extends Bean> c) {
+		Statement st = null;
+		ResultSet rs = null;
+		try {
+			if (!MaxKey.containsKey(c)) {
+				st = DB.Conn().createStatement();
+				String tablename = c.getSimpleName().toLowerCase();
+				Field[] fields = c.getDeclaredFields();
+				String keyname = fields[c.getAnnotation(PrimaryKey.class).value()].getName();
+				String sql = "SELECT MAX(" + keyname + ") AS e FROM " + tablename;
+				rs = st.executeQuery(sql);
+				int v = 0;
+				if (rs.next()) {
+					v = rs.getInt(1);
+				}
+				if (v < 1000000) {
+					v = 1000001;
+				}
+				Log.System(tablename, "->", keyname, ":MaxKey(", v, ")");
+				MaxKey.put(c, v + 1);
+			}
+			int v = MaxKey.get(c);
+			MaxKey.put(c, v + 1);
+			return v;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("BD::Key", e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+					rs = null;
+				}
+				if (st != null) {
+					st.close();
+					st = null;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}

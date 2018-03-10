@@ -1,0 +1,39 @@
+package game.room.task;
+
+import game.data.bean.T_tile;
+import game.room.Room;
+
+public class Extractive extends Task {
+	private static byte arr[] = { 9, 9, 9, 4, 3 };
+
+	public Extractive(Room room) {
+		super(room);
+	}
+
+	public void start() {
+		super.start(500);
+	}
+
+	@Override
+	public void run() {
+		T_tile o = room.getTile();
+		o.index = 5;
+		int id = o.id - (o.id - 1) % 4;
+		for (int i = 0; i < 4; i++) {
+			T_tile t = room.t_tile.get(id++);
+			t.jing = 2;
+			t.update();
+		}
+		int p = arr[o.value / 10];
+		if (o.value % 10 == p) {
+			id -= p * 4;
+		}
+		for (int i = 0; i < 4; i++) {
+			T_tile t = room.t_tile.get(id++);
+			t.jing = 1;
+			t.update();
+		}
+		room.startGame.start();
+	}
+
+}

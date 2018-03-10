@@ -1,0 +1,34 @@
+
+const { ccclass, property } = cc._decorator;
+@ccclass
+export default class IPlayer extends cc.Component {
+
+    @property()
+    azimuth = 0;
+
+    @property({ type: cc.Prefab })
+    H: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    W: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    Tiles: cc.Prefab;
+
+    @property(cc.Vec2)
+    pos1: cc.Vec2 = new cc.Vec2();
+
+    @property(cc.Vec2)
+    pos2: cc.Vec2 = new cc.Vec2();
+
+    index: number;
+    clear() {
+
+    }
+    sort() {
+
+    }
+
+    Brand(o) { }
+
+}

@@ -1,0 +1,210 @@
+package ge.net;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import ge.annotation.RemoteMethod;
+import ge.application.SystemApplication;
+import ge.log.Log;
+import ge.pthread.SwapThread;
+
+public class Handler implements Runnable {
+	private final static int MAX = 255;
+	private final static Method[] METHODS = new Method[MAX];
+	private final static Buffer PARAM_TYPE = new Buffer();
+
+	public static synchronized void send(Sync client) {
+		PARAM_TYPE.reset();
+		client.Send(PARAM_TYPE);
+	}
+
+	public static void init() {
+		PARAM_TYPE.putByte((byte) 4);
+		String classPath = Handler.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		Log.System("LoadApplication......", classPath);
+		Method(SystemApplication.class);
+		File file = new File(classPath);
+		if (file.isFile()) {
+			JarFile jarFile;
+			try {
+				jarFile = new JarFile(file);
+				Enumeration<JarEntry> entrys = jarFile.entries();
+				while (entrys.hasMoreElements()) {
+					JarEntry jarEntry = entrys.nextElement();
+					loadApp(jarEntry.getName());
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			dir(file.listFiles());
+		}
+		PARAM_TYPE.flip();
+		Log.System("LoadComplete!!!");
+	}
+
+	private static void dir(File[] files) {
+		for (File file : files) {
+			if (file.isDirectory()) {
+				dir(file.listFiles());
+			} else {
+				loadApp(file.getPath());
+			}
+		}
+	}
+
+	private static void loadApp(String path) {
+		try {
+			path = path.replaceAll("\\\\", ".");
+			path = path.replaceAll("/", ".");
+			int begin = path.lastIndexOf("game.application");
+			int end = path.lastIndexOf(".class");
+			if (begin != -1 && end != -1) {
+				path = path.substring(begin, end);
+				Class<?> C = Class.forName(path);
+				Method(C);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void Method(Class<?> C) {
+		if (C.getSuperclass().equals(Application.class)) {
+			Method[] methods = C.getMethods();
+			for (Method method : methods) {
+				if (method.getDeclaringClass().equals(C)) {
+					RemoteMethod rm = method.getAnnotation(RemoteMethod.class);
+					if (rm != null) {
+						byte v = rm.value();
+						Log.System(C.getResource("") + C.getSimpleName() + "." + method.getName(), "-->", v);
+						if (METHODS[v] != null) {
+							throw new Error(METHODS[v].getDeclaringClass().getSimpleName() + "." + METHODS[v].getName()
+									+ " AND " + method.getDeclaringClass().getSimpleName() + "." + method.getName()
+									+ " @RemoteMethod.value(" + v + ")冲突");
+						}
+						METHODS[v] = method;
+						Parame(v, method);
+					}
+				}
+			}
+		}
+	}
+
+	private static void Parame(byte code, Method method) {
+		PARAM_TYPE.putByte(code);
+		Class<?>[] c = method.getParameterTypes();
+		PARAM_TYPE.putByte((byte) c.length);
+		for (int j = 0; j < c.length; j++) {
+			PARAM_TYPE.putByte(pTypes.get(c[j]));
+		}
+	}
+
+	private static Object[] Parames(Method method, Buffer buffer) {
+		Class<?>[] c = method.getParameterTypes();
+		Object[] parame = new Object[c.length];
+		for (int j = 0; j < c.length; j++) {
+			parame[j] = Parame(c[j], buffer);
+		}
+		return parame;
+	}
+
+	private static Object Parame(Class<?> t, Buffer buffer) {
+		Object v = null;
+		if (t.equals(Buffer.class)) {
+			v = buffer;
+		} else if (t.equals(boolean.class)) {
+			v = buffer.getBoolean();
+		} else if (t.equals(byte.class)) {
+			v = buffer.getByte();
+		} else if (t.equals(short.class)) {
+			v = buffer.getShort();
+		} else if (t.equals(int.class)) {
+			v = buffer.getInt();
+		} else if (t.equals(long.class)) {
+			v = buffer.getLong();
+		} else if (t.equals(float.class)) {
+			v = buffer.getFloat();
+		} else if (t.equals(double.class)) {
+			v = buffer.getDouble();
+		} else if (t.equals(String.class)) {
+			v = buffer.getUTF();
+		} else {
+			throw new Error("不支持的类型：" + t.getSimpleName());
+		}
+		return v;
+	}
+
+	public static HashMap<Class<?>, Byte> pTypes = new HashMap<Class<?>, Byte>();
+	static {
+		pTypes.put(Buffer.class, (byte) 0);
+		pTypes.put(boolean.class, (byte) 1);
+		pTypes.put(byte.class, (byte) 2);
+		pTypes.put(short.class, (byte) 3);
+		pTypes.put(int.class, (byte) 4);
+		pTypes.put(long.class, (byte) 5);
+		pTypes.put(float.class, (byte) 6);
+		pTypes.put(double.class, (byte) 7);
+		pTypes.put(String.class, (byte) 8);
+	}
+
+	// ---------------------------------------
+	private Client client;
+	private Buffer buffer;
+	private byte code;
+
+	public Handler(Client client, Buffer buffer) {
+		code = buffer.getByte();
+		if (METHODS[code] == null) {
+			System.err.println("不存在的方法(" + code + ")");
+			return;
+		}
+		this.client = client;
+		this.buffer = buffer;
+		SwapThread.IT.push(this);
+	}
+
+	public void run() {
+		buffer.mark();
+		Method method = METHODS[code];
+		try {
+			Application app = client.app(method);
+			if (app != null) {
+				Object[] parames = Parames(method, buffer);
+				Object[] result = (Object[]) method.invoke(app, parames);
+				if (result != null) {
+					buffer.reset();
+					buffer.putArray(result);
+					buffer.flip();
+					client.Send(buffer);
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Handler::handler(" + code + ")" + client);
+			try {
+				ByteArrayOutputStream byteArray = new ByteArrayOutputStream(1024);
+				PrintStream ps = new PrintStream(byteArray);
+				e.printStackTrace(ps);
+				Buffer buffer = new Buffer();
+				buffer.putByte((byte) 9);// 逻辑报错
+				buffer.putUTF(byteArray.toString("utf-8"));
+				buffer.flip();
+				client.Send(buffer);
+			} catch (UnsupportedEncodingException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			client = null;
+			buffer = null;
+		}
+	}
+}

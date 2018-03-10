@@ -1,0 +1,152 @@
+const { ccclass, property } = cc._decorator;
+import Tile from "./Tile";
+import Tiles from "./Tiles";
+import Global from "../utils/Global";
+import Music from "../utils/Music";
+import IPos from "./IPos"
+import IPlayer from "./IPlayer"
+
+@ccclass
+export default class PlayerSelf extends IPlayer {
+
+
+    map: object = {};
+    map2: object = {};
+
+    groups: object = {};
+
+    x: number = 100;
+    x2: number = 150;
+    rank: boolean = false;
+
+
+    pushTiles(o): Tiles {
+        var tiles: Tiles = this.groups[o.order];
+        if (tiles == null) {
+            var node = cc.instantiate(this.Tiles);
+            node.anchorX = 0.18;
+            tiles = node.getComponent<Tiles>(Tiles);
+            this.node.addChild(node);
+            node.x = this.x;
+            node.y = 55;
+            tiles.order = o.order;
+            this.groups[o.order] = tiles;
+            this.x += 180;
+        }
+        tiles.push(o);
+        return tiles;
+    }
+
+    pushTile(o): Tile {
+        var tile: Tile = this.map[o.id];
+        if (tile == null) {
+            var node: cc.Node = cc.instantiate(this.H);
+            tile = node.getComponent<Tile>(Tile);
+            this.node.addChild(node);
+            node.x = this.x;
+            node.y = 55;
+            this.x += 68;
+            this.map[o.id] = tile;
+        }
+        tile.obj(o);
+        return tile;
+    }
+
+    pushTile2(o): Tile {
+        var tile: Tile = this.map2[o.id];
+        if (tile == null) {
+            var node: cc.Node = cc.instantiate(this.W);
+            var tile: Tile = node.getComponent<Tile>(Tile);
+            this.node.addChild(node);
+            node.x = this.x2;
+            node.y = 160;
+            this.x2 += 59;
+            this.map2[o.id] = tile;
+        }
+        tile.obj(o);
+        return tile;
+    }
+
+    removeTile(o) {
+        var tile: Tile = this.map[o.id];
+        if (tile) {
+            delete this.map[o.id];
+            tile.node.destroy();
+            this.rank = true;
+        }
+    }
+
+    removeTile2(o) {
+        var tile: Tile = this.map2[o.id];
+        if (tile) {
+            delete this.map2[o.id];
+            tile.node.destroy();
+            this.rank = true;
+        }
+    }
+
+    Brand(o) {
+        if (o.index == this.index) {
+            switch (o.state) {
+                case 0:
+                    this.pushTile(o);
+                    break;
+                case 1:
+                    var tile = this.pushTile(o);
+                    tile.node.runAction(cc.moveBy(0.5, 50, 0));
+                    break;
+                case 2:
+                    break;
+                case 3://吃
+                case 4://碰
+                case 5://明杠
+                case 6://暗杠
+                case 7://胡牌TTT
+                case 8://胡牌TT
+                    this.pushTiles(o);
+                    this.removeTile(o);
+                    break;
+                case 10://出牌
+                    Music.voice(o.value);
+                    this.pushTile2(o);
+                    this.removeTile(o);
+                    break;
+                case 11:
+                    this.pushTile2(o);
+                    break;
+            }
+        } else {
+            this.removeTile(o);
+            this.removeTile2(o);
+        }
+    }
+
+    sort() {
+        this.x = this.sort2(100, this.groups, 185, (a: Tiles, b: Tiles) => a.order - b.order);
+        this.x = this.sort2(this.x, this.map, 68, (a: Tile, b: Tile) => a.o.id - b.o.id);
+        this.x2 = this.sort2(150, this.map2, 59, (a: Tile, b: Tile) => a.o.order - b.o.order);
+    }
+
+    sort2<T extends IPos>(x: number, map: object, w: number, compareFn: (a: T, b: T) => number): number {
+        var array: Array<T> = [];
+        for (var k in map) {
+            array.push(map[k]);
+        }
+        array.sort(compareFn);
+        for (var i = 0; i < array.length; i++) {
+            array[i].pos(x);
+            x += w;
+        }
+        return x;
+    }
+
+    update() {
+        if (this.rank) {
+            this.rank = false;
+            this.sort();
+        }
+    }
+
+    clear() {
+    }
+}

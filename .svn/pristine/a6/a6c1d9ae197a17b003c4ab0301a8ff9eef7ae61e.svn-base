@@ -1,0 +1,102 @@
+package ge.db;
+
+import ge.utils.Util;
+
+import java.util.Vector;
+
+public class Array<E extends Bean> extends Vector<E> {
+	private static final long serialVersionUID = 5580929969505430814L;
+	private int[] fields;
+	private boolean Asce;
+
+	public void Asc(String... field) {
+		this.Asce = true;
+		sort(field);
+	}
+
+	public void Desc(String... field) {
+		this.Asce = false;
+		sort(field);
+	}
+
+	public void Muddled() {
+		int len = size();
+		for (int i = 0; i < len; i++) {
+			int j = Util.random(0, len - 1);
+			if (i != j) {
+				E a = get(i);
+				E b = get(j);
+				set(i, b);
+				set(j, a);
+			}
+		}
+	}
+
+	private void sort(String[] field) {
+		fields(field);
+		int len = size() - 1;
+		for (int j = len; j > 0; j--) {
+			for (int i = 0; i < j; i++) {
+				swap(i, i + 1);
+			}
+		}
+	}
+
+	private void fields(String[] field) {
+		if (size() == 0) {
+			return;
+		}
+		E o = get(0);
+		int len = field.length;
+		fields = new int[len];
+		for (int j = 0; j < len; j++) {
+			fields[j] = o.table.field(field[j]);
+		}
+	}
+
+	private void swap(int i, int j) {
+		E a = get(i);
+		E b = get(j);
+		if (compare(a, b)) {
+			set(i, b);
+			set(j, a);
+		}
+	}
+
+	private final boolean compare(E a, E b) {
+		double r = 0;
+		for (int field : fields) {
+			Object c1 = a.get(field);
+			Object c2 = b.get(field);
+			switch (a.table.types[field]) {
+			case BYTE:
+				r = ((Byte) c1) - ((Byte) c2);
+				break;
+			case SHORT:
+				r = ((Short) c1) - ((Short) c2);
+				break;
+			case INT:
+				r = ((Integer) c1) - ((Integer) c2);
+				break;
+			case LONG:
+				r = ((Long) c1) - ((Long) c2);
+				break;
+			case FLOAT:
+				r = ((Float) c1) - ((Float) c2);
+				break;
+			case DOUBLE:
+				r = ((Double) c1) - ((Double) c2);
+				break;
+			case STRING:
+				r = ((String) c1).compareTo((String) c2);
+				break;
+			default:
+				break;
+			}
+			if (r != 0) {
+				break;
+			}
+		}
+		return Asce ? r > 0 : r < 0;
+	}
+}

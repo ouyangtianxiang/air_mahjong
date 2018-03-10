@@ -1,0 +1,121 @@
+package game.data.bean;
+
+import ge.annotation.Delete;
+import ge.annotation.Insert;
+import ge.annotation.PrimaryKey;
+import ge.annotation.SyncKey;
+import ge.annotation.Update;
+import ge.db.Bean;
+import ge.db.Table;
+
+/**
+ *  (12)
+ */
+@SyncKey(0)
+@PrimaryKey(0)
+@Insert("insert into u_room values(?,?,?,?,?,?,?,?,?,?,?,?)")
+@Update("update u_room set code=?,owner=?,num=?,banker=?,play=?,remainingTile=?,time=?,curLevel=?,sumLevel=?,state=?,createTime=? where id=?")
+@Delete("delete from u_room where id=?")
+public class U_room extends Bean {
+	/**
+	 * 
+	 * @param id
+	 *            
+	 * @param code
+	 *            房间号
+	 * @param owner
+	 *            房主
+	 * @param num
+	 *            人数
+	 * @param banker
+	 *            庄家
+	 * @param play
+	 *            当前出牌index
+	 * @param remainingTile
+	 *            剩下的牌数
+	 * @param time
+	 *            计时
+	 * @param curLevel
+	 *            当前盘次
+	 * @param sumLevel
+	 *            总盘数
+	 * @param state
+	 *            状态
+	 * @param createTime
+	 *            创建时间
+	 */
+	public U_room(Table<U_room> table, int id, int code, int owner, byte num, byte banker, byte play, short remainingTile, byte time, byte curLevel, byte sumLevel, byte state, int createTime) {
+		super(table, id, code, owner, num, banker, play, remainingTile, time, curLevel, sumLevel, state, createTime);
+	}
+
+	// init
+	public U_room(Table<U_room> table, Object[] v) {
+		super(table, v);
+	}
+
+	// mysql
+	public U_room(Object[] v, Table<U_room> table) {
+		super(v, table);
+	}
+
+	/**
+	 * 
+	 */
+	public int id;
+
+	/**
+	 * 房间号
+	 */
+	public int code;
+
+	/**
+	 * 房主
+	 */
+	public int owner;
+
+	/**
+	 * 人数
+	 */
+	public byte num;
+
+	/**
+	 * 庄家
+	 */
+	public byte banker;
+
+	/**
+	 * 当前出牌index
+	 */
+	public byte play;
+
+	/**
+	 * 剩下的牌数
+	 */
+	public short remainingTile;
+
+	/**
+	 * 计时
+	 */
+	public byte time;
+
+	/**
+	 * 当前盘次
+	 */
+	public byte curLevel;
+
+	/**
+	 * 总盘数
+	 */
+	public byte sumLevel;
+
+	/**
+	 * 状态
+	 */
+	public byte state;
+
+	/**
+	 * 创建时间
+	 */
+	public int createTime;
+
+}

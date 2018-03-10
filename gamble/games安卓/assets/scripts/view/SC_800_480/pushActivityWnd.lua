@@ -1,0 +1,35 @@
+local pushActivityWnd=
+{
+	name="pushActivityWnd",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="img_bg",type=1,typeName="Image",time=85563927,x=0,y=0,width=654,height=520,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="newHall/pushActivity/tips_mahjong.png",gridLeft=50,gridRight=50,gridTop=50,gridBottom=50,
+		{
+			name="btn_close",type=2,typeName="Button",time=85563999,x=54,y=116,width=66,height=70,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,file="Commonx/close_btn.png"
+		},
+		{
+			name="img_mahjong",type=1,typeName="Image",time=85564536,x=0,y=32,width=512,height=100,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/blank.png",
+			{
+				name="Text2",type=4,typeName="Text",time=85564698,x=-30,y=-32,width=130,height=26,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignLeft,colorRed=254,colorGreen=237,colorBlue=201,string=[[哇，发现了]]
+			},
+			{
+				name="view_showtext",type=0,typeName="View",time=85564756,x=-50,y=10,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,
+				{
+					name="text_tips2",type=4,typeName="Text",time=85564779,x=-100,y=-3,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[一个]]
+				},
+				{
+					name="text_tips3",type=4,typeName="Text",time=85564801,x=194,y=-3,width=120,height=30,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[的活动！]]
+				},
+				{
+					name="img_showtext",type=1,typeName="Image",time=85565720,x=30,y=-1,width=200,height=46,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="newHall/pushActivity/push_activity_1.png"
+				}
+			}
+		},
+		{
+			name="btn_ok",type=2,typeName="Button",time=85564588,x=0,y=20,width=222,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,file="Commonx/green_big_wide_btn.png",
+			{
+				name="Text1",type=4,typeName="Text",time=85564627,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=34,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[去看看]]
+			}
+		}
+	}
+}
+return pushActivityWnd;

@@ -1,0 +1,42 @@
+<root>
+	<item id='1' name='游戏局数'>
+		<d id='1' name='8局(3张房卡)' />
+		<d id='2' name='16局(6张房卡)' />
+		<d id='3' name='24局(9张房卡)' />
+		<d id='4' name='32局(12张房卡)' />
+	</item>
+	<item id='2' name='人数'>
+		<d id='1' name='4人' />
+		<d id='2' name='3人' />
+	</item>
+	<item id='3' name='爬楼'>
+		<d id='1' name='牌爬精不爬(逐层下)' />
+		<d id='2' name='牌爬精不爬(快速下)' />
+		<d id='3' name='不爬楼' />
+	</item>
+	<item id='4' name='回头一笑'>
+		<d id='1' name='上下回头' />
+		<d id='2' name='上回头' />
+		<d id='3' name='不回头' />
+	</item>
+	<item id='5' name='下精玩法'>
+		<d id='1' name='同一首歌(弃牌也算)' />
+		<d id='2' name='同一首歌(弃牌不算)' />
+		<d id='3' name='埋地雷(弃牌也算)' />
+		<d id='4' name='埋地雷(弃牌不算)' />
+		<d id='5' name='翻下精' />
+		<d id='6' name='无下精' />
+	</item>
+	<item id='6' name='平胡'>
+		<d id='1' name='有精点炮可平胡' />
+		<d id='2' name='有精点炮不能平胡' />
+	</item>
+	<item id='7' name='杠精玩法'>
+		<d id='1' name='有杠精' />
+		<d id='2' name='有杠精' />
+	</item>
+	<item id='8' name='抄庄'>
+		<d id='1' name='抄庄' />
+		<d id='2' name='不抄庄' />
+	</item>
+</root>

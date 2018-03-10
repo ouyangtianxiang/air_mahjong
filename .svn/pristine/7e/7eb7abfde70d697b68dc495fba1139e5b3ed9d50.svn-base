@@ -1,0 +1,132 @@
+package game.room;
+
+import game.application.Player;
+
+public class Clearing {
+
+	private Player player;
+
+	public Clearing(Player player) {
+		this.player = player;
+	}
+
+	//// --------------------------
+	/**
+	 * 天(地)胡
+	 * 
+	 * @return
+	 */
+	public boolean isTianHU() {
+		return false;
+	}
+
+	/**
+	 * 自摸=*2
+	 * 
+	 * @return
+	 */
+	public boolean isZiMo() {
+		return false;
+	}
+
+	/**
+	 * 精吊=*2+5
+	 * 
+	 * @return
+	 */
+	public boolean isJingDiao() {
+		return false;
+	}
+
+	/**
+	 * 放炮=*2
+	 * 
+	 * @return
+	 */
+	public boolean isFangPao() {
+		return false;
+	}
+
+	/**
+	 * 
+	 * /** 德中德=*2
+	 * 
+	 * @return
+	 */
+	public boolean isDeZhongDe() {
+		return false;
+	}
+
+	/**
+	 * 七星十三烂=*2
+	 * 
+	 * @return
+	 */
+	public boolean isLan13Xing7() {
+		return false;
+	}
+
+	/**
+	 * 十三烂=*2*
+	 * 
+	 * @return
+	 */
+
+	public boolean isLan13() {
+		return false;
+	}
+
+	/**
+	 * 扛上开花=*2
+	 * 
+	 * @return
+	 */
+	public boolean isGangHua() {
+		return false;
+	}
+
+	/**
+	 * 抢杠=*2
+	 * 
+	 * @return
+	 */
+	public boolean isQiangGang() {
+		return false;
+	}
+
+	/**
+	 * 七大对(11122233344455)
+	 * 
+	 * @return
+	 */
+	public boolean maxSevenPairs() {
+		return false;
+	}
+
+	/**
+	 * 七小对(11223344556677)
+	 * 
+	 * @return
+	 */
+	public boolean minSevenPairs() {
+		return false;
+	}
+
+	/**
+	 * 庄家=*2
+	 * 
+	 * @return
+	 */
+	public boolean isBanker() {
+		return false;
+	}
+
+	/**
+	 * 德国=*2+5
+	 * 
+	 * @return
+	 */
+	public boolean isGermany() {
+		return false;
+	}
+}

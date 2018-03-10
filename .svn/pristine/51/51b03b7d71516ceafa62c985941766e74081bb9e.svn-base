@@ -1,0 +1,479 @@
+package game.room;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Vector;
+
+import game.application.Player;
+import game.data.bean.T_tile;
+
+public class MJ {
+
+	public static byte[] TILE = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26,
+			27, 28, 29, 31, 32, 33, 34, 41, 42, 43 };
+
+	private HashMap<Integer, Boolean> tmp = new HashMap<>();
+	public TT tt;
+	private int num;
+	public TTT[] ttts;
+	private Player player;
+	public int score;
+	public int award;
+
+	/**
+	 * 霸王精=*2
+	 */
+	public boolean isBaWangJing;
+
+	/**
+	 * 精吊=*2+5
+	 */
+	public boolean isJingDiao;
+
+	/**
+	 * 德中德=*2
+	 */
+	public boolean isDeZhongDe;
+
+	/**
+	 * 扛上开花=*2
+	 */
+	public boolean isGangHua;
+
+	/**
+	 * 抢杠=*2
+	 */
+	public boolean isQiangGang;
+
+	/**
+	 * 七大对(11122233344455)
+	 */
+	public boolean isMaxSevenPairs;
+
+	/**
+	 * 德国=*2+5
+	 */
+	public boolean isDeGuo;
+
+	/**
+	 * 天胡
+	 */
+	public boolean isTianHU;
+
+	/**
+	 * 自摸
+	 */
+	public boolean isSelfMo;
+	/**
+	 * 放炮
+	 */
+	public byte FangPao = -1;
+	/**
+	 * 七小对
+	 */
+	public boolean isMinSevenPairs;
+	/***
+	 * 十三烂
+	 */
+	public boolean isThirteenRotten;
+	/**
+	 * 七星
+	 */
+	public boolean isMevius;
+
+	public MJ(Player player) {
+		this.player = player;
+	}
+
+	private ArrayList<TT> TTs(Vector<T_tile> tiles) {
+		tmp.clear();
+		ArrayList<TT> arr = new ArrayList<>();
+		int len = tiles.size();
+		for (int i = 0; i < len; i++) {
+			T_tile a = tiles.get(i);
+			for (int j = i + 1; j < len; j++) {
+				T_tile b = tiles.get(j);
+				TT tt = new TT(a, b);
+				if (tt.ok && !tmp.containsKey(tt.code)) {
+					tmp.put(tt.code, true);
+					arr.add(tt);
+				}
+			}
+		}
+		return arr;
+	}
+
+	private ArrayList<TTT> TTTs(ArrayList<T_tile> list) {
+		tmp.clear();
+		ArrayList<TTT> arr = new ArrayList<>();
+		int len = list.size();
+		for (int i = 0; i < len; i++) {
+			T_tile a = list.get(i);
+			for (int j = (i + 1); j < len; j++) {
+				T_tile b = list.get(j);
+				for (int k = (j + 1); k < len; k++) {
+					T_tile c = list.get(k);
+					TTT ttt = new TTT(a, b, c);
+					if (ttt.ok && !tmp.containsKey(ttt.code)) {
+						tmp.put(ttt.code, true);
+						arr.add(ttt);
+					}
+				}
+			}
+		}
+		return arr;
+	}
+
+	/**
+	 * 去除重复搭配
+	 */
+	private boolean perfect(TTT[] arr) {
+		tmp.clear();
+		byte any = 0, pang = 0;
+		for (TTT ttt : arr) {
+			if (tmp.containsKey(ttt.a.id) || tmp.containsKey(ttt.b.id) || tmp.containsKey(ttt.c.id)) {
+				return false;
+			}
+			tmp.put(ttt.a.id, true);
+			tmp.put(ttt.b.id, true);
+			tmp.put(ttt.c.id, true);
+			if (ttt.any) {
+				any++;
+			}
+			if (!ttt.chi) {
+				pang++;
+			}
+		}
+		isDeGuo = any == 0;
+		isMaxSevenPairs = pang == 4;
+		this.ttts = arr;
+		return true;
+	}
+
+	private boolean G2(ArrayList<TTT> list) {
+		TTT[] arr = new TTT[2];
+		int len = list.size();
+		for (int i = 0; i < len; i++) {
+			arr[0] = list.get(i);
+			for (int j = (i + 1); j < len; j++) {
+				arr[1] = list.get(j);
+				if (perfect(arr)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean G3(ArrayList<TTT> list) {
+		TTT[] arr = new TTT[3];
+		int len = list.size();
+		for (int i = 0; i < len; i++) {
+			arr[0] = list.get(i);
+			for (int j = (i + 1); j < len; j++) {
+				arr[1] = list.get(j);
+				for (int k = (j + 1); k < len; k++) {
+					arr[2] = list.get(k);
+					if (perfect(arr)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean G4(ArrayList<TTT> list) {
+		TTT[] arr = new TTT[4];
+		int len = list.size();
+		for (int i = 0; i < len; i++) {
+			arr[0] = list.get(i);
+			for (int j = (i + 1); j < len; j++) {
+				arr[1] = list.get(j);
+				for (int k = (j + 1); k < len; k++) {
+					arr[2] = list.get(k);
+					for (int l = (k + 1); l < len; l++) {
+						arr[3] = list.get(l);
+						if (perfect(arr)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 是否7小对
+	 */
+	private boolean minSevenPairs(ArrayList<TT> arr) {
+		tmp.clear();
+		for (TT tt : arr) {
+			if (tmp.containsKey(tt.a.id) || tmp.containsKey(tt.b.id)) {
+				break;
+			}
+			tmp.put(tt.a.id, true);
+			tmp.put(tt.b.id, true);
+		}
+		isMinSevenPairs = tmp.size() == 14;
+		return isMinSevenPairs;
+	}
+
+	/**
+	 * 十三烂
+	 */
+	private boolean ThirteenRotten(Vector<T_tile> tiles) {
+		tiles.sort(new Comparator<T_tile>() {
+			public int compare(T_tile a, T_tile b) {
+				return a.value - b.value;
+			}
+		});
+		int star = 0;
+		int len = tiles.size();
+		for (int i = 1; i < len; i++) {
+			T_tile o = tiles.get(i);
+			T_tile a = tiles.get(i - 1);
+			if (T.loop(o)) {
+				star++;
+				if (o.value == a.value) {
+					return false;
+				}
+			} else {
+				if (Math.abs(o.value - a.value) < 2) {
+					return false;
+				}
+			}
+		}
+		isThirteenRotten = true;
+		isMevius = star == 7;
+
+		return false;
+	}
+
+	public boolean HU(T_tile o) {
+		reset();
+		FangPao = o.index;
+		Vector<T_tile> array = new Vector<T_tile>(player.array);
+		array.add(o);
+		return HU(array);
+	}
+
+	public boolean HU() {
+		reset();
+		isSelfMo = true;
+		return HU(player.array);
+	}
+
+	public boolean HU(Vector<T_tile> tiles) {
+		isTianHU = player.order == 0;
+		if (ThirteenRotten(tiles)) {
+			return true;
+		}
+		ArrayList<TT> tts = TTs(tiles);
+		if (minSevenPairs(tts)) {
+			return true;
+		}
+		for (TT tt : tts) {
+			this.tt = tt;
+			System.out.println(tt);
+			ArrayList<T_tile> list = new ArrayList<>(tiles);
+			list.remove(tt.a);
+			list.remove(tt.b);
+
+			num = list.size() / 3;
+			if (num == 0) {
+				return true;
+			}
+
+			ArrayList<TTT> ttts = TTTs(list);
+			if (ttts.size() >= num) {
+				switch (num) {
+				case 1:
+					this.ttts = new TTT[] { ttts.get(0) };
+					return true;
+				case 2:
+					if (G2(ttts)) {
+						return true;
+					}
+				case 3:
+					if (G3(ttts)) {
+						return true;
+					}
+				case 4:
+					if (G4(ttts)) {
+						return true;
+					}
+				}
+			}
+
+		}
+		return false;
+	}
+
+	/**
+	 * 杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠杠
+	 */
+	public HashMap<Byte, Vector<T_tile>> gang = new HashMap<>();
+	public byte[] gangValue;
+
+	public boolean Gang() {
+		gang.clear();
+		gangValue = new byte[] { 0, 0, 0 };
+		byte i = 0;
+		for (T_tile o : player.array) {
+			Vector<T_tile> v = gang.get(o.value);
+			if (v == null) {
+				v = new Vector<>(4);
+				gang.put(o.value, v);
+			}
+			v.add(o);
+			if (v.size() == 4) {
+				gangValue[i++] = o.value;
+			}
+		}
+		return i > 0;
+	}
+
+	public Vector<T_tile> pangs = new Vector<T_tile>(4);
+
+	public byte Pang(T_tile obj) {
+		pangs.clear();
+		pangs.add(obj);
+		for (T_tile o : player.array) {
+			if (o.value == obj.value) {
+				pangs.add(o);
+			}
+		}
+		return (byte) pangs.size();
+	}
+
+	public Vector<Byte> chivalue = new Vector<Byte>();
+	public Vector<TTT> chiObj = new Vector<TTT>();
+
+	public byte Chi(T_tile o) {
+		tmp.clear();
+		chivalue.clear();
+		chiObj.clear();
+		int len = player.array.size();
+		for (int i = 0; i < len; i++) {
+			T_tile a = player.array.get(i);
+			for (int j = i + 1; j < len; j++) {
+				T_tile b = player.array.get(j);
+				TTT ttt = new TTT(a, b, o);
+				if (ttt.ok && !ttt.any && ttt.chi && !tmp.containsKey(ttt.code)) {
+					tmp.put(ttt.code, true);
+					chiObj.add(ttt);
+					chivalue.add(a.value);
+					chivalue.add(b.value);
+					chivalue.add(o.value);
+				}
+			}
+		}
+		return (byte) chivalue.size();
+	}
+
+	/**
+	 * 精数
+	 */
+	public int jing;
+	/**
+	 * 精冲关
+	 */
+	public int jingLevel;
+	/**
+	 * 手上是否有精（杠精不算）
+	 */
+	public boolean haveJing;
+
+	/**
+	 * 精计算
+	 */
+	public int jing() {
+		player.array.addAll(player.array2);
+		jing = 0;
+		for (T_tile o : player.array) {
+			jing += o.jing;
+			if (o.state == 0 && o.jing > 0) {
+				haveJing = true;
+			}
+		}
+		if (jing >= 5) {
+			jingLevel = jing - 4;
+			jing *= (jing - 3);
+		}
+		return jing;
+	}
+
+	/**
+	 * 设置霸王精
+	 * 
+	 * @param haveJing2
+	 */
+	public void BaWangJing(int sumjing, int haveJing2) {
+		isBaWangJing = jing > 0 && jing == sumjing;
+		isDeZhongDe = isDeGuo && haveJing2 == 0;
+	}
+
+	public void statistics() {
+		score = 1;
+		if (player.isBanker()) {
+			score *= 2;
+		}
+		if (isSelfMo) {
+			score *= 2;
+		}
+		if (isTianHU) {
+			score *= 2;
+		}
+		if (isMinSevenPairs) {
+			score *= 2;
+		}
+		if (isThirteenRotten) {
+			score *= 2;
+		}
+		if (isMevius) {
+			score *= 2;
+		}
+		if (isDeGuo) {
+			score *= 2;
+			award += 5;
+		}
+		if (isMaxSevenPairs) {
+			score *= 2;
+		}
+		if (isQiangGang) {
+			score *= 2;
+		}
+		if (isGangHua) {
+			score *= 2;
+		}
+		if (isDeZhongDe) {
+			score *= 2;
+		}
+		if (isJingDiao) {
+			score *= 2;
+			award += 5;
+		}
+		if (isBaWangJing) {
+			score *= 2;
+		}
+	}
+
+	public void reset() {
+		isSelfMo = false;
+		isTianHU = false;
+		isMinSevenPairs = false;
+		isThirteenRotten = false;
+		isMevius = false;
+		FangPao = -1;
+		isDeGuo = false;
+		isMaxSevenPairs = false;
+		isQiangGang = false;
+		isGangHua = false;
+		isDeZhongDe = false;
+		isJingDiao = false;
+		isBaWangJing = false;
+	}
+}

@@ -1,0 +1,93 @@
+package game.application;
+
+import game.data.UserData;
+import game.data.bean.T_brand;
+import game.data.bean.T_state;
+import game.room.Room;
+import game.utils.Protocol;
+import ge.annotation.RemoteMethod;
+import ge.db.Array;
+import ge.net.Application;
+
+/**
+ * 南昌麻将
+ */
+public class Player extends Application {
+
+	public Room room = null;
+	public int userId;
+	public byte index;
+	private UserData data;
+
+	private Array<T_brand> array = new Array<T_brand>();
+	public T_state state;
+
+	protected void init() {
+		this.userId = UserID();
+		data = (UserData) data();
+	}
+
+	@RemoteMethod(Protocol.NCMJ_CREATE)
+	public Object[] create(byte num) {
+		this.index = 0;
+		room = new Room(userId, num);
+		room.into(this);
+		return Result(room.roomId);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_INTO)
+	public Object[] into(int roomId, byte index) {
+		this.index = index;
+		room = Room.Find(roomId);
+		if (room != null) {
+			room.into(this);
+			return Result(room.roomId);
+		}
+		return Result(0);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_PREPARE)
+	public Object[] prepare() {
+		room.prepare(this);
+		return Result(0);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_PLAY)
+	public void play(short id) {
+		room.play(this, id);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_REPLY)
+	public void reply(short id) {
+		room.reply(this, id);
+	}
+
+	@RemoteMethod(Protocol.NCMJ_EXIT)
+	public void exit() {
+		room.exit(this);
+		onExit((byte) 0);
+	}
+
+	/*
+	 * 发牌
+	 */
+	public void perflop(T_brand o) {
+		array.add(o);
+	}
+
+	/*
+	 * 自摸
+	 */
+	public void selfDrawn(T_brand o) {
+
+	}
+
+	public void onExit(byte code) {
+		room = null;
+		call(Protocol.NCMJ_EXIT, code);
+	}
+
+	protected void clear() {
+		room.exit(this);
+	}
+}

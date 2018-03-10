@@ -1,0 +1,50 @@
+const { ccclass, property } = cc._decorator;
+import Desktop from "./Desktop"
+import Protocol from "../net/Protocol";
+import Data from "../net/Data";
+import Tile from "./Tile"
+
+
+@ccclass
+export default class TileTouch extends cc.Component {
+
+    public static it: TileTouch;
+
+    _prepare: boolean = false;
+
+    prepare(value: boolean) {
+        this._prepare = value;
+        if (value) {
+            this.node.y = 50;
+        } else {
+            this.node.y = 0;
+        }
+    }
+
+    onTouchStart(event: TouchEvent) {
+        if (!this._prepare) {
+            if (TileTouch.it) {
+                TileTouch.it.prepare(false);
+            }
+            this.prepare(true);
+            TileTouch.it = this;
+        } else {
+            if (Desktop.it.room.play == Desktop.it.state.index) {
+                var tile: Tile = this.node.getComponent<Tile>(Tile);
+                console.log(tile.o.id + "======================");
+                Data.it.im.Call(Protocol.NCMJ_PLAY, null, null, tile.o.id);
+            }
+        }
+    }
+
+    onLoad() {
+        this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+    }
+
+    onDisable() {
+        this.node.off(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+        if (TileTouch.it == this) {
+            TileTouch.it = null;
+        }
+    }
+}

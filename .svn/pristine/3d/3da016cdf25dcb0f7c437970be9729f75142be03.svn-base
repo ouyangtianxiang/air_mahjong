@@ -1,0 +1,26 @@
+const { ccclass, property } = cc._decorator;
+import Tile from "./Tile"
+import IPos from "./IPos"
+
+@ccclass
+export default class Tiles extends cc.Component implements IPos {
+
+    @property({ type: [Tile] })
+    tiles: Tile[] = [];
+    order: number;
+    i: number = 0;
+
+    push(o) {
+        this.tiles[this.i].obj(o);
+        this.tiles[this.i].node.active = true;
+        this.i++;
+    }
+
+    onLoad() {
+        this.tiles.forEach(e => e.node.active = false);
+    }
+
+    pos(v: number) {
+        this.node.x = v;
+    }
+}

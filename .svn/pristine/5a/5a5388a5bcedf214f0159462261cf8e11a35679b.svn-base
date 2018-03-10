@@ -1,0 +1,74 @@
+const { ccclass, property } = cc._decorator;
+class TE {
+    constructor(call: Function, obj: any) {
+        this.call = call;
+        this.obj = obj;
+    }
+    obj: any;
+    call: Function;
+}
+
+@ccclass
+export default class TableEvent<T> {
+    private eventListeners2: object = {};
+
+    addFieldListener(type: string, listener: (obj: T, value: number) => void, thisArg: any) {
+        var listeners: Array<TE> = this.eventListeners2[type];
+        if (listeners == null) {
+            listeners = [];
+            this.eventListeners2[type] = listeners;
+        }
+        listeners.push(new TE(listener, thisArg));
+    }
+
+    removeFieldListener(type: string, listener: (obj: T, value: number) => void, thisArg: any) {
+        var listeners: Array<TE> = this.eventListeners2[type];
+        if (listeners) {
+            for (var i = 0; i < listeners.length; i++) {
+                var te = listeners[i];
+                if (te.call == listener && te.obj == thisArg) {
+                    listeners.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    }
+
+    dispatchEvent2(type: string, obj: T, value: number): void {
+        var listeners: Array<TE> = this.eventListeners2[type];
+        if (listeners != null) {
+            listeners.forEach(te => te.call.call(te.obj, obj, value));
+        }
+    }
+
+    private eventListeners: object = {};
+
+    addDataListener(type: string, listener: (obj: T) => void, thisArg: any) {
+        var listeners: Array<TE> = this.eventListeners[type];
+        if (listeners == null) {
+            listeners = [];
+            this.eventListeners[type] = listeners;
+        }
+        listeners.push(new TE(listener, thisArg));
+    }
+
+    removeDataListener(type: string, listener: (obj: T) => void, thisArg: any) {
+        var listeners: Array<TE> = this.eventListeners[type];
+        if (listeners) {
+            for (var i = 0; i < listeners.length; i++) {
+                var te = listeners[i];
+                if (te.call == listener && te.obj == thisArg) {
+                    listeners.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    }
+
+    dispatchEvent(type: string, obj: T): void {
+        var listeners: Array<TE> = this.eventListeners[type];
+        if (listeners != null) {
+            listeners.forEach(te => te.call.call(te.obj, obj));
+        }
+    }
+}

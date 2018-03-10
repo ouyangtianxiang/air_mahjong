@@ -1,0 +1,72 @@
+package game.data.bean;
+
+import ge.annotation.Delete;
+import ge.annotation.Insert;
+import ge.annotation.PrimaryKey;
+import ge.annotation.SyncKey;
+import ge.annotation.Update;
+import ge.db.Bean;
+import ge.db.Table;
+
+/**
+ *  (5)
+ */
+@SyncKey(0)
+@PrimaryKey(0)
+@Insert("insert into t_play values(?,?,?,?,?)")
+@Update("update t_play set pang=?,gang=?,chi=?,hu=? where userId=?")
+@Delete("delete from t_play where userId=?")
+public class T_play extends Bean {
+	/**
+	 * 
+	 * @param userId
+	 *            
+	 * @param pang
+	 *            碰
+	 * @param gang
+	 *            扛
+	 * @param chi
+	 *            吃
+	 * @param hu
+	 *            胡
+	 */
+	public T_play(Table<T_play> table, int userId, byte pang, byte gang, byte chi, byte hu) {
+		super(table, userId, pang, gang, chi, hu);
+	}
+
+	// init
+	public T_play(Table<T_play> table, Object[] v) {
+		super(table, v);
+	}
+
+	// mysql
+	public T_play(Object[] v, Table<T_play> table) {
+		super(v, table);
+	}
+
+	/**
+	 * 
+	 */
+	public int userId;
+
+	/**
+	 * 碰
+	 */
+	public byte pang;
+
+	/**
+	 * 扛
+	 */
+	public byte gang;
+
+	/**
+	 * 吃
+	 */
+	public byte chi;
+
+	/**
+	 * 胡
+	 */
+	public byte hu;
+
+}

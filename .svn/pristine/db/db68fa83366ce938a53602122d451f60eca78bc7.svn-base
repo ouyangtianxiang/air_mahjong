@@ -1,0 +1,278 @@
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class Buffer {
+    data: DataView;
+    pos: number = 0;
+    constructor(arrayBuffer: ArrayBuffer) {
+        this.data = new DataView(arrayBuffer);
+    }
+
+    remaining() {
+        return this.data.byteLength - this.pos;
+    }
+
+    getData() {
+        return this.data;
+    }
+
+    getBoolean() {
+        return this.getByte() == 1;
+    }
+
+    getUByte() {
+        var value = this.data.getUint8(this.pos);
+        this.pos += 1;
+        return value;
+    }
+
+    getByte() {
+        var value = this.data.getInt8(this.pos);
+        this.pos += 1;
+        return value;
+    }
+
+    getUShort() {
+        var value = this.data.getUint16(this.pos, true);
+        this.pos += 2;
+        return value;
+    }
+
+    getShort() {
+        var value = this.data.getInt16(this.pos, true);
+        this.pos += 2;
+        return value;
+    }
+
+    getInt() {
+        var value = this.data.getInt32(this.pos, true);
+        this.pos += 4;
+        return value;
+    }
+
+    getUInt() {
+        var value = this.data.getUint32(this.pos, true);
+        this.pos += 4;
+        return value;
+    }
+
+    getLong() {
+        var value1 = this.getUInt();
+        var value2 = this.getUInt();
+        return value2 * 4294967296 + value1;
+    }
+
+    getFloat() {
+        var value = this.data.getFloat32(this.pos, true);
+        this.pos += 4;
+        return value;
+    }
+
+    getDouble() {
+        var value = this.data.getFloat64(this.pos, true);
+        this.pos += 8;
+        return value;
+    }
+
+    getUTF() {
+        var len = this.getShort();
+        var array = new Uint8Array(this.data.buffer, this.pos, len);
+        this.pos += len;
+
+        var out, i, c;
+        var char2, char3;
+
+        out = "";
+        len = array.length;
+        i = 0;
+        while (i < len) {
+            c = array[i++];
+            switch (c >> 4) {
+                case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+                    // 0xxxxxxx
+                    out += String.fromCharCode(c);
+                    break;
+                case 12: case 13:
+                    // 110x xxxx   10xx xxxx
+                    char2 = array[i++];
+                    out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+                    break;
+                case 14:
+                    // 1110 xxxx  10xx xxxx  10xx xxxx
+                    char2 = array[i++];
+                    char3 = array[i++];
+                    out += String.fromCharCode(((c & 0x0F) << 12) |
+                        ((char2 & 0x3F) << 6) |
+                        ((char3 & 0x3F) << 0));
+                    break;
+            }
+        }
+
+        return out;
+
+    }
+    //////////////////////////////////////////////////////////
+
+    putBoolean(value) {
+        this.putByte((value ? 1 : 0));
+    }
+
+    putUByte(value) {
+        this.examinePut(1);
+        this.data.setUint8(this.pos, value);
+        this.pos += 1;
+    }
+
+    putByte(value) {
+        this.examinePut(1);
+        this.data.setInt8(this.pos, value);
+        this.pos += 1;
+    }
+
+    putUShort(value) {
+        this.examinePut(2);
+        this.data.setUint16(this.pos, value, true);
+        this.pos += 2;
+    }
+
+    putShort(value) {
+        this.examinePut(2);
+        this.data.setInt16(this.pos, value, true);
+        this.pos += 2;
+    }
+
+    putUInt(value) {
+        this.examinePut(4);
+        this.data.setUint32(this.pos, value, true);
+        this.pos += 4;
+    }
+
+    putInt(value) {
+        this.examinePut(4);
+        this.data.setInt32(this.pos, value, true);
+        this.pos += 4;
+    }
+
+    putLong(value: number) {
+        this.putUInt(value % 4294967296);
+        this.putUInt(Math.floor(value / 4294967296));
+    }
+
+    putFloat(value) {
+        this.examinePut(4);
+        this.data.setFloat32(this.pos, value, true);
+        this.pos += 4;
+    }
+
+    putDouble(value) {
+        this.examinePut(8);
+        this.data.setFloat64(this.pos, value, true);
+        this.pos += 8;
+    }
+
+
+    putUTF(str) {
+        var out = [], p = 0;
+        for (var i = 0; i < str.length; i++) {
+            var c = str.charCodeAt(i);
+            if (c < 128) {
+                out[p++] = c;
+            } else if (c < 2048) {
+                out[p++] = (c >> 6) | 192;
+                out[p++] = (c & 63) | 128;
+            } else if (
+                ((c & 0xFC00) == 0xD800) && (i + 1) < str.length &&
+                ((str.charCodeAt(i + 1) & 0xFC00) == 0xDC00)) {
+                // Surrogate Pair
+                c = 0x10000 + ((c & 0x03FF) << 10) + (str.charCodeAt(++i) & 0x03FF);
+                out[p++] = (c >> 18) | 240;
+                out[p++] = ((c >> 12) & 63) | 128;
+                out[p++] = ((c >> 6) & 63) | 128;
+                out[p++] = (c & 63) | 128;
+            } else {
+                out[p++] = (c >> 12) | 224;
+                out[p++] = ((c >> 6) & 63) | 128;
+                out[p++] = (c & 63) | 128;
+            }
+        }
+        this.putShort(p);
+        for (var i = 0; i < p; i++) {
+            this.putUByte(out[i]);
+        }
+    }
+
+
+    getObj(type) {
+        switch (type) {
+            case 1:
+                return this.getBoolean();
+            case 2:
+                return this.getByte();
+            case 3:
+                return this.getShort();
+            case 4:
+                return this.getInt();
+            case 5:
+                return this.getLong();
+            case 6:
+                return this.getFloat();
+            case 7:
+                return this.getDouble();
+            case 8:
+                return this.getUTF();
+        }
+    }
+
+
+    putObj(o, type) {
+        switch (type) {
+            case 1:
+                this.putBoolean(o);
+                break;
+            case 2:
+                this.putByte(o);
+                break;
+            case 3:
+                this.putShort(o);
+                break;
+            case 4:
+                this.putInt(o);
+                break;
+            case 5:
+                this.putLong(o);
+                break;
+            case 6:
+                this.putFloat(o);
+                break;
+            case 7:
+                this.putDouble(o);
+                break;
+            case 8:
+                this.putUTF(o);
+                break;
+        }
+    }
+
+    putArray(pTypes, value) {
+        if (pTypes.length != value.length) {
+            console.error("参数不数量一至");
+        }
+        for (var i = 0; i < value.length; i++) {
+            this.putObj(value[i], pTypes[i]);
+        }
+    }
+
+    examinePut(l) {
+        while (this.remaining() < l) {
+            var dv = new DataView(new ArrayBuffer(this.data.byteLength * 2));
+            for (var i = 0; i < this.data.byteLength; i++) {
+                dv.setUint8(i, this.data.getUint8(i));
+            }
+            this.data = dv;
+        }
+    }
+
+    flip() {
+
+    }
+}

@@ -1,0 +1,220 @@
+package ge.db;
+
+import ge.annotation.Type;
+import ge.log.Log;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+public class Fill {
+
+	private ArrayList<T> init = new ArrayList<T>();
+
+	public Fill(String filename) {
+		String url = filename;
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document document = db.parse(url);
+			Node root = document.getFirstChild();
+			NodeList list = root.getChildNodes();
+			for (int i = 0; i < list.getLength(); i++) {
+				Node table = list.item(i);
+				if (table.getNodeType() == 1) {
+					init.add(new T(table));
+				}
+			}
+			Log.System("Load(" + url + ")!!!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	class T {
+		String name;
+		ArrayList<R> rs = new ArrayList<R>();
+		HashMap<String, String> where;
+
+		T(Node table) {
+			name = table.getNodeName();
+			where = kvs(table.getAttributes());
+			if (table.getNodeType() == 1) {
+				NodeList list = table.getChildNodes();
+				for (int i = 0; i < list.getLength(); i++) {
+					Node row = list.item(i);
+					if (row.getNodeType() == 1) {
+						rs.add(new R(row));
+					}
+				}
+			}
+		}
+
+		public void fill(Table<? extends Bean> table, HashMap<String, Object> var) throws Exception {
+			Iterator<Entry<String, String>> it = where.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<String, String> e = it.next();
+				if (!var.get(e.getKey()).toString().equals(e.getValue())) {
+					return;
+				}
+			}
+			for (R r : rs) {
+				r.fill(table, var);
+			}
+		}
+	}
+
+	class R {
+		private char name;
+		private HashMap<String, String> value;
+		private HashMap<String, String> where;
+
+		R(Node row) {
+			name = row.getNodeName().charAt(0);
+			switch (name) {
+			case 'i':
+				value = kvs(row.getAttributes());
+				break;
+			case 'd':
+				where = kvs(row.getAttributes());
+				break;
+			case 'u':
+				where = kvs(row.getAttributes());
+				NodeList list = row.getChildNodes();
+				for (int i = 0; i < list.getLength(); i++) {
+					Node v = list.item(i);
+					if (v.getNodeType() == 1) {
+						value = kvs(v.getAttributes());
+					}
+				}
+				break;
+			}
+		}
+
+		String[] where(HashMap<String, Object> var) {
+			String str[] = new String[where.size()];
+			Set<Entry<String, String>> set = where.entrySet();
+			int i = 0;
+			for (Entry<String, String> entry : set) {
+				String k = entry.getKey();
+				String v = entry.getValue();
+				if ('?' == v.charAt(0)) {
+					v = var.get(k).toString();
+				}
+				str[i++] = k + "=" + v;
+			}
+			return str;
+		}
+
+		public void fill(Table<? extends Bean> table, HashMap<String, Object> var) throws Exception {
+			switch (name) {
+			case 'i':
+				insert(table, var);
+				break;
+			case 'd':
+				delete(table, var);
+				break;
+			case 'u':
+				update(table, var);
+				break;
+			}
+		}
+
+		private void insert(Table<? extends Bean> table, HashMap<String, Object> var) throws Exception {
+			Object[] v = new Object[table.cols];
+			for (int i = 0; i < table.cols; i++) {
+				String k = table.fields[i].getName();
+				String sv = value.get(k);
+				if (sv == null) {
+					sv = "0";
+				}
+				if ('?' == sv.charAt(0)) {
+					v[i] = var.get(k);
+				} else {
+					v[i] = valueOf(sv, table.types[i]);
+				}
+			}
+			table.c.getConstructor(table.getClass(), Object[].class).newInstance(table, v);
+		}
+
+		private void delete(Table<? extends Bean> table, HashMap<String, Object> var) {
+			table.del(true, where(var));
+		}
+
+		private void update(Table<? extends Bean> table, HashMap<String, Object> var) {
+			Array<? extends Bean> arr = table.get(true, where(var));
+			for (Bean e : arr) {
+				for (int i = 0; i < table.cols; i++) {
+					Field f = table.fields[i];
+					String k = f.getName();
+					String sv = value.get(k);
+					if (sv != null) {
+						Object v;
+						if ('?' == sv.charAt(0)) {
+							v = var.get(k);
+						} else {
+							v = valueOf(sv, table.types[i]);
+						}
+						e.set(i, v);
+					}
+				}
+				e.update();
+			}
+		}
+	}
+
+	public void fill(Table<? extends Bean> table, HashMap<String, Object> var) {
+		for (T t : init) {
+			if (t.name.equals(table.name)) {
+				try {
+					t.fill(table, var);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public static Object valueOf(String sv, Type type) {
+		switch (type) {
+		case BYTE:
+			return Byte.valueOf(sv);
+		case SHORT:
+			return Short.valueOf(sv);
+		case INT:
+			return Integer.valueOf(sv);
+		case LONG:
+			return Long.valueOf(sv);
+		case FLOAT:
+			return Float.valueOf(sv);
+		case DOUBLE:
+			return Double.valueOf(sv);
+		case STRING:
+			return sv;
+		default:
+			throw new Error("Type Error:" + type);
+		}
+	}
+
+	static HashMap<String, String> kvs(NamedNodeMap attributes) {
+		HashMap<String, String> kvs = new HashMap<String, String>();
+		for (int i = 0; i < attributes.getLength(); i++) {
+			Node item = attributes.item(i);
+			String k = item.getNodeName();
+			String v = item.getTextContent();
+			kvs.put(k, v);
+		}
+		return kvs;
+	}
+}

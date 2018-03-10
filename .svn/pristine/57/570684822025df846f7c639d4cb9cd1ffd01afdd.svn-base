@@ -1,0 +1,38 @@
+const { ccclass, property } = cc._decorator;
+import Window from "./Window"
+
+@ccclass
+export default class Global {
+
+    public static PA: cc.SpriteAtlas;
+    public static Main: number;
+    public static Vice: number;
+
+    public static dataView: Window;
+
+    public static KeyEvent() {
+
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN.toString(), Global.onKeyDown);
+    }
+
+    public static onKeyDown(event) {
+        switch (event.keyCode) {
+            case 6:
+            case 27:
+                if (Global.dataView == null || Global.dataView.node != null && !Global.dataView.node.isValid) {
+                    Global.dataView = new Window("DataView");
+                }
+                break;
+        }
+    }
+
+    public static GotoScene(name, ...param) {
+        cc.director.loadScene(name, function (err, scene) {
+            var canvas = scene.getChildByName('Canvas');
+            var script = canvas.getComponent(name);
+            if (script.init instanceof Function) {
+                script.init(param);
+            }
+        });
+    }
+}

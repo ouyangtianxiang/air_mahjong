@@ -1,0 +1,10 @@
+
+export default class IWindow extends cc.Component {
+    init(param) {
+
+    }
+
+    close(code: number = 0) {
+
+    }
+}

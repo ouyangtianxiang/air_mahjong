@@ -1,0 +1,86 @@
+package game.data.bean;
+
+import ge.annotation.Delete;
+import ge.annotation.Insert;
+import ge.annotation.PrimaryKey;
+import ge.annotation.SyncKey;
+import ge.annotation.Update;
+import ge.db.Bean;
+import ge.db.Table;
+
+/**
+ *  (7)
+ */
+@SyncKey(0)
+@PrimaryKey(0)
+@Insert("insert into u_room_level values(?,?,?,?,?,?,?)")
+@Update("update u_room_level set userId=?,roomId=?,level=?,score=?,jing=?,jingLevel=? where id=?")
+@Delete("delete from u_room_level where id=?")
+public class U_room_level extends Bean {
+	/**
+	 * 
+	 * @param id
+	 *            id
+	 * @param userId
+	 *            用户ID
+	 * @param roomId
+	 *            房间ID
+	 * @param level
+	 *            局次
+	 * @param score
+	 *            得分数
+	 * @param jing
+	 *            精
+	 * @param jingLevel
+	 *            精冲关
+	 */
+	public U_room_level(Table<U_room_level> table, int id, int userId, int roomId, int level, int score, int jing, byte jingLevel) {
+		super(table, id, userId, roomId, level, score, jing, jingLevel);
+	}
+
+	// init
+	public U_room_level(Table<U_room_level> table, Object[] v) {
+		super(table, v);
+	}
+
+	// mysql
+	public U_room_level(Object[] v, Table<U_room_level> table) {
+		super(v, table);
+	}
+
+	/**
+	 * id
+	 */
+	public int id;
+
+	/**
+	 * 用户ID
+	 */
+	public int userId;
+
+	/**
+	 * 房间ID
+	 */
+	public int roomId;
+
+	/**
+	 * 局次
+	 */
+	public int level;
+
+	/**
+	 * 得分数
+	 */
+	public int score;
+
+	/**
+	 * 精
+	 */
+	public int jing;
+
+	/**
+	 * 精冲关
+	 */
+	public byte jingLevel;
+
+}

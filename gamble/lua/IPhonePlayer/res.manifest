@@ -1,0 +1,160 @@
+ManifestFileVersion: 0
+CRC: 1765908664
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f82fd06e1f1e120788f740467c43c547
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 53fb8a3ed553354abb406749dd34376c
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1367256648, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/majiang/majiang/pai_xia_black.png
+- Assets/Res/majiang/ui/Paizhuo_ziz_touxiang_ok.png
+- Assets/Res/majiang/majiang/pai_xia_black2.png
+- Assets/Res/majiang/ui/103.png
+- Assets/Res/majiang/majiang/pai_cemian_hu.png
+- Assets/Res/majiang/bg/hall.jpg
+- Assets/Res/majiang/ui/120.png
+- Assets/Res/majiang/majiang/100.png
+- Assets/Res/majiang/majiang/pai_mid_daping.png
+- Assets/Res/majiang/majiang/Zmwf_ncmj_mark_jing2.png
+- Assets/Res/majiang/majiang/17.png
+- Assets/Res/majiang/ui/hall_bottom_tip.png
+- Assets/Res/majiang/ui/124.png
+- Assets/Res/majiang/ui/114.png
+- Assets/Res/majiang/ui/108.png
+- Assets/Res/majiang/majiang/24.png
+- Assets/Res/majiang/majiang/pai_mid_daping_black.png
+- Assets/Res/majiang/ui/hall_bottom_icon_pack.png
+- Assets/Res/majiang/majiang/7.png
+- Assets/Res/majiang/majiang/check_more.png
+- Assets/Res/majiang/majiang/102.png
+- Assets/Res/majiang/majiang/2.png
+- Assets/Res/majiang/majiang/45.png
+- Assets/Res/majiang/ui/hall_bottom_icon_rank.png
+- Assets/Res/majiang/majiang/22.png
+- Assets/Res/majiang/majiang/21.png
+- Assets/Res/majiang/majiang/pai_xia1.png
+- Assets/Res/majiang/majiang/pai_ce_dao.png
+- Assets/Res/majiang/ui/102.png
+- Assets/Res/majiang/hall_logo.png
+- Assets/Res/majiang/majiang/8.png
+- Assets/Res/majiang/ui/111.png
+- Assets/Res/majiang/majiang/pai_ce_hu.png
+- Assets/Res/majiang/majiang/Zmwf_ncmj_mark_jing.png
+- Assets/Res/majiang/majiang/101.png
+- Assets/Res/majiang/majiang/time_up.png
+- Assets/Res/majiang/bg/loading.jpg
+- Assets/Res/majiang/ui/107.png
+- Assets/Res/majiang/majiang/ting_corner_icon.png
+- Assets/Res/majiang/ui/123.png
+- Assets/Res/majiang/majiang/14.png
+- Assets/Res/majiang/majiang/36.png
+- Assets/Res/majiang/majiang/pai_shang1.png
+- Assets/Res/majiang/ui/100.png
+- Assets/Res/majiang/majiang/15.png
+- Assets/Res/majiang/majiang/27.png
+- Assets/Res/majiang/majiang/pai_xia2.png
+- Assets/Res/majiang/majiang/48.png
+- Assets/Res/majiang/majiang/laizi.png
+- Assets/Res/majiang/majiang/31.png
+- Assets/Res/majiang/majiang/pai_mid_daping_laizi.png
+- Assets/Res/majiang/majiang/42.png
+- Assets/Res/ui/Login.prefab
+- Assets/Res/majiang/ui/113.png
+- Assets/Res/majiang/majiang/1.png
+- Assets/Res/majiang/ui/109.png
+- Assets/Res/majiang/majiang/28.png
+- Assets/Res/majiang/majiang/5.png
+- Assets/Res/majiang/ui/Paizhuo_ziz_mark_fangzhu.png
+- Assets/Res/majiang/majiang/pai_shang2.png
+- Assets/Res/majiang/ui/121.png
+- Assets/Res/ui/NanchangMahjong.prefab
+- Assets/Res/majiang/ui/hall_bottom_icon_shop.png
+- Assets/Res/majiang/majiang/43.png
+- Assets/Res/majiang/bg/zhuomian.jpg
+- Assets/Res/majiang/majiang/pai_mid_daping1.png
+- Assets/Res/majiang/majiang/13.png
+- Assets/Res/majiang/majiang/lack_corner_icon.png
+- Assets/Res/majiang/majiang/103.png
+- Assets/Res/majiang/majiang/25.png
+- Assets/Res/majiang/majiang/32.png
+- Assets/Res/majiang/majiang/pai_shang3.png
+- Assets/Res/majiang/majiang/9.png
+- Assets/Res/majiang/majiang/pai_cemian.png
+- Assets/Res/majiang/ui/106.png
+- Assets/Res/majiang/majiang/Zmwf_ncmj_mark_bao.png
+- Assets/Res/majiang/majiang/4.png
+- Assets/Res/majiang/majiang/16.png
+- Assets/Res/majiang/majiang/pai_xia3.png
+- Assets/Res/majiang/majiang/Zmwf_poyang_icon_bao.png
+- Assets/Res/majiang/ui/105.png
+- Assets/Res/majiang/ui/hall_bottom_icon_help.png
+- Assets/Res/majiang/majiang/34.png
+- Assets/Res/majiang/ui/101.png
+- Assets/Res/majiang/majiang/41.png
+- Assets/Res/majiang/majiang/35.png
+- Assets/Res/majiang/ui/110.png
+- Assets/Res/majiang/majiang/12.png
+- Assets/Res/majiang/majiang/dir_arrow.png
+- Assets/Res/majiang/ui/hall_bottom_icon_vip.png
+- Assets/Res/majiang/majiang/104.png
+- Assets/Res/majiang/majiang/18.png
+- Assets/Res/majiang/majiang/Zmwf_ncmj_mark_bao2.png
+- Assets/Res/majiang/majiang/3.png
+- Assets/Res/majiang/majiang/19.png
+- Assets/Res/majiang/majiang/ZM_mark_lai2.png
+- Assets/Res/majiang/majiang/46.png
+- Assets/Res/majiang/majiang/29.png
+- Assets/Res/majiang/ui/hall_bottom_icon_userinfo.png
+- Assets/Res/majiang/majiang/47.png
+- Assets/Res/majiang/majiang/pai_xia_fapai.png
+- Assets/Res/majiang/majiang/ZM_mark_lai.png
+- Assets/Res/majiang/majiang/33.png
+- Assets/Res/majiang/majiang/37.png
+- Assets/Res/majiang/majiang/pai_mid.png
+- Assets/Res/majiang/majiang/chupai_board.png
+- Assets/Res/majiang/ui/hall_bottom_icon_more.png
+- Assets/Res/ui/Hall.prefab
+- Assets/Res/majiang/ui/hall_bottom_icon_more_on.png
+- Assets/Res/majiang/majiang/44.png
+- Assets/Res/majiang/majiang/11.png
+- Assets/Res/majiang/majiang/ghost_corner_icon.png
+- Assets/Res/majiang/ui/hall_bottom_icon_friends.png
+- Assets/Res/majiang/majiang/26.png
+- Assets/Res/majiang/ui/104.png
+- Assets/Res/majiang/majiang/pai_poen.png
+- Assets/Res/majiang/majiang/6.png
+- Assets/Res/majiang/ui/112.png
+- Assets/Res/majiang/majiang/23.png
+Dependencies: []

@@ -1,0 +1,32 @@
+local shareWindow=
+{
+	name="shareWindow",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=720,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignTopLeft,
+	{
+		name="v",type=0,typeName="View",time=115207004,x=0,y=0,width=720,height=720,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,
+		{
+			name="window_bg",type=1,typeName="Image",time=115207069,x=0,y=0,width=424,height=706,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Room/share/bg.png",gridLeft=50,gridRight=50,gridTop=50,gridBottom=50,
+			{
+				name="img_screenshot",type=1,typeName="Image",time=115207070,x=0,y=0,width=374,height=656,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/blank.png"
+			},
+			{
+				name="btn_close",type=2,typeName="Button",time=115207071,x=31,y=30,width=200,height=200,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,file="Commonx/blank.png",
+				{
+					name="Image1",type=1,typeName="Image",time=115207072,x=0,y=0,width=76,height=76,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,file="Room/share/close.png"
+				}
+			}
+		},
+		{
+			name="btn_wechat_share",type=2,typeName="Button",time=115207090,x=0,y=-216,width=222,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,file="Room/share/WechatShare.png"
+		},
+		{
+			name="btn_qq_share",type=2,typeName="Button",time=115207121,x=0,y=76,width=222,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,file="Room/share/QQShare.png"
+		},
+		{
+			name="btn_friend_circle_share",type=2,typeName="Button",time=115207127,x=0,y=-72,width=222,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,file="Room/share/FriendCircleShare.png"
+		},
+		{
+			name="btn_qzone_share",type=2,typeName="Button",time=115207142,x=0,y=220,width=222,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,file="Room/share/QzoneShare.png"
+		}
+	}
+}
+return shareWindow;

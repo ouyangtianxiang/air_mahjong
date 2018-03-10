@@ -1,0 +1,40 @@
+fetionInvitefriendWindow=
+{
+	name="fetionInvitefriendWindow",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=800,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,
+	{
+		name="img_win_bg",type=1,typeName="Image",time=51435238,x=0,y=-200,width=600,height=200,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,file="Common/windowsBg.png",gridLeft=50,gridRight=50,gridTop=85,gridBottom=50,
+		{
+			name="btn_close",type=2,typeName="Button",time=51852720,x=-20,y=-20,width=68,height=68,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopRight,file="Common/windowsClose.png"
+		},
+		{
+			name="btn_left",type=2,typeName="Button",time=53773437,x=-120,y=0,width=212,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/blank.png",
+			{
+				name="Image3",type=1,typeName="Image",time=53773438,x=48,y=0,width=112,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG2.png",gridLeft=10,gridRight=10,gridTop=0,gridBottom=0
+			},
+			{
+				name="Image4",type=1,typeName="Image",time=53773439,x=0,y=0,width=50,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG1.png"
+			},
+			{
+				name="Image5",type=1,typeName="Image",time=53773440,x=158,y=0,width=50,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG3.png"
+			},
+			{
+				name="text_name",type=4,typeName="Text",time=53773441,x=0,y=0,width=212,height=74,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignCenter,fontSize=34,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[飞信通知]]
+			}
+		},
+		{
+			name="btn_right",type=2,typeName="Button",time=53773443,x=120,y=0,width=212,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/blank.png",
+			{
+				name="Image3",type=1,typeName="Image",time=53773444,x=48,y=0,width=112,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG2.png",gridLeft=10,gridRight=10,gridTop=0,gridBottom=0
+			},
+			{
+				name="Image4",type=1,typeName="Image",time=53773445,x=0,y=0,width=50,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG1.png"
+			},
+			{
+				name="Image5",type=1,typeName="Image",time=53773446,x=158,y=0,width=50,height=74,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnBG3.png"
+			},
+			{
+				name="text_name",type=4,typeName="Text",time=53773447,x=0,y=0,width=212,height=74,visible=1,fillParentWidth=1,fillParentHeight=1,nodeAlign=kAlignCenter,fontSize=34,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[短信通知]]
+			}
+		}
+	}
+}

@@ -1,0 +1,35 @@
+local rankListItem4=
+{
+	name="rankListItem4",type=0,typeName="View",time=0,x=0,y=0,width=1120,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="item_view",type=0,typeName="View",time=50747657,x=0,y=0,width=1120,height=120,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+		{
+			name="img_line",type=1,typeName="Image",time=50809340,x=0,y=0,width=1124,height=116,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTop,file="Hall/hallRank/item_bg.png"
+		},
+		{
+			name="img_charm_lv",type=1,typeName="Image",time=50813503,x=30,y=-4,width=192,height=46,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignRight,file="Hall/hallRank/charm_level_1.png"
+		},
+		{
+			name="text_name",type=4,typeName="Text",time=89970541,x=230,y=-4,width=360,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=30,textAlign=kAlignLeft,colorRed=75,colorGreen=43,colorBlue=28
+		},
+		{
+			name="text_score",type=4,typeName="Text",time=89970543,x=540,y=-4,width=300,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=30,textAlign=kAlignLeft,colorRed=148,colorGreen=50,colorBlue=0
+		},
+		{
+			name="view_place",type=0,typeName="View",time=89970550,x=0,y=0,width=110,height=116,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+			{
+				name="img_place",type=1,typeName="Image",time=89970551,x=0,y=0,width=96,height=54,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Hall/hallRank/rank_bg2.png"
+			},
+			{
+				name="text_place",type=4,typeName="Text",time=89970552,x=0,y=0,width=87,height=33,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=26,textAlign=kAlignCenter,colorRed=155,colorGreen=152,colorBlue=145,string=[[未上榜]]
+			}
+		},
+		{
+			name="btn_image",type=2,typeName="Button",time=89970553,x=110,y=0,width=90,height=90,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,file="Hall/hallRank/head_bg.png",
+			{
+				name="img_photo",type=1,typeName="Image",time=89970554,x=0,y=0,width=2,height=2,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/blank.png"
+			}
+		}
+	}
+}
+return rankListItem4;

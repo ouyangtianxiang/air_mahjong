@@ -1,0 +1,56 @@
+
+const { ccclass, property } = cc._decorator;
+import IPos from "./IPos"
+@ccclass
+export default class IPlayer extends cc.Component {
+
+    @property()
+    azimuth = 0;
+
+    @property({ type: cc.Prefab })
+    H: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    W: cc.Prefab;
+
+    @property({ type: cc.Prefab })
+    Tiles: cc.Prefab;
+
+    @property(cc.Vec2)
+    pos1: cc.Vec2 = new cc.Vec2();
+
+    @property(cc.Vec2)
+    pos2: cc.Vec2 = new cc.Vec2();
+
+    index: number;
+    clear() {
+
+    }
+    sort() {
+
+    }
+
+
+    sort3<T extends IPos>(x: number, map: object, w: number): number {
+        for (var k in map) {
+            map[k].posX(x);
+            x += w;
+        }
+        return x;
+    }
+
+    sort2<T extends IPos>(x: number, map: object, w: number, compareFn: (a: T, b: T) => number): number {
+        var array: Array<T> = [];
+        for (var k in map) {
+            array.push(map[k]);
+        }
+        array.sort(compareFn);
+        for (var i = 0; i < array.length; i++) {
+            array[i].moveToX(x);
+            x += w;
+        }
+        return x;
+    }
+    Brand(o) { }
+
+}

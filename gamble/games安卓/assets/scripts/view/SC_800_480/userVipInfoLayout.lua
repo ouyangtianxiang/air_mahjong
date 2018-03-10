@@ -1,0 +1,34 @@
+userVipInfoLayout=
+{
+	name="userVipInfoLayout",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=700,visible=1,fillParentWidth=1,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="innerFrame",type=1,typeName="Image",time=77793220,x=0,y=70,width=1180,height=520,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Common/subViewFrame.png",gridLeft=8,gridRight=8,gridTop=8,gridBottom=8
+	},
+	{
+		name="vipIcon",type=1,typeName="Image",time=77793365,x=50,y=24,width=80,height=80,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="newHall/userInfo/vipIcon/vipLevel/vip1.png"
+	},
+	{
+		name="vipContentText1",type=4,typeName="Text",time=77793498,x=146,y=30,width=100,height=32,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=30,textAlign=kAlignLeft,colorRed=255,colorGreen=240,colorBlue=207,string=[[]]
+	},
+	{
+		name="vipContentText2",type=4,typeName="Text",time=77793583,x=254,y=29,width=200,height=27,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=26,textAlign=kAlignLeft,colorRed=255,colorGreen=207,colorBlue=134,string=[[]]
+	},
+	{
+		name="progressBg",type=1,typeName="Image",time=77793692,x=146,y=100,width=304,height=26,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="progressBg.png",packFile="MahjongPinTu/userNormalInfoPin.lua",gridLeft=31,gridRight=31,gridTop=0,gridBottom=0,
+		{
+			name="progress",type=1,typeName="Image",time=77793792,x=0,y=0,width=302,height=23,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="progress.png",packFile="MahjongPinTu/userNormalInfoPin.lua",gridLeft=31,gridRight=31,gridTop=0,gridBottom=0
+		},
+		{
+			name="progressText",type=4,typeName="Text",time=77793906,x=0,y=0,width=275,height=22,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=22,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[]]
+		}
+	},
+	{
+		name="wantVipBtn",type=2,typeName="Button",time=77794746,x=478,y=78,width=200,height=64,visible=0,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Common/subViewBtnG.png",gridLeft=30,gridRight=30,gridTop=32,gridBottom=32,
+		{
+			name="wantVipText",type=4,typeName="Text",time=77794864,x=0,y=0,width=200,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=32,textAlign=kAlignCenter,colorRed=255,colorGreen=255,colorBlue=255,string=[[]]
+		}
+	},
+	{
+		name="iconScrollView",type=0,typeName="ScrollView",time=77794923,x=0,y=170,width=1150,height=500,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop
+	}
+}

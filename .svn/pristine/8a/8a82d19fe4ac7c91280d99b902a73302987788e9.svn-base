@@ -1,0 +1,24 @@
+const { ccclass, property } = cc._decorator;
+import Brand from "./Brand";
+import Global from "../utils/Global";
+
+@ccclass
+export default class Extractive extends cc.Component {
+
+    @property(Brand)
+    main: Brand;
+
+    @property(Brand)
+    vice: Brand;
+
+    onLoad() {
+
+    }
+
+    obj(o) {
+        Global.Main = o.value;
+        Global.Vice = Global.Nearby(o.value, 1);
+        this.main.obj(o);
+        this.vice.value(Global.Vice);
+    }
+}

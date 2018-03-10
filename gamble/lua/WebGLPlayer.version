@@ -1,0 +1,13 @@
+WebGLPlayer/res,f36377da10274ff18261f7346b495875,657444
+WebGLPlayer/WebGLPlayer,567a2bd37bee819f55df701bad79e7bd,901
+src/GameMain.lua,c81618af45b506980fd6c6c8da2ed74b,497
+src/GameUI.lua,e7c99ae5558441dae3fd6559ae383796,694
+src/Http.lua,de4602896a4cc6a19fc04743dfa68f34,1032
+src/Utils.lua,31cef47ca6b5ef0250efac5254090033,4852
+src/ui/CreateRoom.lua,1e6df113d6b95752036949db015369f4,265
+src/ui/Hall.lua,7fa53436995719069ef6cf06372c55c8,781
+src/ui/IntoRoom.lua,1e6df113d6b95752036949db015369f4,265
+src/ui/Login.lua,1198bc64a0e014a1369036e334d2ec5d,485
+src/ui/Messager.lua,8b0f0063b59c1e7b3030202c10e197d5,453
+src/ui/NanchangMahjong.lua,c69522eddd9588824c334978514225f2,308
+src/ui/Wait.lua,57605674e42a26ca98f3c6af8fd826fd,459

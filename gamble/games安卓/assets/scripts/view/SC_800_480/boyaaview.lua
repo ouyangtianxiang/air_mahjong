@@ -1,0 +1,59 @@
+local boyaaview=
+{
+	name="boyaaview",type=0,typeName="View",time=0,x=0,y=0,width=1280,height=720,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,
+	{
+		name="bg",type=1,typeName="Image",time=96428546,x=0,y=0,width=632,height=426,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/pop_window_small.png",
+		{
+			name="title",type=4,typeName="Text",time=96428586,x=0,y=28,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTop,fontSize=35,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[博雅通行证登录]]
+		},
+		{
+			name="account",type=1,typeName="Image",time=96430907,x=0,y=-64,width=500,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/blank.png",
+			{
+				name="Text1",type=4,typeName="Text",time=96430958,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=30,textAlign=kAlignLeft,colorRed=75,colorGreen=43,colorBlue=28,string=[[账 号:]]
+			},
+			{
+				name="account_infoview",type=1,typeName="Image",time=96433882,x=100,y=2,width=410,height=60,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/text_editor_bg2.png",gridLeft=10,gridRight=10,gridTop=10,gridBottom=10,
+				{
+					name="account",type=6,typeName="EditText",time=96434018,x=10,y=0,width=400,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=24,textAlign=kAlignLeft,colorRed=173,colorGreen=158,colorBlue=149
+				}
+			}
+		},
+		{
+			name="password",type=1,typeName="Image",time=96431372,x=0,y=15,width=500,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/blank.png",
+			{
+				name="Text1",type=4,typeName="Text",time=96431373,x=0,y=0,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=30,textAlign=kAlignLeft,colorRed=75,colorGreen=43,colorBlue=28,string=[[密 码:]]
+			},
+			{
+				name="password_infoview",type=1,typeName="Image",time=96434073,x=100,y=2,width=410,height=60,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/text_editor_bg2.png",gridLeft=10,gridRight=10,gridTop=10,gridBottom=10,
+				{
+					name="password",type=6,typeName="EditText",time=96434074,x=10,y=0,width=400,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,fontSize=24,textAlign=kAlignLeft,colorRed=173,colorGreen=158,colorBlue=149
+				}
+			}
+		},
+		{
+			name="thirdline",type=1,typeName="Image",time=96431746,x=60,y=267,width=500,height=64,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,file="Commonx/blank.png",
+			{
+				name="rememberPwdField",type=1,typeName="Image",time=96431979,x=-100,y=0,width=158,height=40,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,file="Commonx/blank.png",
+				{
+					name="rememberPwd",type=0,typeName="CheckBoxGroup",time=96432079,x=0,y=0,width=40,height=40,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignLeft,
+					{
+						name="CheckBox1",type=0,typeName="CheckBox",time=96432080,x=0,y=0,width=40,height=40,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter
+					}
+				},
+				{
+					name="remember",type=4,typeName="Text",time=96432088,x=41,y=5,width=96,height=24,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignTopLeft,fontSize=24,textAlign=kAlignLeft,colorRed=75,colorGreen=43,colorBlue=28,string=[[记住密码]]
+				}
+			},
+			{
+				name="TextView1",type=5,typeName="TextView",time=96432190,x=171,y=-4,width=100,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=24,textAlign=kAlignLeft,colorRed=75,colorGreen=43,colorBlue=28,string=[[找回密码]]
+			}
+		},
+		{
+			name="login",type=2,typeName="Button",time=96432291,x=0,y=34,width=156,height=62,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignBottom,file="Commonx/green_small_btn.png",
+			{
+				name="Text2",type=4,typeName="Text",time=96432397,x=0,y=-3,width=0,height=0,visible=1,fillParentWidth=0,fillParentHeight=0,nodeAlign=kAlignCenter,fontSize=30,textAlign=kAlignLeft,colorRed=255,colorGreen=255,colorBlue=255,string=[[登 录]]
+			}
+		}
+	}
+}
+return boyaaview;
